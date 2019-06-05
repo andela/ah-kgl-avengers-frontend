@@ -1,0 +1,64 @@
+{
+  "name": "authorshaven-front-end",
+  "version": "1.0.0",
+  "description": "A Social platform for the creative at heart",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --open",
+    "build": "webpack --mode production",
+    "lint": "npx eslint ./src/**/*.js",
+    "lint-fix": "npx eslint --fix ./src/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela/ah-kgl-avengers-frontend.git"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "authors",
+    "haven",
+    "ah",
+    "frontend",
+    "avengers"
+  ],
+  "author": "Andela Kigali Avengers team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andela/ah-kgl-avengers-frontend/issues"
+  },
+  "homepage": "https://github.com/andela/ah-kgl-avengers-frontend#readme",
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.4.4",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.8.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "const": "^1.0.0",
+    "css-loader": "^2.1.1",
+    "dotenv-webpack": "^1.7.0",
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.13.0",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.7.0",
+    "style-loader": "^0.23.1",
+    "uglifyjs-webpack-plugin": "^2.0.1",
+    "url-loader": "^1.1.2",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.5.1"
+  },
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}

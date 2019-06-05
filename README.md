@@ -1,4 +1,4 @@
-# Authors' Haven - Frontend 
+# Authors' Haven - Frontend
 
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
@@ -10,3 +10,52 @@ A blogging platform for the creative at heart.
 ## Documentation
 
 Comprehensive documentation for the API is hosted [here](https://ah-kg-avengers-backend-staging.herokuapp.com/swagger).
+
+## Features
+
+- Users can create accounts to store their data.
+- Users can create, edit and delete articles.
+- Users can read other authors' articles.
+- Users can follow other authors and share these articles on Social Platforms.
+
+## Tools
+
+Tools used for development are;
+
+- Documentation : [Swagger](https://swagger.io/)
+- Framework: [http://react/](https://reactjs.org/)
+- Code Editor/IDE: [VSCode](https://code.visualstudio.com)
+- Programming language: [JavaScript(ES6)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/)
+- Testing environment: [Jest](https://www.getpostman.com)
+
+## Getting Started
+
+1. After cloning the repository from [here](https://github.com/andela/ah-kgl-avengers-frontend), install requirements by running this command in the root of the repo folder
+
+```sh
+    $ npm install
+```
+
+2. Make a copy of `.env.sample` and rename it to `.env`. Edit the file replacing the respective configuration values.
+
+3. Run the following command to start the API server:
+
+```sh
+    $ npm start
+```
+
+## Running the tests
+
+To be updated
+
+## Contributors
+
+Many thanks to `Ezrqn Kemboi` and `Bridget Mendoza`.
+
+### Key Contributors
+
+- [Eric Shema](https://www.github.com/shemaeric)
+- [Jean Bosco Niyodusenga](https://www.github.com/niyobobo)
+- [Fridolin Niyonsaba](https://www.github.com/fridolinho)
+- [Aaron Sekisambu](https://www.github.com/aaronsekisambu)
+- [Vincent De Paul Abimana](https://www.github.com/avpaul)
