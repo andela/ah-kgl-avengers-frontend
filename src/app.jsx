@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router, Route, Link, Switch,
 } from 'react-router-dom';
 import './index.scss';
+import Welcome from './components/Welcome';
 
 // Temporary functional components will be deleted after project setup.
 const Home = () => (
@@ -40,6 +41,7 @@ const App = () => (
   <Router>
     <Switch>
       <Route exact path="/" component={Home} />
+      <Route path="/welcome" component={Welcome} />
       <Route path="/about" component={About} />
       <Route path="/sign-up" component={SignUp} />
     </Switch>

@@ -47,6 +47,7 @@ const config = {
   plugins: [
     new Dotenv({
       safe: true,
+      systemvars: true,
     }),
     new Webpack.NoEmitOnErrorsPlugin(),
     new Webpack.HotModuleReplacementPlugin(),
