@@ -4,7 +4,7 @@
   "description": "A Social platform for the creative at heart",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --coverage --collectCoverageFrom=src/**/*.{js,jsx}",
     "start": "webpack-dev-server --open",
     "build": "webpack --mode production",
     "lint": "npx eslint ./src/**/*.js",
@@ -49,7 +49,9 @@
     "eslint-plugin-react": "^7.13.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
+    "jest": "^24.8.0",
     "mini-css-extract-plugin": "^0.7.0",
+    "react-test-renderer": "^16.8.6",
     "style-loader": "^0.23.1",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "url-loader": "^1.1.2",
