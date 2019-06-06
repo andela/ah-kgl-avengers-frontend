@@ -1,6 +1,10 @@
 # Authors' Haven - Frontend
 
-[![CircleCI](https://circleci.com/gh/andela/ah-kgl-avengers-frontend.svg?style=svg)](https://circleci.com/gh/andela/ah-kgl-avengers-frontend) [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
+[![CircleCI](https://circleci.com/gh/andela/ah-kgl-avengers-frontend.svg?style=svg)](https://circleci.com/gh/andela/ah-kgl-avengers-frontend) 
+[![Maintainability](https://api.codeclimate.com/v1/badges/da774b4cd3ed816daf60/maintainability)](https://codeclimate.com/github/andela/ah-kgl-avengers-frontend/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/da774b4cd3ed816daf60/test_coverage)](https://codeclimate.com/github/andela/ah-kgl-avengers-frontend/test_coverage)
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+[![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
 A blogging platform for the creative at heart.
 
@@ -36,7 +40,7 @@ Tools used for development are;
     $ npm install
 ```
 
-2. Make a copy of `.env.sample` and rename it to `.env`. Edit the file replacing the respective configuration values.
+2. Make a copy of `.env.example` and rename it to `.env`. Edit the file replacing the respective configuration values.
 
 3. Run the following command to start the API server:
 
