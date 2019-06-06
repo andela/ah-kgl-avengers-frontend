@@ -2,7 +2,7 @@ import React from 'react';
 import {
   BrowserRouter as Router, Route, Link, Switch,
 } from 'react-router-dom';
-import './index.css';
+import './index.scss';
 
 // Temporary functional components will be deleted after project setup.
 const Home = () => (
