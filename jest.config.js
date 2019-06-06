@@ -7,4 +7,6 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: ['src/**/*.{js,jsx}'],
   verbose: true,
+  testEnvironment: 'jsdom',
+  setupFiles: ['./enzyme.config.js'],
 };

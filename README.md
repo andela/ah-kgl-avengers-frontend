@@ -5,6 +5,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/da774b4cd3ed816daf60/test_coverage)](https://codeclimate.com/github/andela/ah-kgl-avengers-frontend/test_coverage)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9a5328dc-4eb1-444d-b54c-f694ca5b5f3f/deploy-status)](https://app.netlify.com/sites/ah-kgl-avengers-frontend/deploys)
 
 A blogging platform for the creative at heart.
 
