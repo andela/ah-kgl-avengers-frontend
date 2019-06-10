@@ -1,0 +1,12 @@
+sudo: false
+language: node_js
+node_js:
+  - "11.10.1"
+cache:
+  directories:
+    - node_modules
+install:
+  - npm install
+  - cypress install
+script:
+  - npm run cypress:all

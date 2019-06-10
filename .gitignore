@@ -6,3 +6,5 @@ node_modules
 .idea
 .sonarlint
 mockups/assets/.DS_Store/
+cypress/videos/
+.nyc_output/

@@ -1,0 +1,48 @@
+describe('App Test', () => {
+  beforeEach(() => {
+    cy.visit('/');
+  });
+
+  it('Visit the app', () => {
+    // check if we have tha class container
+    cy.get('.nav-top').should('be.visible');
+
+    // check if in the DOM there exist the class called app-title and has text Home
+    cy.get('.nav-logo').should('exist');
+    cy.get('img').should('exist');
+
+    cy.get('.ml-auto').should('exist');
+  });
+
+  it('Visit the Sign Up in dummy component', () => {
+    // test the SIGN IN button
+    cy.get('.btn-outline-inverse').should('have.text', 'SIGN IN').click();
+
+    // test the GER STARTED  button
+    cy.get('.btn-outline').should('have.text', 'GET STARTED').click();
+
+    // check if we redirected to the same page
+    cy.location('pathname').should('eq', '/');
+  });
+
+  it('Test Items', () => {
+    const textLinks = 'MONEYSTARTUPSRELIGIONSELF-DEVELOPMENTPOLITICSTECHBUSINESSHELPCAREERABOUTPRIVACY POLICYTERMS AND CONDITIONS';
+
+    cy.get('.collapse').should('exist');
+    cy.get('ul').should('have.class', 'navbar-nav');
+    cy.get('li').should('have.class', 'nav-item');
+    cy.get('.nav-item').should('have.text', textLinks);
+  });
+
+  it('Test Footer', () => {
+    // check if we have tha class container
+    cy.get('.footer').should('be.visible');
+
+    cy.get('ul').should('have.class', 'footer');
+
+    // check if we have tha class container
+    cy.get('.footer-copyright').should('be.visible');
+
+    cy.get('span').should('have.text', '© AuthorsHaven 2019');
+  });
+});
