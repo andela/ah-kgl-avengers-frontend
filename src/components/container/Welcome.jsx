@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropType from 'prop-types';
-import welcomeAction from '../redux/action-creators/welcome';
+import { Container } from 'reactstrap';
+import welcomeAction from '../../redux/action-creators/welcome';
+import Navigation from '../functional/navigation';
+import Footer from '../functional/footer';
 
 class Welcome extends Component {
   constructor(props) {
@@ -17,12 +20,12 @@ class Welcome extends Component {
   }
 
   render() {
-    const { response } = this.props;
     return (
-      <div className="container">
-        <h1 className="app-title">Authors Haven</h1>
-        { response !== undefined && <p>{response.message}</p>}
-      </div>
+      <Container>
+        <Navigation />
+        {/* Article container will be placed here } */}
+        <Footer />
+      </Container>
     );
   }
 }
