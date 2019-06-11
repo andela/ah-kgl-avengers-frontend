@@ -7,6 +7,8 @@ import Welcome from './components/container/Welcome';
 import Signup from './components/Auth/Signup';
 import Redirect from './components/Auth/Redirect';
 import Login from './components/Auth/login';
+import ReadArticle from './components/readArticle';
+
 
 const App = () => (
   <Router>
@@ -15,6 +17,7 @@ const App = () => (
       <Route path="/signup" component={Signup} />
       <Route path="/redirect" component={Redirect} />
       <Route path="/login" component={Login} />
+      <Route exact path="/read-article" component={ReadArticle} />
     </Switch>
   </Router>
 );

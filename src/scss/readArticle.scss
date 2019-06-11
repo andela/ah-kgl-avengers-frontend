@@ -1,0 +1,101 @@
+.acronym {
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: bold;
+  font-size: 20px;
+  color: white;
+  padding: .4em 0 0 .2em;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border-top: 1px #38C4B0 solid;
+  border-bottom: .5px #38C4B0 solid;
+  background-color: #38C4B0;
+}
+
+.avatar {
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.title {
+  background-color: #38C4B0;
+}
+
+// Button Styling
+.btn-follow-author {
+  border: 1px solid #2ea8f7;
+  border-radius: 4px;
+  padding: .5px 10px;
+  font-size: 0.8rem;
+  color: #2ea8f7;
+  margin: 0 0 0 1em;
+  vertical-align: middle;
+  text-align: center;
+  display: table-cell;
+}
+
+.btn-follow-author:hover {
+  color: #ffffff;
+  background-color: #2ea8f7;
+}
+
+.images {
+  border: 1px solid #2ea8f7;
+  border-radius: 4px;
+  height: 560px;
+}
+
+.text {
+  font-size: .7em;
+  padding-top: 5px;
+}
+
+p img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media all and (min-width: 320px) {
+  .lead-un-sm {
+    font-size: .9em;
+    text-transform: capitalize;
+  }
+
+  .lead-rt-sm {
+    font-size: .7em;
+    text-transform: capitalize;
+  }
+
+  .follow {
+    width: 2em;
+    height: 1.5em;
+  }
+}
+
+@media all and (min-width: 968px) {
+  .text {
+    font-size: .9em;
+  }
+}
+
+@media all and (min-width: 576px) {
+  .lead-un-sm {
+    font-size: .9em;
+    text-transform: capitalize;
+  }
+
+  .lead-rt-sm {
+    font-size: .7em;
+    text-transform: capitalize;
+  }
+
+  .follow {
+    width: 2em;
+    height: 1.5em;
+  }
+
+}
