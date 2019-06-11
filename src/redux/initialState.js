@@ -8,7 +8,7 @@ export default {
   },
   currentUser: {
   },
-  signUp: {
+  register: {
     username: '',
     email: '',
     errors: [],

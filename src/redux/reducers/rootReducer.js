@@ -4,7 +4,11 @@
 */
 import { combineReducers } from 'redux';
 import welcome from './welcome';
+import registerReducer from './signup';
 
-export default combineReducers({
+const reducers = combineReducers({
   welcome,
+  registerReducer,
 });
+
+export default reducers;
