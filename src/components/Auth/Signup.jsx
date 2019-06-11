@@ -157,7 +157,7 @@ export class Register extends Component {
                     <div className="sign-up-footer">
                       <p>
                         Already have an account?
-                        <a href="../signinTemplate/signin.html"> sign in</a>
+                        <Link to="/login"> sign in</Link>
                       </p>
                       <p>
                         By signing up you agree to all
@@ -193,12 +193,12 @@ Register.propTypes = {
   history: PropTypes.instanceOf(Object).isRequired,
 };
 
-export const mapStateToProps = state => ({
-  username: state.register.username,
-  email: state.register.email,
-  password: state.register.password,
-  message: state.register.message,
-  errors: state.register,
+export const mapStateToProps = ({registerReducer}) => ({
+  username: registerReducer.register.username,
+  email: registerReducer.register.email,
+  password: registerReducer.register.password,
+  message: registerReducer.register.message,
+  errors: registerReducer.register,
 });
 
 Register.defaultProps = {

@@ -3,12 +3,12 @@
 * and combine all of them using combinedReducers
 */
 import { combineReducers } from 'redux';
-import welcome from './welcome';
 import registerReducer from './signup';
+import user from './user';
 
 const reducer = combineReducers({
-  welcome,
   registerReducer,
+  user,
 });
 
 export default reducer;
