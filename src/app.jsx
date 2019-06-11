@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom';
 import './index.scss';
 import Welcome from './components/Welcome';
+import ReadArticle from './components/readArticle';
 
 // Temporary functional components will be deleted after project setup.
 const Home = () => (
@@ -44,6 +45,7 @@ const App = () => (
       <Route path="/welcome" component={Welcome} />
       <Route path="/about" component={About} />
       <Route path="/sign-up" component={SignUp} />
+      <Route exact path="/read-article" component={ReadArticle} />
     </Switch>
   </Router>
 );

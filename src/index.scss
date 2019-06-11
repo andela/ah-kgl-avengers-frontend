@@ -1,3 +1,4 @@
+@import "../node_modules/rfs/scss";
 * {
   padding: 0;
   margin: 0;
@@ -13,7 +14,5 @@ html {
   font-weight: 700;
   text-align: center;
 }
-p {
-  text-align: center;
-  font-size: 1.4rem;
-}
+
+

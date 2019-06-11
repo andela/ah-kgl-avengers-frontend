@@ -4,7 +4,9 @@
 */
 import { combineReducers } from 'redux';
 import welcome from './welcome';
+import readArticle from './readArticle';
 
 export default combineReducers({
   welcome,
+  readArticle,
 });
