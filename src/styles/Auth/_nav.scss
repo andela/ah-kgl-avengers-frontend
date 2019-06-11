@@ -1,0 +1,28 @@
+.nav {
+    width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    z-index: 1000;
+    height: 64px;
+    display: flex;
+    flex-direction: row;
+    padding: 8px;
+}
+.nav .spacer {
+    flex-grow: 1;
+}
+
+.nav-logo {
+    height: 100%;
+}
+  
+.nav-logo img {
+    height: 100%;
+    width: auto;
+}
+  
+.nav-logo img:last-of-type {
+    margin-bottom: 1px;
+    height: 36px;
+}
