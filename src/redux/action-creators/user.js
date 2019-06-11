@@ -11,6 +11,8 @@ const userLogin = user => async (dispatch) => {
   Axios.post(url, user)
     .then((response) => {
       // dispatch the action and pass the payload
+      const { token } = response.data.user;
+      localStorage.setItem('token', token);
       dispatch(actionDispatch(loginSuccess, response.data.user));
     })
     .catch((error) => {

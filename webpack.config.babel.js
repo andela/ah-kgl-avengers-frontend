@@ -63,7 +63,7 @@ const config = {
     hot: true,
     compress: true,
     allowedHosts: ['.ngrok.io'],
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname, 'public'),
     historyApiFallback: true,
   },
 };

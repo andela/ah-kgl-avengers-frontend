@@ -5,13 +5,13 @@
   font-weight: bold;
   font-size: 20px;
   color: white;
-  padding: .4em 0 0 .2em;
+  padding: 0.4em 0 0 0.2em;
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border-top: 1px #38C4B0 solid;
-  border-bottom: .5px #38C4B0 solid;
-  background-color: #38C4B0;
+  border-top: 1px #38c4b0 solid;
+  border-bottom: 0.5px #38c4b0 solid;
+  background-color: #38c4b0;
 }
 
 .avatar {
@@ -22,14 +22,14 @@
 }
 
 .title {
-  background-color: #38C4B0;
+  background-color: #38c4b0;
 }
 
 // Button Styling
 .btn-follow-author {
   border: 1px solid #2ea8f7;
   border-radius: 4px;
-  padding: .5px 10px;
+  padding: 0.5px 10px;
   font-size: 0.8rem;
   color: #2ea8f7;
   margin: 0 0 0 1em;
@@ -49,8 +49,53 @@
   height: 560px;
 }
 
+// Added changes
+figure {
+  padding-top: 8px;
+  img {
+    height: 500px;
+    width: 100%;
+  }
+}
+figcaption {
+  padding: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  color: #111111;
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+p {
+  text-align: left;
+  font-style: normal;
+  display: block;
+  padding: 0;
+  color: #111111;
+  font-weight: 300;
+  font-size: 1.2rem;
+}
+blockquote {
+  width: 70%;
+  margin: 16px auto;
+  padding: 8px 16px;
+  display: block;
+  border-left: 8px #38c4b0 solid;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: #00000090;
+  p {
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    font-size: 1.4rem;
+  }
+}
+
 .text {
-  font-size: .7em;
+  font-size: 0.7em;
   padding-top: 5px;
 }
 
@@ -61,12 +106,12 @@ p img {
 
 @media all and (min-width: 320px) {
   .lead-un-sm {
-    font-size: .9em;
+    font-size: 0.9em;
     text-transform: capitalize;
   }
 
   .lead-rt-sm {
-    font-size: .7em;
+    font-size: 0.7em;
     text-transform: capitalize;
   }
 
@@ -78,18 +123,18 @@ p img {
 
 @media all and (min-width: 968px) {
   .text {
-    font-size: .9em;
+    font-size: 0.9em;
   }
 }
 
 @media all and (min-width: 576px) {
   .lead-un-sm {
-    font-size: .9em;
+    font-size: 0.9em;
     text-transform: capitalize;
   }
 
   .lead-rt-sm {
-    font-size: .7em;
+    font-size: 0.7em;
     text-transform: capitalize;
   }
 
@@ -97,5 +142,22 @@ p img {
     width: 2em;
     height: 1.5em;
   }
+}
 
+.article-taglist{
+  width: 90%;
+  margin: 0 auto;
+  .article-tag{
+    display: inline-block;
+    color: #2ea8f7;
+    height: 32px;
+    padding: 0 12px;
+    margin: 8px;
+    border-radius: 2px;
+    background-color: #e6ebec;
+    line-height: 32px;
+    &::first-letter{
+      text-transform: uppercase; 
+    }
+  }
 }

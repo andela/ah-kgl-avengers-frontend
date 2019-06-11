@@ -2,7 +2,8 @@
 * {
   padding: 0;
   margin: 0;
-}
+  box-sizing: border-box;
+} 
 
 html {
   font-family: "Open Sans", sans-serif;
@@ -59,7 +60,7 @@ body {
 }
 
 .nav-item a:hover {
-  color: #686565 !important
+  color: #686565 !important;
 }
 
 .btn-outline {
@@ -82,20 +83,21 @@ body {
 }
 
 .footer a,
-.footer-copright {
+.footer-copyright {
   text-decoration: none;
   color: #38c4b0 !important;
-  font-weight: 500;
-  font-size: 12px;
+  font-weight: 300;
+  font-size: 14px;
 }
 
 .footer a:hover {
   color: #0b6d5e !important;
 }
 
-.footer-copright {
-  padding: 0px 16px;
+.footer-copyright {
+  padding-bottom: 16px;
   display: block;
+  font-size: 1.1rem;
 }
 
 .btn-toggler {
@@ -103,10 +105,10 @@ body {
   color: white;
   padding: 0.5rem;
   border-radius: 0;
-} 
+}
 
 .btn-toggler:hover {
   background-color: white;
   color: #38c4b0;
   border-color: #38c4b0;
-} 
+}

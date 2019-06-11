@@ -8,43 +8,54 @@ import Description from './description';
 import ArticleTitle from './articleTitle';
 import Status from './status';
 import ArticleCreatedDate from './date';
-import tempImage from '../images/lion.png';
 import ReadTime from './readTime';
 import UserName from './userNames';
-import Images from './image';
 import TextArea from './textArea';
 import readArticle from '../redux/action-creators/readArticle';
 import readArticleHelper from '../helpers/readArticle';
+import Footer from './functional/footer';
+import Navbar from './functional/navBar';
 
 class ReadArticle extends Component {
   state = {};
 
   componentDidMount() {
+    const { params } = this.props.match;
     const { readArticles } = this.props;
-    readArticles();
+    readArticles(params.id);
   }
 
+  renderTags = (tags) => {
+    if (tags.length > 0) {
+      return tags.map(tag => (
+        <div className="chip article-tag" key={tag}>
+          {`#${tag}`}
+        </div>
+      ));
+    }
+    return <div className="chip article-tag">#notags</div>;
+  };
+
   render() {
-    const { response } = this.props;
-    if (response === undefined) return null;
+    const { article } = this.props;
+    if (article === undefined) return null;
     const {
-      title, body, readTime, author, createdAt,
-    } = response;
+      title, body, readTime, author, createdAt, tagList,
+    } = article;
     const newBody = ReactHtmlParser(body);
     const desc = readArticleHelper.description(body);
     const formatDate = readArticleHelper.timeFormat(createdAt);
     return (
       <Fragment>
+        <Navbar/>
         {/*
         /* Heading and
         /* Description section
         */}
 
-        <section className="col-lg-8 col-md-8 col-sm-10 pt-4 pt-md-11 col-lg-offset-3 col-md-offset-3 mx-auto">
+        <section className="col-lg-8 col-md-8 col-sm-10 pt-4 col-lg-offset-3 col-md-offset-3 mx-auto">
           <div className="container">
-            <ArticleTitle className="display-5 text-md-left">
-              {title}
-            </ArticleTitle>
+            <ArticleTitle className="display-5 text-md-left">{title}</ArticleTitle>
             <Description className="text-lg-left text-md-left text-sm-left text-black-50 mb-2 mb-lg-8">
               {desc}
             </Description>
@@ -57,8 +68,8 @@ class ReadArticle extends Component {
         /* Date and
         /* Read Time section
         */}
-        <section className="col-lg-8 col-lx-8 col-md-8 col-sm-10 col-lg-offset-4 mx-auto col-md-6 pt-2 pt-md-11">
-          <div className="container">
+        <section className="col-lg-8 col-lx-8 col-md-8 col-sm-10 col-lg-offset-4 mx-auto col-md-6 pt-2">
+          <div className="container pl-5">
             <div className="row align-items-left">
               <ImageAvatar />
               <div>
@@ -66,7 +77,7 @@ class ReadArticle extends Component {
                   <UserName className="lead lead-un-sm lead-un-md lead-un-lg text-left text-md-left text-black-50 ml-4 mt-2">
                     {author.username}
                   </UserName>
-                  <Status className="btn-follow-author"> follow</Status>
+                  <Status className="btn-follow-author">Follow</Status>
                 </div>
                 <div className="row align-items-center">
                   <ArticleCreatedDate className="lead lead-rt-sm text-left text-md-left text-black-50 ml-4">
@@ -81,49 +92,37 @@ class ReadArticle extends Component {
             </div>
           </div>
         </section>
-        {/*
-        /* Main Image section with remarks
-        */}
-        <section className="col-lg-12 col-md-12 col-sm-12 pt-4 pt-md-11 col-lg-offset-3  mx-auto">
-          <div className="container text-center">
-            <Images className="img-fluid" image={tempImage} alt="" />
-          </div>
-        </section>
+        
         {/*
         /* Reading Text section
         /* Social links side section
         */}
 
-        <section className="col-lg-8 col-md-8 col-sm-10 pt-4 pt-md-11 col-lg-offset-3 col-md-offset-3 mx-auto">
+        <section className="col-lg-8 col-md-8 col-sm-10 pt-4 col-lg-offset-3 col-md-offset-3 mx-auto">
           <div className="container">
-            <ArticleTitle className="display-5 text-md-left">
-              {title}
-            </ArticleTitle>
             <TextArea className="text-lg-left text-justify text-md-left text-sm-left text-black-50 mb-2 mb-lg-8">
               {newBody}
             </TextArea>
           </div>
+          {tagList && <div className="article-taglist">{this.renderTags(tagList)}</div>}
+          <Footer/>
         </section>
+
       </Fragment>
     );
   }
 }
 
-
 ReadArticle.propTypes = {
   readArticles: PropTypes.func.isRequired,
-  response: PropTypes.instanceOf(Object).isRequired,
+  article: PropTypes.instanceOf(Object).isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
-  readArticles: () => dispatch(readArticle()),
-});
-
-const mapStateToProps = state => ({
-  response: state.readArticle.payload,
+const mapStateToProps = ({ readArticle: readArticleReducer }) => ({
+  article: readArticleReducer.article,
 });
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  { readArticles: readArticle },
 )(ReadArticle);
