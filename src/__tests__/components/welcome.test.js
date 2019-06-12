@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import Welcome from '../../components/Welcome';
+import Welcome from '../../components/container/Welcome';
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({});

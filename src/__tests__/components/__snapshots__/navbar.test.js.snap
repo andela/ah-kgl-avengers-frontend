@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Shared navigation Render component when NavBar toggled  1`] = `ShallowWrapper {}`;
+
+exports[`Shared navigation should render without crashing 1`] = `ShallowWrapper {}`;
