@@ -4,9 +4,11 @@
  */
 import { combineReducers } from 'redux';
 import user from './user';
+import resetPassword from './resetPassword';
 import article from './article';
 
 const reducer = combineReducers({
+  resetPassword,
   user,
   article,
 });

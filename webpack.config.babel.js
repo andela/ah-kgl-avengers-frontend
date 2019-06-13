@@ -64,8 +64,10 @@ const config = {
     compress: true,
     allowedHosts: ['.ngrok.io'],
     contentBase: path.join(__dirname, 'dist'),
-    historyApiFallback: true,
     index: path.join(__dirname, 'dist'),
+    historyApiFallback: {
+      disableDotRule: true,
+    },
   },
 };
 

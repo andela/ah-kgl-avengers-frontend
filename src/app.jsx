@@ -7,6 +7,8 @@ import Login from './components/Auth/login';
 import ReadArticle from './components/readArticle';
 import Editor from './components/editor/editor';
 import Articles from './components/articles';
+import Reset from './components/container/requestReset';
+import UpdatePassword from './components/container/updatePassword';
 import './index.scss';
 
 const App = () => (
@@ -19,6 +21,8 @@ const App = () => (
       <Route exact path="/articles/:slug" component={ReadArticle} />
       <Route exact path="/new-post" component={Editor} />
       <Route exact path="/my-articles" component={Articles} />
+      <Route exact path="/reset" component={Reset} />
+      <Route exact path="/updatePassword/:token" component={UpdatePassword} />
     </Switch>
   </Router>
 );

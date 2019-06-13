@@ -117,7 +117,11 @@ class Login extends Component {
 
                     <div className="sign-up-footer">
                       <p>
-                        Don&apos;t have an account?
+                        Forget your password?
+                        <Link to="/reset"> Reset</Link>
+                      </p>
+                      <p>
+                        Don't have an account?
                         <Link to="/signup"> sign up</Link>
                       </p>
                       <p>
