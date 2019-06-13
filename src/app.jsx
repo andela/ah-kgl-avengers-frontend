@@ -5,6 +5,7 @@ import {
 import './index.scss';
 import Welcome from './components/Welcome';
 import Register from './components/Auth/Signup';
+import Login from './components/Auth/login/Login';
 
 // Temporary functional components will be deleted after project setup.
 const Home = () => (
@@ -45,6 +46,7 @@ const App = () => (
       <Route path="/welcome" component={Welcome} />
       <Route path="/about" component={About} />
       <Route path="/sign-up" component={Register} />
+      <Route path="/login" component={Login} />
     </Switch>
   </Router>
 );
