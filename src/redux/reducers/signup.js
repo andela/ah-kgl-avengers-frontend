@@ -10,7 +10,12 @@ import {
 } from '../action-types/auth';
 import initialState from '../initialState';
 
-const registerReducer = (state = initialState.register, action) => {
+const registerReducer = (state = {register: {
+    username: '',
+    email: '',
+    errors: [],
+  }
+}, action) => {
   switch (action.type) {
     case REGISTER_LOAD:
       return initialState;

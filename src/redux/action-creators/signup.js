@@ -39,7 +39,7 @@ export const userRegister = data => async (dispatch) => {
   const url = process.env.REACT_APP_API;
   try {
     // make a call on the API with provided headers
-    const makeRequest = await Axios.post(`${url}api/v1/auth/signup`, data);
+    const makeRequest = await Axios.post(`${url}/auth/signup`, data);
 
     /*
     * Incase the response returned has status from 200 or 201

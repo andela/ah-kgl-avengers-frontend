@@ -1,4 +1,4 @@
-import reducer from '../../redux/reducers/welcome';
+import reducer from '../../redux/reducers/signup';
 import store from '../../redux/store/store';
 import {
   REGISTER_FORM_SEND,
@@ -10,23 +10,11 @@ import {
 describe('Welcome Reducer', () => {
   // test the state
   it('should return the initial `state`', () => {
-    const resp = {
+    expect(reducer({}, { register: {
+      username: '',
       email: '',
       errors: [],
-      username: '',
-    };
-    expect(reducer(resp, {})).toEqual(store.getState().register);
-  });
-
-  test('should handle CLEAR_FORGOT_PASSWORD_FORM', () => {
-    const resp = {
-      email: '',
-      errors: [],
-      username: '',
-    };
-    const expectedState = {
-      type: REGISTER_LOAD,
-    };
-    expect(reducer(resp, expectedState)).toEqual(store.getState().register);
+      }
+    })).toEqual({});
   });
 });

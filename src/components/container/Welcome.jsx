@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component,Fragment } from 'react';
 import { connect } from 'react-redux';
-import PropType from 'prop-types';
 import { Container } from 'reactstrap';
-import welcomeAction from '../../redux/action-creators/welcome';
 import Navigation from '../functional/navigation';
 import Footer from '../functional/footer';
+import AppBar from '../functional/navBar';
 
 class Welcome extends Component {
   constructor(props) {
@@ -14,37 +13,18 @@ class Welcome extends Component {
     };
   }
 
-  componentDidMount() {
-    const { welcome } = this.props;
-    welcome();
-  }
-
   render() {
     return (
+      <Fragment>
+      <AppBar/>
       <Container>
         <Navigation />
         {/* Article container will be placed here } */}
         <Footer />
       </Container>
+      </Fragment>
     );
   }
 }
 
-// Do the props validations
-Welcome.propTypes = {
-  welcome: PropType.func.isRequired,
-};
-
-// Add the dispatch action creator to the props
-const mapDispatchToProps = dispatch => ({
-  welcome: () => dispatch(welcomeAction()),
-});
-
-// Add the response return in the current state to the props
-const mapStateToProps = state => ({
-  response: state.welcomeMessage,
-});
-
-export default connect(
-  mapStateToProps, mapDispatchToProps,
-)(Welcome);
+export default connect()(Welcome);

@@ -14,10 +14,9 @@ export default {
     errors: [],
   },
   login: {
-    user: {
-      username: '',
-      email: '',
-    },
+    username: null,
+    email: '',
+    errors: [],
   },
   article: {
   },
