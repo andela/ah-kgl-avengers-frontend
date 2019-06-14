@@ -1,0 +1,51 @@
+.chips-container {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 8px 0;
+  .chips-label {
+    position: absolute;
+    padding: 0 16px;
+    height: 36px;
+    max-width: 180px;
+    font-weight: 300;
+    font-size: 1.2rem;
+  }
+  input {
+    height: 36px;
+    width: 100%;
+    padding-left: 170px;
+    border: none;
+    color: #444554;
+    &:focus {
+      outline: none;
+    }
+  }
+  .chip {
+    display: inline-block;
+    height: 32px;
+    padding: 0 12px;
+    margin: 8px;
+    border-radius: 2px;
+    background-color: #e6ebec;
+    line-height: 32px;
+    span {
+      text-transform: capitalize;
+    }
+    button {
+      display: inline-block;
+      height: 18px;
+      width: 18px;
+      padding: 0;
+      margin-left: 8px;
+      line-height: 18px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      i {
+        font-size: 18px;
+        line-height: inherit;
+      }
+    }
+  }
+}

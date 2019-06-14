@@ -39,7 +39,7 @@ const Footer = () => (
         </NavItem>
       </Nav>
     </Navbar>
-    <div className="footer-copright d-flex justify-content-center">
+    <div className="footer-copyright d-flex justify-content-center">
       <span>&copy; AuthorsHaven 2019</span>
     </div>
   </Container>

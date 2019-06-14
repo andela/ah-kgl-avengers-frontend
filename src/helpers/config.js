@@ -8,7 +8,6 @@ const actionDispatch = (type, payload) => ({
   type,
   payload,
 });
-
 export {
   optRequest,
   actionDispatch,

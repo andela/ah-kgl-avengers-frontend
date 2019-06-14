@@ -1,0 +1,154 @@
+.editor-container {
+  min-height: 100%;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "Open Sans", sans-serif;
+
+  .status-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 54px;
+
+    .status-progress {
+      color: #2ea8f7;
+      font-weight: 300;
+      span {
+        text-transform: capitalize;
+      }
+    }
+    .status-errors {
+      min-width: 300px;
+      display: none;
+      &.error {
+        display: inline-block;
+        color: #d62839;
+      }
+    }
+    .spacer {
+      flex-basis: 100%;
+    }
+    .status,
+    .status-progress,
+    .status-errors {
+      padding: 8px 16px;
+      line-height: 38px;
+    }
+
+    .btn {
+      display: inline-block;
+      border: none;
+      border-radius: 1px;
+      min-width: 64px;
+      height: 36px;
+      padding: 0 16px;
+      text-transform: uppercase;
+      font-weight: 400;
+      text-align: center;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 36px;
+      text-decoration: none;
+      box-shadow: none;
+      padding-left: 12px;
+      color: #04080f;
+      .icon,
+      .zmdi,
+      .material-icons {
+        display: inline-block;
+        font-size: inherit;
+        margin-right: 8px;
+        color: inherit;
+        line-height: inherit;
+        vertical-align: bottom;
+      }
+
+      &.btn-publish-edit {
+        background-color: #38c4b0;
+      }
+      &.btn-save-edit {
+        border: 1px #2ea8f7 solid;
+        &:hover {
+          color: #ffffff;
+          background-color: #2ea8f7;
+        }
+      }
+    }
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 220px;
+      .btn {
+        margin-left: 8px;
+        margin-right: 8px;
+      }
+    }
+  }
+  .editor-wrapper {
+    min-height: 600px;
+    margin-top: 20px;
+
+    .ck.ck-content.ck-focused {
+      outline: none;
+      border: none;
+      box-shadow: none;
+    }
+    .article-title {
+      display: block;
+      padding: 8px;
+      margin-bottom: 0;
+      font-size: 2rem;
+      color: #111111;
+      font-weight: 600;
+      border-left: 1px #444554 solid;
+      &:focus {
+        outline: none;
+      }
+    }
+    p {
+      text-align: left;
+      font-style: normal;
+      display: block;
+      padding: 0;
+      color: #111111;
+      font-weight: 300;
+      font-size: 1.2rem;
+    }
+    blockquote {
+      width: 70%;
+      margin: 16px auto;
+      padding: 8px 16px;
+      display: block;
+      border-left: 8px #38c4b0 solid;
+      font-style: italic;
+      font-size: 1.4rem;
+      color: #00000090;
+      p {
+        margin: 0;
+        padding: 0;
+        font-weight: 400;
+        font-size: 1.4rem;
+      }
+    }
+    figure {
+      &:hover {
+        outline: none;
+      }
+      img {
+        height: 500px;
+        width: 100%;
+      }
+    }
+    figcaption {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+  }
+  .editor-options {
+    width: 50%;
+    margin-right: auto;
+    margin-left: 16px;
+  }
+}
