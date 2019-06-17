@@ -7,8 +7,8 @@ import {
   FETCH_ARTICLE_FAIL,
 } from '../action-types';
 
-const readArticle = id => (dispatch) => {
-  const url = `${process.env.REACT_APP_API}/articles/${id}`;
+const readArticle = slug => (dispatch) => {
+  const url = `${process.env.REACT_APP_API}/articles/${slug}`;
   dispatch({ type: FETCH_ARTICLE_START, payload: {} });
   return axios
     .get(url, optRequest)

@@ -20,9 +20,10 @@ class ReadArticle extends Component {
   state = {};
 
   componentDidMount() {
-    const { params } = this.props.match;
+    const { match } = this.props;
+    const { params } = match;
     const { readArticles } = this.props;
-    readArticles(params.id);
+    readArticles(params.slug);
   }
 
   renderTags = (tags) => {
@@ -118,7 +119,7 @@ ReadArticle.propTypes = {
   article: PropTypes.instanceOf(Object).isRequired,
 };
 
-const mapStateToProps = ({ readArticle: readArticleReducer }) => ({
+const mapStateToProps = ({ article: readArticleReducer }) => ({
   article: readArticleReducer.article,
 });
 

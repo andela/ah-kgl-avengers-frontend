@@ -25,6 +25,8 @@
   color: #d80909;
   cursor: pointer;
   font-size: 20px;
+  background: none;
+  border: none;
 }
 .article-details .edit {
   color: #238100;
@@ -38,15 +40,23 @@
 
 .article-menu {
   border-bottom: .8px solid #38c4b0;
-  padding-bottom: 20px;
   font-size: 20px;
   font-weight: bold;
+  button{
+    background: none;
+    border: none;
+    padding-right: 8px;
+    margin-right: 16px;
+    
+  }
+  .bold {
+    border-bottom: 4px solid #38c4b0;
+    padding-bottom: 5px;
+    margin-bottom: -2px;
+  }
 }
 
-.bold {
-  border-bottom: 4px solid #38c4b0;
-  padding-bottom: 21px;
-}
+
 
 .normal {
   color: grey;

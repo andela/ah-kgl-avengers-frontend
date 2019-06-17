@@ -6,7 +6,7 @@
 export default {
   user: {
     token:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNiMmZlNGFiLWMyODMtNDAyMy04MTJhLTQ5NGZhYjMzNGFlNCIsInJvbGUiOiJ1c2VyIiwiZW1haWwiOiJ2YWJpbWFuYUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6InBhdWwiLCJpYXQiOjE1NjA0NzE2NDYsImV4cCI6MTU2MDQ3NTI0Nn0.tzoJM3qj4h0iv8l1IQcdSIxBdxZeAtR1QIiPejx6RFc',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImI1NTlmNWIxLTk5MTktNGZlMC1iNGY0LWE2ZjRmMjYwY2I1NyIsInJvbGUiOiJ1c2VyIiwiZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoidXNlciIsImlhdCI6MTU2MDg1MTY1MywiZXhwIjoxNTYwODU1MjUzfQ.g_hBBm5sO9ikwUDmlk3yX7cPdhsS2ZkdaFqAykvVeoY',
   },
   register: {},
   currentUser: {},
@@ -23,7 +23,7 @@ export default {
     errors: [],
   },
   article: {},
-  articles: null,
   drafts: null,
+  articles: [],
   message: { type: '', text: [] },
 };
