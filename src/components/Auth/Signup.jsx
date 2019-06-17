@@ -193,7 +193,7 @@ Register.propTypes = {
   history: PropTypes.instanceOf(Object).isRequired,
 };
 
-export const mapStateToProps = ({registerReducer}) => ({
+export const mapStateToProps = ({ registerReducer }) => ({
   username: registerReducer.register.username,
   email: registerReducer.register.email,
   password: registerReducer.register.password,

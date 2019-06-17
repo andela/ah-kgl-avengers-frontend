@@ -9,4 +9,5 @@ module.exports = {
   verbose: true,
   testEnvironment: 'jsdom',
   setupFiles: ['./enzyme.config.js'],
+  modulePathIgnorePatterns: ['<rootDir>/cypress'],
 };
