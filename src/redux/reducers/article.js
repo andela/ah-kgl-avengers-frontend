@@ -28,6 +28,9 @@ export default (state = initialState, { type, payload }) => {
     case REDIRECT_TO:
       return { ...state, redirect: payload };
 
+    case 'EDIT_REQUEST':
+      return { ...state, article: payload };
+
     default:
       return state;
   }

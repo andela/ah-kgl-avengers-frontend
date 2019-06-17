@@ -96,7 +96,7 @@ class Editor extends Component {
           <ContentEditable
             className="article-title"
             innerRef={this.titleRef}
-            html={title}
+            html={article.title || title}
             onFocus={(evt) => {
               evt.preventDefault();
               if (!tittleChanged) {
@@ -112,7 +112,7 @@ class Editor extends Component {
 
           <CKEditor
             editor={ClassicEditor}
-            data="<p>Your story here!</p>"
+            data={article.body || '<p>Your story here!</p>'}
             config={EditorConfigs}
             onChange={(event, editor) => {
               const data = editor.getData();
@@ -125,7 +125,7 @@ class Editor extends Component {
               }
             }}
             onFocus={(evt, editor) => {
-              if (!editorFocusedFirst) {
+              if (!editorFocusedFirst && !article.body) {
                 editor.setData('');
                 this.setState({ editorFocusedFirst: true });
               }

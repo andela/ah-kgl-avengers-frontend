@@ -23,5 +23,7 @@ export default {
     errors: [],
   },
   article: {},
+  articles: null,
+  drafts: null,
   message: { type: '', text: [] },
 };

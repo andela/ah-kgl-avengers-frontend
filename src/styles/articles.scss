@@ -1,0 +1,67 @@
+.articles {
+  margin-top: 30px;
+}
+
+.articles h3{ 
+  text-align: center;
+}
+
+.articles h4{
+  margin-bottom: 20px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.articles hr {
+  border-color: #38c4b0;
+}
+
+.articles span {
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.article-details .delete {
+  color: #d80909;
+  cursor: pointer;
+  font-size: 20px;
+}
+.article-details .edit {
+  color: #238100;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.article {
+  cursor: pointer;
+}
+
+.article-menu {
+  border-bottom: .8px solid #38c4b0;
+  padding-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.bold {
+  border-bottom: 4px solid #38c4b0;
+  padding-bottom: 21px;
+}
+
+.normal {
+  color: grey;
+}
+
+.article-details {
+  font-size: 15px;
+  color: grey;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+a:hover {
+  text-decoration: none;
+  color: black;
+}
