@@ -1,7 +1,7 @@
 /*
-* The action creators of the signup functionalities will be added here.
-*
-*/
+ * The action creators of the signup functionalities will be added here.
+ *
+ */
 import Axios from 'axios';
 import {
   REGISTER_FORM_SEND,
@@ -9,6 +9,8 @@ import {
   REGISTER_FAIL,
   REGISTER_LOAD,
 } from '../action-types/auth';
+
+import { REDIRECT_TO } from '../action-types';
 
 // the action creator for handling the register form submit
 export const registerFormSend = payload => ({

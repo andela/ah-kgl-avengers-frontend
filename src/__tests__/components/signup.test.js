@@ -14,11 +14,13 @@ const props = {
   registerSubmit: jest.fn().mockImplementation(() => Promise.resolve({ status: 201 })),
   onInputChange: mockFn,
   history: { push: mockFn },
-  errors: [],
-  register: {
-    email: '',
-    password: '',
-    username: '',
+  user: {
+    errors: [],
+    register: {
+      email: '',
+      password: '',
+      username: '',
+    },
   },
 };
 
@@ -30,11 +32,9 @@ const defaultState = {
   email: '',
   usernameError: 'Username is Required',
   hidden: true,
-
 };
 describe('<Register />', () => {
-  beforeEach(() => {
-  });
+  beforeEach(() => {});
 
   afterEach(() => {
     jest.clearAllMocks();
@@ -49,7 +49,7 @@ describe('<Register />', () => {
         <Register {...props} />
       </Router>,
     );
-    expect(wrapper.find('Register').props().register).toBeDefined();
+    expect(wrapper.find('Register').props().user).toBeDefined();
   });
 
   test('should call registerSubmit', () => {

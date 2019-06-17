@@ -18,6 +18,16 @@ const store = mockStore({
 const props = {
   onSaveArticle: jest.fn(),
 };
+
+// mock for mutations observer window object
+global.MutationObserver = class {
+  constructor(callback) {}
+
+  disconnect() {}
+
+  observe(element, initObject) {}
+};
+
 describe('<Editor />', () => {
   beforeEach(() => {});
 
@@ -31,13 +41,5 @@ describe('<Editor />', () => {
   );
   it('should render without crashing', () => {
     expect(component).toMatchSnapshot();
-  });
-  test('should mount the editor', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <Editor {...props} />
-      </Provider>,
-    );
-    expect(wrapper.find('Editor')).toBeDefined();
   });
 });

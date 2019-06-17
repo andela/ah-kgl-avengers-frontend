@@ -2,11 +2,9 @@ import moxios from 'moxios';
 import axios from 'axios';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import {
-  UPDATE_ARTICLE_FAIL,
-} from '../../redux/action-types';
+import { UPDATE_ARTICLE_FAIL } from '../../redux/action-types';
 
-import { saveArticle } from '../../redux/action-creators';
+import saveArticle from '../../redux/action-creators';
 
 const mockStore = configureStore([thunk]);
 const store = mockStore({ user: {} });
@@ -18,6 +16,32 @@ describe('Article action', () => {
   });
   afterEach(() => {
     moxios.uninstall(axios);
+  });
+
+  it('It should create a new article', async () => {
+    const article = {
+      title: 'a new article',
+      body: 'a new body',
+      slug: 'slug',
+      status: 'draft',
+      tagList: [],
+    };
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: {
+          data: {
+            status: 200,
+            article,
+          },
+        },
+      });
+    });
+
+    await store.dispatch(saveArticle({ article, token: 'awsedrftgyhujuhygtfrdes.jhgfds.kjhgfds' }));
+    expect(store.getActions()).toBeDefined();
   });
 
   it('It should create a UPDATE_ARTICLE_FAIL action when body is empty', () => {

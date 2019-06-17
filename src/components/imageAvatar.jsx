@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import avatar from '../../mockups/reset-password/logo.png';
+import avatar from '../images/avatar.png';
 
 const acronyms = (firstName, lastName) => {
   const names = `${firstName} ${lastName}`;
-  if (firstName === undefined || lastName === undefined) {
+  if (firstName === '' || lastName === '') {
     return <img className="avatar" src={avatar} alt="avatar" />;
   }
   const acronym = names.match(/\b(\w)/g).join('');
@@ -15,19 +15,22 @@ const ImageAvatar = ({
   image, alt, firstName, lastName,
 }) => (
   <div>
-    {image ? (
-      <img className="avatar" src={image} alt={alt} />
-    ) : (
-      acronyms(firstName, lastName)
-    )}
+    {image ? <img className="avatar" src={image} alt={alt} /> : acronyms(firstName, lastName)}
   </div>
 );
 
 ImageAvatar.propTypes = {
-  image: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired,
-  firstName: PropTypes.string.isRequired,
-  lastName: PropTypes.string.isRequired,
+  image: PropTypes.string,
+  alt: PropTypes.string,
+  firstName: PropTypes.string,
+  lastName: PropTypes.string,
+};
+
+ImageAvatar.defaultProps = {
+  image: '',
+  alt: '',
+  firstName: '',
+  lastName: '',
 };
 
 export default ImageAvatar;

@@ -8,7 +8,9 @@ import { loginSuccess, loginFailed } from '../action-types/user';
 
 const userLogin = user => async (dispatch) => {
   const url = `${process.env.REACT_APP_API}/auth/login`;
-  Axios.post(url, user)
+  // const url = 'https://ah-kg-avengers-backend-staging.herokuapp.com/api/v1/auth/login';
+
+  return Axios.post(url, user)
     .then((response) => {
       // dispatch the action and pass the payload
       const { token } = response.data.user;
@@ -17,7 +19,12 @@ const userLogin = user => async (dispatch) => {
     })
     .catch((error) => {
       // handle error
-      dispatch(actionDispatch(loginFailed, error.response.data));
+    dispatch(
+        actionDispatch(
+          loginFailed,
+          (error.response.data.error && [error.response.data.error]) || error.response.data.errors,
+        ),
+      );
     });
 };
 

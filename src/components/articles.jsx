@@ -180,9 +180,9 @@ Articles.propTypes = {
   getArticles: PropTypes.func.isRequired,
   getDrafts: PropTypes.func.isRequired,
   editArticle: PropTypes.func.isRequired,
-  articles: PropTypes.arrayOf(PropTypes.string),
-  drafts: PropTypes.arrayOf(PropTypes.string),
-  history: PropTypes.objectOf(PropTypes.string),
+  articles: PropTypes.arrayOf(PropTypes.object),
+  drafts: PropTypes.arrayOf(PropTypes.object),
+  history: PropTypes.objectOf(PropTypes.any),
   deleteArticle: PropTypes.func.isRequired,
 };
 

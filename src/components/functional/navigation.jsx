@@ -11,7 +11,7 @@ class Navigation extends Component {
   toggle = () => {
     const { isToggled } = this.state;
     this.setState({ isToggled: !isToggled });
-  }
+  };
 
   render() {
     const { isToggled } = this.state;

@@ -53,7 +53,7 @@ describe('Read an article', () => {
 
   it('Should render avatar with default image', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<ImageAvatar />, div);
+    ReactDOM.render(<ImageAvatar image="" alt="" firstName="" lastName="" />, div);
     ReactDOM.unmountComponentAtNode(div);
   });
 
@@ -65,7 +65,7 @@ describe('Read an article', () => {
 
   it('Should render avatar with user profile', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<ImageAvatar image="Aaron" />, div);
+    ReactDOM.render(<ImageAvatar image="Aaron" alt="" firstName="" lastName="" />, div);
     ReactDOM.unmountComponentAtNode(div);
   });
 
@@ -77,7 +77,7 @@ describe('Read an article', () => {
 
   it('Should render rating component', () => {
     const h2 = document.createElement('h2');
-    ReactDOM.render(<RatingStars />, h2);
+    ReactDOM.render(<RatingStars className="" />, h2);
     ReactDOM.unmountComponentAtNode(h2);
   });
 

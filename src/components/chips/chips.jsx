@@ -64,7 +64,7 @@ class Chips extends Component {
     return (
       <div className="chips-container">
         <div className="chips-label">{`${label}:`}</div>
-        <input type="text" id="chip" onKeyUp={this.shouldAddChip} />
+        <input type="text" id="chip" onKeyUp={this.shouldAddChip} placeholder="Add tags on your story"/>
         <div className="chips-group">{this.renderChips(value)}</div>
       </div>
     );

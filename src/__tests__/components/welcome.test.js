@@ -7,15 +7,14 @@ import thunk from 'redux-thunk';
 import Welcome from '../../components/container/Welcome';
 
 const mockStore = configureMockStore([thunk]);
-const store = mockStore({});
+const store = mockStore({ article: { feeds: {}, isProgressOn: true } });
 
 const props = {
-  welcome: jest.fn(),
-  response: jest.fn(),
+  onFetchArticles: jest.fn(),
+  article: { feeds: {}, isProgressOn: false },
 };
 describe('<Welcome />', () => {
-  beforeEach(() => {
-  });
+  beforeEach(() => {});
 
   afterEach(() => {
     jest.clearAllMocks();
@@ -32,7 +31,7 @@ describe('<Welcome />', () => {
     const wrapper = mount(
       <BrowserRouter>
         <Provider store={store}>
-          <Welcome />
+          <Welcome {...props} />
         </Provider>
       </BrowserRouter>,
     );
