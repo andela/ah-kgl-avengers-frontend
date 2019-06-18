@@ -27,3 +27,109 @@
     height: 36px;
 }
 
+.login-img {
+    cursor: pointer;
+}
+
+.btn-secondary{
+    background: none;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background: none;
+    border: none;
+}
+
+.btn-secondary:focus {
+    box-shadow: none;
+    outline: none;
+    background: none !important;
+    border: transparent;
+    border: none;
+}
+
+.btn-secondary:active {
+    box-shadow: none;
+    outline: none;
+    background: none !important;
+    border-color: #38c4b0;
+    border: none;
+}
+
+.dropdown {
+    box-shadow: none;
+    outline: none;
+    background: none !important;
+    border: transparent;
+    border: none;
+}
+
+.btn-add-article {
+    height: 40px;
+    margin-top: .8em;
+    margin-right: 1em;
+}
+
+.drop-btn {
+    display: none;
+}
+
+button:focus {
+    outline: none;
+}
+
+input:focus {
+    outline: none;
+}
+
+.new-art {
+    font-weight: 700;
+} 
+
+.navbar-toggler {
+    border: none;
+}
+
+.up-chev {
+    position: absolute;
+    top: -29px;
+    left: 0;
+    right: 0;
+    transform: translateX(15%);
+    color: #ffffff;
+}
+
+.disabled {
+    display: none;
+}
+
+@media all and (max-width: 575px){
+    .btn-outline {
+        display: none;
+    }
+    .navbar-toggler-icon {
+        display: none;
+    }
+    .avatar {
+        float: left;
+    }
+    .drop-btn {
+        display: block;
+        margin-top: 1rem;
+        background: white;
+    }
+
+    .button01 {
+        display: none;
+    }
+
+    .drop-btn a li{
+        padding-top: .8rem;
+        padding-left: 1.2rem;
+    }
+
+    .list-footer{
+        padding-bottom: 1rem;
+    }
+}

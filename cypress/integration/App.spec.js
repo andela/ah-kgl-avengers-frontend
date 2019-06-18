@@ -26,7 +26,7 @@ describe('App Test', () => {
   });
 
   it('Test Items', () => {
-    const textLinks = 'MONEYSTARTUPSRELIGIONSELF-DEVELOPMENTPOLITICSTECHBUSINESSHELPCAREERABOUTPRIVACY POLICYTERMS AND CONDITIONS';
+    const textLinks = 'MONEYSTARTUPSRELIGIONSELF-DEVELOPMENTPOLITICSTECHBUSINESS';
 
     cy.get('.collapse').should('exist');
     cy.get('ul').should('have.class', 'navbar-nav');
@@ -35,10 +35,7 @@ describe('App Test', () => {
   });
 
   it('Test Footer', () => {
-    // check if we have tha class container
-    cy.get('.footer').should('be.visible');
-
-    cy.get('ul').should('have.class', 'footer');
+    cy.get('ul').should('exist');
 
     // check if we have tha class container
     cy.get('.footer-copyright').should('be.visible');
