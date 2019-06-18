@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { shallow } from 'enzyme';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import NavBar from '../../components/functional/navBar';
@@ -26,7 +27,7 @@ describe('Shared navigation', () => {
 
   it('Checking component top level element', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<NavBar />, div);
+    ReactDOM.render(<BrowserRouter><NavBar /></BrowserRouter>, div);
     ReactDOM.unmountComponentAtNode(div);
   });
 

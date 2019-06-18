@@ -14,15 +14,15 @@ describe('App Test', () => {
     cy.get('.ml-auto').should('exist');
   });
 
-  it('Visit the Sign Up in dummy component', () => {
+  it('Visit the Sign Up', () => {
     // test the SIGN IN button
-    cy.get('.btn-outline-inverse').should('have.text', 'SIGN IN').click();
+    cy.get('.btn-outline-inverse').should('have.text', 'SIGN IN');
 
     // test the GER STARTED  button
     cy.get('.btn-outline').should('have.text', 'GET STARTED').click();
 
     // check if we redirected to the same page
-    cy.location('pathname').should('eq', '/');
+    cy.location('pathname').should('eq', '/signup');
   });
 
   it('Test Items', () => {

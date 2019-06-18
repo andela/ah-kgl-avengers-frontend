@@ -40,11 +40,10 @@ class Login extends Component {
     });
   }
 
-  componentDidUpdate(prevProps){
-    const {user, history} = this.props;
+  componentDidUpdate(prevProps) {
+    const { user, history } = this.props;
     if (user.username !== prevProps.user.username) {
       history.push('/');
-
     }
   }
 
@@ -69,7 +68,7 @@ class Login extends Component {
 
     return (
       <Fragment>
-      {/*{redirectUser}*/}
+        {/*{redirectUser} */}
         <div className="wrapper">
           <section className="col-12 col-lg-8 col-md-10 col-sm-10">
             <div className="container">
@@ -123,8 +122,7 @@ class Login extends Component {
                         <Link to="/signup"> sign up</Link>
                       </p>
                       <p>
-                        By signing up you agree to all
-                        <Link to="/"> Terms and conditions</Link>
+                        <Link to="/"> Home</Link>
                       </p>
                     </div>
                   </Form>
@@ -150,7 +148,7 @@ Login.defaultProps = {
   errors: [],
 };
 
-export const mapStateToProps = ({user}) => ({
+export const mapStateToProps = ({ user }) => ({
   errors: user.user.errors,
   user: user.user,
 });
