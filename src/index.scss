@@ -5,6 +5,14 @@
   box-sizing: border-box;
 } 
 
+a {
+  text-decoration: none !important;
+}
+
+li {
+  list-style-type: none;
+}
+
 html {
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
@@ -112,3 +120,4 @@ body {
   color: #38c4b0;
   border-color: #38c4b0;
 }
+

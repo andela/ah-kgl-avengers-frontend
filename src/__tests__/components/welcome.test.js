@@ -34,7 +34,6 @@ describe('<Welcome />', () => {
         <Provider store={store}>
           <Welcome />
         </Provider>
-,
       </BrowserRouter>,
     );
     expect(wrapper.find('Welcome')).toBeDefined();
