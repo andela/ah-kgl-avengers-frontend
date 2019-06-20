@@ -47,7 +47,7 @@ class ReadArticle extends Component {
     const formatDate = readArticleHelper.timeFormat(createdAt);
     return (
       <Fragment>
-        <Navbar/>
+        <Navbar />
         {/*
         /* Heading and
         /* Description section
@@ -92,7 +92,7 @@ class ReadArticle extends Component {
             </div>
           </div>
         </section>
-        
+
         {/*
         /* Reading Text section
         /* Social links side section
@@ -105,7 +105,7 @@ class ReadArticle extends Component {
             </TextArea>
           </div>
           {tagList && <div className="article-taglist">{this.renderTags(tagList)}</div>}
-          <Footer/>
+          <Footer />
         </section>
 
       </Fragment>

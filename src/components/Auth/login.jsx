@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
@@ -19,10 +19,6 @@ class Login extends Component {
       emailError: '',
       passError: '',
     };
-  }
-
-  onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -47,6 +43,11 @@ class Login extends Component {
     }
   }
 
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ emailError: '', passError: '' });
+  }
+
   login = (e) => {
     e.preventDefault();
     const { email, password } = this.state;
@@ -59,16 +60,8 @@ class Login extends Component {
       email, password, emailError, passError,
     } = this.state;
 
-    // let redirectUser = null;
-
-    // if(this.props.username !== null) {
-    //   console.log(this.props.username);
-    //   redirectUser = <Redirect to="/" />
-    // }
-
     return (
       <Fragment>
-        {/*{redirectUser} */}
         <div className="wrapper">
           <section className="col-12 col-lg-8 col-md-10 col-sm-10">
             <div className="container">
@@ -118,7 +111,7 @@ class Login extends Component {
 
                     <div className="sign-up-footer">
                       <p>
-                        Don't have an account?
+                        Don&apos;t have an account?
                         <Link to="/signup"> sign up</Link>
                       </p>
                       <p>
@@ -141,15 +134,17 @@ class Login extends Component {
 Login.propTypes = {
   userLogin: PropTypes.func.isRequired,
   errors: PropTypes.instanceOf(Array),
+  user: PropTypes.instanceOf(Array),
+  history: PropTypes.func.isRequired,
 };
-
 
 Login.defaultProps = {
   errors: [],
+  user: [],
 };
 
 export const mapStateToProps = ({ user }) => ({
-  errors: user.user.errors,
+  errors: user.errors,
   user: user.user,
 });
 
