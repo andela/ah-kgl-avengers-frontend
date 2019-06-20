@@ -160,8 +160,7 @@ export class Register extends Component {
                         <Link to="/login"> sign in</Link>
                       </p>
                       <p>
-                        By signing up you agree to all
-                        <Link to="/"> Terms and conditions</Link>
+                        <Link to="/">Back</Link>
                       </p>
                     </div>
                   </Form>

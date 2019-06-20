@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import Welcome from '../../components/container/Welcome';
@@ -29,9 +30,12 @@ describe('<Welcome />', () => {
   });
   test('should render <Welcome />', () => {
     const wrapper = mount(
-      <Provider store={store}>
-        <Welcome />
-      </Provider>,
+      <BrowserRouter>
+        <Provider store={store}>
+          <Welcome />
+        </Provider>
+,
+      </BrowserRouter>,
     );
     expect(wrapper.find('Welcome')).toBeDefined();
   });
