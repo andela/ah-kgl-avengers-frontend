@@ -49,9 +49,12 @@ describe('Article Reducer', () => {
     expect(
       reducer(initialState, {
         type: TYPES.DELETE_ARTICLE_SUCCESS,
-        payload: { text: 'token invalid', type: 'error' },
+        payload: { slug: 'ghfghfgfhfhgfh', status: 'published' },
       }),
-    ).toEqual({ ...initialState, message: { text: 'token invalid', type: 'error' } });
+    ).toEqual({
+      ...initialState,
+      articles: initialState.articles.filter(item => item.slug !== 'ghfghfgfhfhgfh'),
+    });
   });
 
   it('should update the isInProgress variable', () => {

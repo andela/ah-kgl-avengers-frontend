@@ -77,17 +77,19 @@ export function saveArticle({ article: data, token }) {
   });
 }
 
-export function deleteArticle({ article, token }) {
-  return (dispatch) => {
-    const url = `/articles/${article.slug}`;
-    return axios
-      .delete(url, {
-        headers: { authorization: `Bearer ${token}` },
-      })
-      .then(response => dispatch({ type: DELETE_ARTICLE_SUCCESS, payload: { message: 'Article deleted!' } }))
-      .catch(error => dispatch({
-        type: DELETE_ARTICLE_FAIL,
-        payload: { message: 'Failed to delete article!' },
-      }));
-  };
-}
+
+export const deleteArticle = (slug, status) => async (dispatch) => {
+  const url = `/articles/${slug}`;
+  const token = localStorage.getItem('token');
+  try {
+    await axios.delete(url, {
+      headers: { authorization: `Bearer ${token}` },
+    });
+    return dispatch({ type: DELETE_ARTICLE_SUCCESS, payload: { slug, status } });
+  } catch (error) {
+    return dispatch({
+      type: DELETE_ARTICLE_FAIL,
+      payload: { message: 'Failed to delete article!' },
+    });
+  }
+};
