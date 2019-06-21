@@ -82,6 +82,7 @@ class AppBar extends Component {
 
                     <DropdownItem divider />
                     <Link to="/my-articles">
+                      {' '}
                       <li>My Articles</li>
                     </Link>
                     <Link to="/">
@@ -101,10 +102,9 @@ class AppBar extends Component {
                     <ImageAvatar />
                   </DropdownToggle>
                   <DropdownMenu>
-                    <div className="up-chev">
-                      <i className="zmdi zmdi-caret-up zmdi-hc-3x" />
-                    </div>
+                    <div className="up-chev"><i className="zmdi zmdi-caret-up zmdi-hc-3x" /></div>
                     <Link to="/my-articles">
+                      {' '}
                       <DropdownItem>My Articles</DropdownItem>
                     </Link>
                     <Link to="/">
@@ -130,7 +130,7 @@ class AppBar extends Component {
     return (
       <Navbar dark className="nav-top shadow-sm p-3" expand="sm">
         <Container>
-          <Link to="/login">
+          <Link to="/">
             <NavbarBrand className="nav-logo">
               <img src={Logo} alt="logo" />
               <img src={Title} alt="title" />

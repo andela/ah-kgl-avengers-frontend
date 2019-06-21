@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing reset password Should create RequestReset snapshot 1`] = `ShallowWrapper {}`;
+
+exports[`Testing reset password Should create UpdatePassword snapshot 1`] = `ShallowWrapper {}`;
