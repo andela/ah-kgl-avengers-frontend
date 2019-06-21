@@ -22,7 +22,7 @@ const DeleteConfirmation = ({
 );
 
 DeleteConfirmation.propTypes = {
-  modal: PropTypes.instanceOf(bool).isRequired,
+  modal: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
   deleteArticle: PropTypes.func.isRequired,
   slug: PropTypes.string.isRequired,

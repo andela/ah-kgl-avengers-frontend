@@ -28,7 +28,7 @@ describe('Article Reducer', () => {
         type: TYPES.UPDATE_ARTICLE_SUCCESS,
         payload: { title: 'men will be men' },
       }),
-    ).toEqual({ ...initialState, article: { title: 'men will be men' } });
+    ).toEqual({ ...initialState, editorArticle: { title: 'men will be men' } });
   });
 
   it('should add a message', () => {
@@ -61,6 +61,49 @@ describe('Article Reducer', () => {
     expect(reducer(initialState, { type: TYPES.CREATE_ARTICLE_STARTED, payload: {} })).toEqual({
       ...initialState,
       isProgressOn: true,
+    });
+  });
+
+  it('should add article feeds', () => {
+    const feeds = { main: {}, secondary: [], trending: [] };
+    expect(reducer(initialState, { type: TYPES.FETCH_FEEDS_SUCCESS, payload: feeds })).toEqual({
+      ...initialState,
+      feeds,
+    });
+  });
+
+  it('should change isProgressOn to true', () => {
+    expect(reducer(initialState, { type: TYPES.FETCH_ARTICLE_START, payload: {} })).toEqual({
+      ...initialState,
+      isProgressOn: true,
+    });
+  });
+
+  it('should change isProgressOn to false', () => {
+    expect(reducer(initialState, { type: TYPES.FETCH_ARTICLE_END, payload: {} })).toEqual({
+      ...initialState,
+      isProgressOn: false,
+    });
+  });
+
+  it('should fetch articles errors to state', () => {
+    expect(
+      reducer(initialState, { type: TYPES.FETCH_ARTICLE_FAIL, payload: 'fetch failed' }),
+    ).toEqual({
+      ...initialState,
+      message: 'fetch failed',
+    });
+  });
+
+  it('should add article feeds', () => {
+    const article = {
+      title: 'sample',
+      body: 'body text',
+      slug: 'sample-slug',
+    };
+    expect(reducer(initialState, { type: TYPES.FETCH_ARTICLE_SUCCESS, payload: article })).toEqual({
+      ...initialState,
+      article,
     });
   });
 });

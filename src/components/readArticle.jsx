@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
-import '../scss/readArticle.scss';
 import ImageAvatar from './imageAvatar';
 import Description from './description';
 import ArticleTitle from './articleTitle';
@@ -39,7 +38,8 @@ class ReadArticle extends Component {
 
   render() {
     const { article } = this.props;
-    if (article === undefined) return null;
+    if (!Object.prototype.hasOwnProperty.call(article, 'body')) return null;
+    
     const {
       title, body, readTime, author, createdAt, tagList,
     } = article;
@@ -87,7 +87,7 @@ class ReadArticle extends Component {
                   <ReadTime className="lead lead-rt-sm text-left text-md-left text-black-50  ml-2">
                     {readTime}
                   </ReadTime>
-                  <ReadTime className=" zmdi zmdi-star lead lead-rt-sm text-left text-md-left text-black-50  ml-2" />
+                  <i className=" zmdi zmdi-star lead lead-rt-sm text-left text-md-left text-black-50  ml-2 pb-2" />
                 </div>
               </div>
             </div>
@@ -119,8 +119,8 @@ ReadArticle.propTypes = {
   article: PropTypes.instanceOf(Object).isRequired,
 };
 
-const mapStateToProps = ({ article: readArticleReducer }) => ({
-  article: readArticleReducer.article,
+const mapStateToProps = ({ article: articleReducer }) => ({
+  article: articleReducer.article,
 });
 
 export default connect(

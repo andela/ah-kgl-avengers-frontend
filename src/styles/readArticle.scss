@@ -21,10 +21,6 @@
   border-radius: 50%;
 }
 
-.title {
-  background-color: #38c4b0;
-}
-
 // Button Styling
 .btn-follow-author {
   border: 1px solid #2ea8f7;
@@ -144,10 +140,10 @@ p img {
   }
 }
 
-.article-taglist{
+.article-taglist {
   width: 90%;
   margin: 0 auto;
-  .article-tag{
+  .article-tag {
     display: inline-block;
     color: #2ea8f7;
     height: 32px;
@@ -156,8 +152,8 @@ p img {
     border-radius: 2px;
     background-color: #e6ebec;
     line-height: 32px;
-    &::first-letter{
-      text-transform: uppercase; 
+    &::first-letter {
+      text-transform: uppercase;
     }
   }
 }

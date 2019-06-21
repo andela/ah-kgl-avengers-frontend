@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Button, Form, FormGroup, Label, Input, FormText,
+  Button, Form, FormGroup, Label, Input,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
@@ -13,37 +13,19 @@ export default function Title() {
       </h3>
       <FormGroup>
         <Label for="exampleEmail">Username</Label>
-        <Input
-          type="username"
-          name="username"
-          placeholder="snow"
-        />
+        <Input type="username" name="username" placeholder="snow" />
       </FormGroup>
       <FormGroup>
         <Label for="exampleEmail">Email</Label>
-        <Input
-          type="email"
-          name="email"
-          placeholder="snowice@company.com"
-        />
+        <Input type="email" name="email" placeholder="snowice@company.com" />
       </FormGroup>
       <FormGroup>
         <Label for="exampleEmail">Password</Label>
-        <Input
-          type="password"
-          name="password"
-          placeholder="password"
-          pattern="[a-zA-Z0-9]"
-        />
+        <Input type="password" name="password" placeholder="password" pattern="[a-zA-Z0-9]" />
       </FormGroup>
       <FormGroup>
         <Label for="exampleEmail">Confirm Password</Label>
-        <Input
-          type="password"
-          name="password"
-          placeholder="password"
-          pattern="[a-zA-Z0-9]"
-        />
+        <Input type="password" name="password" placeholder="password" pattern="[a-zA-Z0-9]" />
       </FormGroup>
       <div className="card-action">
         <Button>Signup</Button>
@@ -51,11 +33,11 @@ export default function Title() {
       <div className="card-spacer" />
       <div className="card-footer">
         <p>
-                Already have an account?
+          Already have an account?
           <a href="../signinTemplate/signin.html">sign in</a>
         </p>
         <p>
-                By signing up you agree to all
+          By signing up you agree to all
           <Link to="/"> Terms and conditions</Link>
         </p>
       </div>

@@ -1,22 +1,61 @@
-/* Here goes the simple index action creator for returning the welcoming message
- * of the Authors Haven
+/*
+ * The user reducer manages the whole states related to user:
+ * login, signup and profile
  */
 
 import { loginSuccess, loginFailed } from '../action-types/user';
-import initialState from '../initialState';
+import {
+  REGISTER_FORM_SEND,
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
+  REGISTER_LOAD,
+} from '../action-types/auth';
 
-export default (state = initialState, action) => {
-  switch (action.type) {
+import { REDIRECT_TO } from '../action-types';
+
+export default (
+  state = {
+    register: {
+      username: '',
+      email: '',
+      errors: [],
+    },
+    user: { token: '' },
+    errors: [],
+  },
+  { type, payload },
+) => {
+  switch (type) {
     case loginSuccess:
       return {
         ...state,
-        user: action.payload,
+        user: payload,
       };
     case loginFailed:
       return {
         ...state,
-        errors: action.payload.errors,
+        errors: payload,
       };
+    case REGISTER_LOAD:
+    case REGISTER_FORM_SEND:
+      return {
+        ...state,
+        submit: payload,
+      };
+    case REGISTER_SUCCESS:
+      return {
+        ...state,
+        message: payload.message,
+        register: payload.user,
+        formSend: false,
+      };
+    case REGISTER_FAIL:
+      return {
+        ...state,
+        errors: payload.errors,
+      };
+    case REDIRECT_TO:
+      return { ...state, redirect: payload };
     default:
       return state;
   }

@@ -7,4 +7,4 @@ node_modules
 .sonarlint
 mockups/assets/.DS_Store/
 cypress/videos/
-.nyc_output/
+

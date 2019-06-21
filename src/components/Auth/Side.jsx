@@ -8,11 +8,7 @@ export default function Title({ img }) {
         <span> You will have betrayed yourself</span>
       </h1>
       <div className="container">
-        <img
-          src={img}
-          alt=""
-          className="img-fluid"
-        />
+        <img src={img} alt="" className="img-fluid" />
       </div>
     </div>
   );

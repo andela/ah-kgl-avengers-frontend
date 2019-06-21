@@ -9,7 +9,6 @@ import Side from './Side';
 import img from '../../assets/sign-in-img.png';
 import userLogin from '../../redux/action-creators/user';
 
-
 class Login extends Component {
   constructor() {
     super();
@@ -46,14 +45,14 @@ class Login extends Component {
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
     this.setState({ emailError: '', passError: '' });
-  }
+  };
 
   login = (e) => {
     e.preventDefault();
     const { email, password } = this.state;
     const { userLogin: login } = this.props;
     login({ email, password });
-  }
+  };
 
   render() {
     const {
@@ -84,7 +83,7 @@ class Login extends Component {
                         placeholder="abc@company.com"
                         onChange={this.onChange}
                         value={email}
-                        isrequired
+                        isrequired="true"
                       />
                       <div className="errors">
                         <div className="error">{emailError}</div>
@@ -99,14 +98,21 @@ class Login extends Component {
                         placeholder="password"
                         onChange={this.onChange}
                         value={password}
-                        isrequired
+                        isrequired="true"
                       />
                       <div className="errors">
                         <div className="error">{passError}</div>
                       </div>
                     </FormGroup>
                     <div className="text-center mb-4">
-                      <button type="button" value="button" onClick={this.login} className="sign-up-btn">Login</button>
+                      <button
+                        type="button"
+                        value="button"
+                        onClick={this.login}
+                        className="sign-up-btn"
+                      >
+                        Login
+                      </button>
                     </div>
 
                     <div className="sign-up-footer">
@@ -123,24 +129,22 @@ class Login extends Component {
               </div>
             </div>
           </section>
-
         </div>
       </Fragment>
     );
   }
 }
 
-
 Login.propTypes = {
   userLogin: PropTypes.func.isRequired,
   errors: PropTypes.instanceOf(Array),
-  user: PropTypes.instanceOf(Array),
   history: PropTypes.func.isRequired,
+  user: PropTypes.instanceOf(Object),
 };
 
 Login.defaultProps = {
   errors: [],
-  user: [],
+  user: {},
 };
 
 export const mapStateToProps = ({ user }) => ({
@@ -148,4 +152,7 @@ export const mapStateToProps = ({ user }) => ({
   user: user.user,
 });
 
-export default connect(mapStateToProps, { userLogin })(Login);
+export default connect(
+  mapStateToProps,
+  { userLogin },
+)(Login);
