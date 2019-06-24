@@ -164,3 +164,41 @@ p img {
     }
   }
 }
+
+.small-icon {
+  font-size: 10px;
+  display: inline-block;
+  margin-left: 5px;
+  margin-bottom: 10px;
+  color: #38c4b0;
+}
+
+.ratings {
+  color: #38c4b0;
+  margin-left: 10px;
+}
+
+.rating-message {
+  animation: cssAnimation 0s 5s forwards;
+  visibility: visible;
+}
+
+.error {
+  color: red;
+}
+
+.message {
+  color: #38c4b0;
+}
+
+.author-details {
+  font-weight: bold;
+  margin-left: 10px;
+  font-size: 0.7em;
+  color: rgba(0,0,0,.5) !important;
+} 
+
+
+@keyframes cssAnimation {
+  to   { visibility: hidden; }
+}

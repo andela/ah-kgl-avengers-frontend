@@ -12,4 +12,6 @@ export default {
   articles: [],
   feeds: { main: {}, secondary: {}, trending: {} },
   message: { type: '', text: [] },
+  error: '',
+  success: '',
 };
