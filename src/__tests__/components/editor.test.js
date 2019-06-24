@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -21,11 +22,11 @@ const props = {
 
 // mock for mutations observer window object
 global.MutationObserver = class {
-  constructor(callback) {}
+  constructor() {}
 
   disconnect() {}
 
-  observe(element, initObject) {}
+  observe() {}
 };
 
 describe('<Editor />', () => {
@@ -39,7 +40,19 @@ describe('<Editor />', () => {
       <Editor {...props} />
     </Provider>,
   );
+
   it('should render without crashing', () => {
     expect(component).toMatchSnapshot();
+  });
+
+  it('Should render the component', () => {
+    const wrapper = mount(
+      <Provider store={store}>
+        <Router>
+          <Editor />
+        </Router>
+      </Provider>,
+    );
+    expect(wrapper.find('Editor')).toBeDefined();
   });
 });

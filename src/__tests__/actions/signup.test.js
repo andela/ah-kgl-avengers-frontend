@@ -75,4 +75,22 @@ describe('Signup actions', () => {
       expect(store.getActions().length).toBe(3);
     });
   });
+
+  test('Should fail to create the user', () => {
+    const userData = {
+      username: 'avengers',
+      email: 'avengers@andela.com',
+      password: 'avengers1234',
+    };
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 400,
+        response: { data: { errors: ['Some error occurs'] } },
+      });
+    });
+    return store.dispatch(userRegister(userData)).then((error) => {
+      expect(error.status).toEqual(400);
+    });
+  });
 });

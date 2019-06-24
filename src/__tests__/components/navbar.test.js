@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import NavBar from '../../components/functional/navBar';
+import Navigation from '../../components/functional/navigation';
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({});
@@ -43,6 +44,13 @@ describe('Shared navigation', () => {
   it('Nav bar should be toggled when clicked', () => {
     const wrapper = shallow(<NavBar />);
     const toggleButton = wrapper.find('NavbarToggler').at(0);
+    toggleButton.simulate('click');
+    expect(wrapper.state().isToggled).toEqual(true);
+  });
+
+  it('Second navigation should be toggled when clicked', () => {
+    const wrapper = shallow(<Navigation />);
+    const toggleButton = wrapper.find('Button').at(0);
     toggleButton.simulate('click');
     expect(wrapper.state().isToggled).toEqual(true);
   });

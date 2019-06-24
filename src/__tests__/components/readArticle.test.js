@@ -1,6 +1,7 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import ReactDOM from 'react-dom';
@@ -10,45 +11,49 @@ import RatingStars from '../../components/ratingStars';
 import ReadTime from '../../components/readTime';
 import Status from '../../components/status';
 
-const mockStore = configureMockStore([thunk]);
-const store = mockStore({});
-const props = {
-  response: jest.fn(),
+const initialState = {
+  article: {
+    article: {
+      title: 'Mock title',
+      body: 'Body o',
+      readTime: '2 min',
+      author: 'ABC',
+      createdAt: '2019-06-21T08:13:05.567Z',
+      tagList: ['test', 'jest'],
+    },
+  },
 };
-
+const mockStore = configureMockStore([thunk]);
+const props = {
+  match: {
+    params: 'test',
+  },
+  readArticles: jest.fn(),
+};
+let store;
+let component;
 describe('Read an article', () => {
-  beforeEach(() => {});
+  beforeEach(() => {
+    store = mockStore(initialState);
+    component = mount(
+      <Provider store={store}>
+        <Router>
+          <ReadArticle {...props} />
+        </Router>
+      </Provider>,
+    );
+  });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
-
-  const component = shallow(
-    <Provider store={store}>
-      <ReadArticle {...props} />
-    </Provider>,
-  );
 
   it('Should store component snapshot', () => {
     expect(component).toMatchSnapshot();
   });
 
   it('Should render without crashing', () => {
-    const wrapper = shallow(
-      <Provider store={store}>
-        <ReadArticle />
-      </Provider>,
-    );
-    expect(wrapper.exists()).toBe(true);
-  });
-
-  it('Should render without crashing', () => {
-    const wrapper = shallow(
-      <Provider store={store}>
-        <ReadArticle />
-      </Provider>,
-    );
-    expect(wrapper.dive({ context: { store } }).exists()).toBe(true);
+    expect(component.find('ReadArticle')).toBeDefined();
   });
 
   it('Should render avatar with default image', () => {

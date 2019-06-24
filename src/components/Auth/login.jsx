@@ -151,7 +151,7 @@ Login.defaultProps = {
   user: {},
 };
 
-export const mapStateToProps = ({ user }) => ({
+const mapStateToProps = ({ user }) => ({
   errors: user.errors,
   user: user.user,
 });

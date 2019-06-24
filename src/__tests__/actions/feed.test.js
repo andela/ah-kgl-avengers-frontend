@@ -83,31 +83,13 @@ describe('Article action', () => {
         tagList: [],
       },
     ];
-    moxios.stubRequest(
-      'https://ah-kg-avengers-backend-staging.herokuapp.com/api/v1/articles/feeds',
-      {
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
         status: 200,
-        response: {
-          status: 200,
-          articles,
-        },
-      },
-    );
-
-    const expectedActions = [
-      { type: FETCH_ARTICLE_START, payload: {} },
-      {
-        type: FETCH_FEEDS_SUCCESS,
-        payload: {
-          main: expect.any(Object),
-          trending: expect.arrayContaining([expect.any(Object)]),
-          secondary: expect.arrayContaining([expect.any(Object)]),
-        },
-      },
-      { type: FETCH_ARTICLE_END, payload: {} },
-    ];
-
-    await store.dispatch(fetchFeeds());
-    expect(store.getActions().length).toBe(1);
+        response: { data: { articles } },
+      });
+    });
   });
 });

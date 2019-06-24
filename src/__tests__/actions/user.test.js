@@ -3,7 +3,6 @@ import moxios from 'moxios';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import userLogin from '../../redux/action-creators/user';
-import { loginSuccess, loginFailed } from '../../redux/action-types/user';
 
 const mockStore = configureStore([thunk]);
 const store = mockStore();
