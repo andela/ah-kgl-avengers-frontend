@@ -12,7 +12,11 @@ import ArticleCreatedDate from './date';
 import ReadTime from './readTime';
 import UserName from './userNames';
 import TextArea from './textArea';
-import readArticle from '../redux/action-creators/readArticle';
+import {
+  readArticle,
+  likeArticle,
+  dislikeArticle,
+} from '../redux/action-creators/readArticle';
 import readArticleHelper from '../helpers/readArticle';
 import Footer from './functional/footer';
 import Navbar from './functional/navBar';
@@ -34,6 +38,16 @@ class ReadArticle extends Component {
     request(newRating, article.slug);
   }
 
+  likeArts = async (slug) => {
+    const { likeArticles } = this.props;
+    likeArticles(slug);
+  };
+
+  dislikeArts = (slug) => {
+    const { dislikeArticles } = this.props;
+    dislikeArticles(slug);
+  };
+
   renderTags = (tags) => {
     if (tags.length > 0) {
       return tags.map(tag => (
@@ -47,9 +61,11 @@ class ReadArticle extends Component {
 
   render() {
     const {
-      article, error, success,
+      article, likes, dislikes, newLikes, error, success,
     } = this.props;
+
     if (!Object.prototype.hasOwnProperty.call(article, 'body')) return null;
+
     const {
       title, body, readTime, author, createdAt, tagList, ratings, totalRatings,
     } = article;
@@ -67,7 +83,9 @@ class ReadArticle extends Component {
 
         <section className="col-lg-8 col-md-8 col-sm-10 pt-4 col-lg-offset-3 col-md-offset-3 mx-auto">
           <div className="container">
-            <ArticleTitle className="display-5 text-md-left">{title}</ArticleTitle>
+            <ArticleTitle className="display-5 text-md-left">
+              {title}
+            </ArticleTitle>
             <Description className="text-lg-left text-md-left text-sm-left text-black-50 mb-2 mb-lg-8">
               {desc}
             </Description>
@@ -130,7 +148,6 @@ class ReadArticle extends Component {
               {newBody}
             </TextArea>
           </div>
-          {tagList && <div className="article-taglist">{this.renderTags(tagList)}</div>}
           Rate this article:
           <Rating
             className="ratings"
@@ -145,9 +162,37 @@ class ReadArticle extends Component {
           />
           <div><span className="error">{error}</span></div>
           <div><span className="message">{success}</span></div>
+          <div className="article-likes mb-1 mt-2">
+            <div>
+              <button
+                type="button"
+                onClick={() => this.likeArts(article.slug)}
+                className="btn-follow-author"
+              >
+                <i className="zmdi zmdi-thumb-up mr-2" />
+                {newLikes === undefined ? likes : newLikes.data.article.likes}
+                {' '}
+              likes
+              </button>
+            </div>
+            <div>
+              <button
+                type="button"
+                onClick={() => this.dislikeArts(article.slug)}
+                className="dislike"
+              >
+                <i className="zmdi zmdi-thumb-down mr-2" />
+                {newLikes === undefined ? dislikes : newLikes.data.article.dislikes}
+                {' '}
+              dislikes
+              </button>
+            </div>
+          </div>
+          {tagList && (
+            <div className="article-taglist">{this.renderTags(tagList)}</div>
+          )}
           <Footer />
         </section>
-
       </Fragment>
     );
   }
@@ -160,20 +205,33 @@ ReadArticle.defaultProps = {
 
 ReadArticle.propTypes = {
   readArticles: PropTypes.func.isRequired,
+  likeArticles: PropTypes.func.isRequired,
   rateArticle: PropTypes.func.isRequired,
   article: PropTypes.instanceOf(Object).isRequired,
+  dislikeArticles: PropTypes.func.isRequired,
   error: PropTypes.string,
   success: PropTypes.string,
+  likes: PropTypes.number.isRequired,
+  dislikes: PropTypes.number.isRequired,
   match: PropTypes.instanceOf(Object).isRequired,
+  newLikes: PropTypes.instanceOf(Object).isRequired,
 };
 
 const mapStateToProps = ({ article: articleReducer }) => ({
   article: articleReducer.article,
   error: articleReducer.error,
   success: articleReducer.success,
+  likes: articleReducer.article.likes,
+  dislikes: articleReducer.article.dislikes,
+  newLikes: articleReducer.newLiked,
 });
 
 export default connect(
   mapStateToProps,
-  { readArticles: readArticle, rateArticle },
+  {
+    readArticles: readArticle,
+    likeArticles: likeArticle,
+    dislikeArticles: dislikeArticle,
+    rateArticle,
+  },
 )(ReadArticle);

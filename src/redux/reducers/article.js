@@ -18,11 +18,11 @@ import {
   articleRequest,
   articleSuccess,
   articleFailed,
+  likeArticle,
+  dislikeArticle,
+  fetchLikedArticle,
 } from '../action-types/getArticles';
-import {
-  rateSuccess,
-  rateFailed,
-} from '../action-types/rateArticle';
+import { rateSuccess, rateFailed } from '../action-types/rateArticle';
 
 import initialState from '../initialState';
 
@@ -133,6 +133,32 @@ export default (state = initialState, { type, payload }) => {
         error: '',
       };
 
+    /*
+     * Like an article and change the database
+     */
+    case likeArticle:
+      return {
+        ...state,
+        likedArticle: state.article,
+      };
+
+    /*
+     * Dislike an article and change the database
+     */
+    case dislikeArticle:
+      return {
+        ...state,
+        dislikeArticle: state.article,
+      };
+
+    /*
+     * Fetch the updated article with total count of likes and dislikes
+     */
+    case fetchLikedArticle:
+      return {
+        ...state,
+        newLiked: payload,
+      };
     default:
       return state;
   }

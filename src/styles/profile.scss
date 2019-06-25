@@ -39,6 +39,10 @@
     font-size: 14px;
     border: 1px solid #2ea8f7;
     margin-top: 8px;
+    &:hover {
+      color: #ffffff;
+      background-color: #2ea8f7;
+    }
   }
   .profile-img-loader {
     display: none;
