@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Profile/> match the snapshot of the Profile component 1`] = `ShallowWrapper {}`;
+
+exports[`<Profile/> match the snapshot of the ProfileEditor component 1`] = `ShallowWrapper {}`;

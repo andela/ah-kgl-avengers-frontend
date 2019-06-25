@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 import Welcome from '../../components/container/Welcome';
 
 const initialState = {
+  user: { user: {} },
   article: {
     feeds: {
       main: {
@@ -99,7 +100,7 @@ const props = {
   },
 };
 describe('<Welcome />', () => {
-  beforeEach(() => { });
+  beforeEach(() => {});
 
   afterEach(() => {
     jest.clearAllMocks();

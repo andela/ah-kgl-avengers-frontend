@@ -12,9 +12,9 @@ const acronyms = (firstName, lastName) => {
 };
 
 const ImageAvatar = ({
-  image, alt, firstName, lastName,
+  image, alt, firstName, lastName, className,
 }) => (
-  <div>
+  <div className={className}>
     {image ? <img className="avatar" src={image} alt={alt} /> : acronyms(firstName, lastName)}
   </div>
 );
@@ -24,6 +24,7 @@ ImageAvatar.propTypes = {
   alt: PropTypes.string,
   firstName: PropTypes.string,
   lastName: PropTypes.string,
+  className: PropTypes.string,
 };
 
 ImageAvatar.defaultProps = {
@@ -31,6 +32,7 @@ ImageAvatar.defaultProps = {
   alt: '',
   firstName: '',
   lastName: '',
+  className: '',
 };
 
 export default ImageAvatar;

@@ -9,6 +9,8 @@ import Editor from './components/editor/editor';
 import Articles from './components/articles';
 import Reset from './components/container/requestReset';
 import UpdatePassword from './components/container/updatePassword';
+import Profile from './components/container/profile';
+import ProfileEditor from './components/container/profileEditor';
 import './index.scss';
 
 const App = () => (
@@ -23,6 +25,8 @@ const App = () => (
       <Route exact path="/my-articles" component={Articles} />
       <Route exact path="/reset" component={Reset} />
       <Route exact path="/updatePassword/:token" component={UpdatePassword} />
+      <Route exact path="/:username" component={Profile} />
+      <Route exact path="/:username/edit" component={ProfileEditor} />
     </Switch>
   </Router>
 );

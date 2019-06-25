@@ -26,10 +26,11 @@ class Welcome extends Component {
   secondaryArticle = articles => articles.map(single => <ArticleView article={single} key={single.slug} />);
 
   render() {
-    const { feeds, isProgressOn } = this.props;
+    const { feeds, isProgressOn, user } = this.props;
+    const { image = null } = user;
     return (
       <Fragment>
-        <AppBar />
+        <AppBar image={image} />
         <Container className="landing-page-container">
           <Navigation />
           <div className="container-fluid">
@@ -47,7 +48,9 @@ class Welcome extends Component {
                       </section>
                     )}
                     <section className="articles-user-feed">
-                      {feeds.secondary.length > 0 && feeds.secondary[5] && this.secondaryArticle(feeds.secondary)}
+                      {feeds.secondary.length > 0
+                        && feeds.secondary[5]
+                        && this.secondaryArticle(feeds.secondary)}
                     </section>
                   </section>
                   <aside className="col-12 col-md-3">
@@ -72,11 +75,18 @@ Welcome.propTypes = {
   onFetchArticles: propTypes.func.isRequired,
   feeds: propTypes.objectOf(propTypes.any).isRequired,
   isProgressOn: propTypes.bool.isRequired,
+  user: propTypes.instanceOf(Object),
 };
 
-const mapStateToProps = ({ article: articleReducer }) => {
+Welcome.defaultProps = {
+  user: {},
+};
+
+const mapStateToProps = ({ article: articleReducer, user: userReducer }) => {
   const { feeds, isProgressOn } = articleReducer;
+  const { user } = userReducer;
   return {
+    user,
     feeds,
     isProgressOn,
   };
