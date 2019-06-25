@@ -7,7 +7,8 @@ import {
 } from 'reactstrap';
 import Side from './Side';
 import img from '../../assets/sign-in-img.png';
-import userLogin from '../../redux/action-creators/user';
+import { userLogin } from '../../redux/action-creators/user';
+import SocialLogin from './socialLogin';
 
 class Login extends Component {
   constructor() {
@@ -22,17 +23,19 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { errors } = nextProps;
-    errors.forEach((error) => {
-      if (error.includes('email')) {
-        this.setState({
-          emailError: error,
-        });
-      } else {
-        this.setState({
-          passError: error,
-        });
-      }
-    });
+    if (errors instanceof Array === true) {
+      errors.forEach((error) => {
+        if (error.includes('email')) {
+          this.setState({
+            emailError: error,
+          });
+        } else {
+          this.setState({
+            passError: error,
+          });
+        }
+      });
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -58,17 +61,16 @@ class Login extends Component {
     const {
       email, password, emailError, passError,
     } = this.state;
-
     return (
       <Fragment>
         <div className="wrapper">
           <section className="col-12 col-lg-8 col-md-10 col-sm-10">
             <div className="container">
               <div className="row">
-                <div className="col-12 col-md-10 col-lg-7 signup-container text-center">
+                <div className="col-12 col-md-10 col-lg-6 signup-container text-center">
                   <Side img={img} />
                 </div>
-                <div className="col-12 col-md-10 col-lg-5 sign-up">
+                <div className="col-12 col-md-10 col-lg-6 sign-up">
                   <Form>
                     <h3 className="sign-up-title mt-4 text-center">
                       sign
@@ -113,8 +115,8 @@ class Login extends Component {
                       >
                         Login
                       </button>
+                      <SocialLogin login="login  " />
                     </div>
-
                     <div className="sign-up-footer">
                       <p>
                         Forget your password?
@@ -142,7 +144,7 @@ class Login extends Component {
 Login.propTypes = {
   userLogin: PropTypes.func.isRequired,
   errors: PropTypes.instanceOf(Array),
-  history: PropTypes.func.isRequired,
+  history: PropTypes.instanceOf(Object).isRequired,
   user: PropTypes.instanceOf(Object),
 };
 
@@ -151,9 +153,11 @@ Login.defaultProps = {
   user: {},
 };
 
-const mapStateToProps = ({ user }) => ({
-  errors: user.errors,
+export const mapStateToProps = ({ user }) => ({
+  errors: user.localErrors,
   user: user.user,
+  googleUser: user.googleUser,
+  facebookUser: user.facebookUser,
 });
 
 export default connect(

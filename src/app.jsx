@@ -12,11 +12,13 @@ import UpdatePassword from './components/container/updatePassword';
 import Profile from './components/container/profile';
 import ProfileEditor from './components/container/profileEditor';
 import './index.scss';
+import socialLogin from './components/Auth/socialLogin';
 
 const App = () => (
   <Router>
     <Switch>
       <Route exact path="/" component={Welcome} />
+      <Route path="/social" component={socialLogin} />
       <Route path="/signup" component={Signup} />
       <Route path="/redirect" component={Redirect} />
       <Route path="/login" component={Login} />

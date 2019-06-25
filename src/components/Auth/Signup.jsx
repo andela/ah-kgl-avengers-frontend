@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import Side from './Side';
 import img from '../../assets/developers_2_A1_Rectangle_58_pattern.png';
 import { userRegister, registerLoad } from '../../redux/action-creators/signup';
+import SocialLogin from './socialLogin';
 
 export class Register extends Component {
   state = {
@@ -82,13 +83,13 @@ export class Register extends Component {
     return (
       <Fragment>
         <div className="wrapper">
-          <section className="col-12 col-lg-8 col-md-10 col-sm-10">
+          <section className="col-12 col-lg-12 col-md-10 col-sm-10">
             <div className="container">
               <div className="row">
-                <div className="col-12 col-md-10 col-lg-7 signup-container text-center">
+                <div className="col-12  col-md-4 col-lg-7 signup-container text-center">
                   <Side img={img} />
                 </div>
-                <div className="col-12 col-md-10 col-lg-5 sign-up">
+                <div className="col-12 col-md-8 col-lg-5 sign-up">
                   <Form>
                     <h3 className="sign-up-title mt-4 text-center">
                       sign
@@ -154,6 +155,9 @@ export class Register extends Component {
                       </button>
                     </div>
 
+                    <div>
+                      <SocialLogin login="sign up" />
+                    </div>
                     <div className="sign-up-footer">
                       <p>
                         Already have an account?
@@ -197,7 +201,7 @@ export const mapStateToProps = ({ user }) => ({
   email: user.register.email,
   password: user.register.password,
   message: user.register.message,
-  errors: user.errors,
+  errors: user.register.localErrors,
 });
 
 Register.defaultProps = {
