@@ -40,7 +40,10 @@ describe('Article Reducer', () => {
   });
 
   it('should add login errors to the state', () => {
-    expect(reducer(state, { type: loginFailed, payload: [] })).toEqual({ ...state, errors: [] });
+    expect(reducer(state, { type: loginFailed, payload: [] })).toEqual({
+      ...state,
+      localErrors: [],
+    });
   });
 
   it('should handle the REGISTER_LOAD &  REGISTER_FORM_SEND actions', () => {
@@ -71,7 +74,7 @@ describe('Article Reducer', () => {
   it('should add register errors to the state', () => {
     expect(reducer(state, { type: REGISTER_FAIL, payload: { errors: [] } })).toEqual({
       ...state,
-      errors: [],
+      localErrors: [],
     });
   });
 

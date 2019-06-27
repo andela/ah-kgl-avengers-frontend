@@ -2,7 +2,7 @@ import axios from 'axios';
 import moxios from 'moxios';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import userLogin from '../../redux/action-creators/user';
+import { userLogin } from '../../redux/action-creators/user';
 
 const mockStore = configureStore([thunk]);
 const store = mockStore();
@@ -39,7 +39,6 @@ describe('LOGIN actions', () => {
       });
     });
     return store.dispatch(userLogin(userData)).then(() => {
-      // expect(res.type).toEqual(loginSuccess);
       expect(store.getActions().length).toBe(1);
     });
   });
