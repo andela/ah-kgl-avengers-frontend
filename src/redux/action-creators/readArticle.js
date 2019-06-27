@@ -5,11 +5,14 @@ import {
   FETCH_ARTICLE_SUCCESS,
   FETCH_ARTICLE_START,
   FETCH_ARTICLE_FAIL,
+  LIKE_ARTICLE,
+  DISLIKE_ARTICLE,
+  FETCH_AGAIN_LIKES,
 } from '../action-types';
 
-const readArticle = slug => async (dispatch) => {
-  const url = `https://ah-kg-avengers-backend-staging.herokuapp.com/api/v1/articles/${slug}`;
-  const ratingUrl = `https://ah-kg-avengers-backend-staging.herokuapp.com/api/v1/articles/${slug}/ratings`;
+export const readArticle = slug => async (dispatch) => {
+  const url = `${process.env.REACT_APP_API}/articles/${slug}`;
+  const ratingUrl = `${process.env.REACT_APP_API}/articles/${slug}/ratings`;
   dispatch({ type: FETCH_ARTICLE_START, payload: {} });
   try {
     const resp = await axios.get(url, optRequest);
@@ -28,4 +31,39 @@ const readArticle = slug => async (dispatch) => {
     dispatch({ type: FETCH_ARTICLE_END, payload: {} });
   }
 };
-export default readArticle;
+
+export const likeArticle = slug => async (dispatch) => {
+  const url = `${process.env.REACT_APP_API}/articles/${slug}/like`;
+  const fetchAgain = `${process.env.REACT_APP_API}/articles/${slug}`;
+  try {
+    const makeRequest = await axios.post(url, {}, {
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        Accept: 'application/json',
+      },
+    });
+    const likedArticle = await axios.get(fetchAgain, optRequest);
+    dispatch({ type: LIKE_ARTICLE, payload: makeRequest });
+    dispatch({ type: FETCH_AGAIN_LIKES, payload: likedArticle });
+  } catch (errors) {
+    return errors;
+  }
+};
+
+export const dislikeArticle = slug => async (dispatch) => {
+  const url = `${process.env.REACT_APP_API}/articles/${slug}/dislike`;
+  const fetchAgain = `${process.env.REACT_APP_API}/articles/${slug}`;
+
+  try {
+    const makeRequest = await axios.delete(url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+      },
+    });
+    const likedArticle = await axios.get(fetchAgain, optRequest);
+    dispatch({ type: DISLIKE_ARTICLE, payload: makeRequest });
+    dispatch({ type: FETCH_AGAIN_LIKES, payload: likedArticle });
+  } catch (errors) {
+    return errors;
+  }
+};

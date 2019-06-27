@@ -202,3 +202,24 @@ p img {
 @keyframes cssAnimation {
   to   { visibility: hidden; }
 }
+.article-likes {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+}
+
+.dislike {
+  border: 1px solid #f72e38;
+  border-radius: 4px;
+  padding: 0.5px 10px;
+  font-size: 0.8rem;
+  color: #f72e71;
+  margin: 0 0 0 1em;
+  vertical-align: middle;
+  text-align: center;
+  display: table-cell;
+  &:hover {
+    color: #ffffff;
+    background-color: #f72e3f;
+  }
+}

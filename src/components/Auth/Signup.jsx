@@ -197,7 +197,7 @@ export const mapStateToProps = ({ user }) => ({
   email: user.register.email,
   password: user.register.password,
   message: user.register.message,
-  errors: user.register.errors,
+  errors: user.errors,
 });
 
 Register.defaultProps = {

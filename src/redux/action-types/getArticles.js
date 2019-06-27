@@ -4,3 +4,6 @@ export const articleFailed = 'GET_ARTICLE_FAILED';
 export const draftRequest = 'GET_DRAFT_REQUEST';
 export const draftSuccess = 'GET_DRAFT_SUCCESS';
 export const draftFailed = 'GET_DRAFT_FAILED';
+export const likeArticle = 'LIKE_ARTICLE';
+export const dislikeArticle = 'DISLIKE_ARTICLE';
+export const fetchLikedArticle = 'FETCH_AGAIN_LIKES';

@@ -1,7 +1,7 @@
 import moxios from 'moxios';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import readArticle from '../../redux/action-creators/readArticle';
+import { readArticle } from '../../redux/action-creators/readArticle';
 import editArticle from '../../redux/action-creators/editArticle';
 import { deleteArticle } from '../../redux/action-creators/index';
 
