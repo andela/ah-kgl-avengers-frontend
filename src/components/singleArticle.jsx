@@ -20,15 +20,17 @@ const ArticleView = ({ article, className }) => {
       <div className="article-img">
         <img src={article.featuredImage} alt={article.title} />
       </div>
-      <h3 className="title">{article.title}</h3>
+      <h3 className="title font-weight-bolder">{article.title}</h3>
       <p className="article-description">{article.description}</p>
       <div className="article-meta">
         <div>
-          <span className="author-name">{article.author.username}</span>
-          <div>{renderTags(article.tagList)}</div>
-          <div>
+          <span className="author-name">
+            <i className="zmdi zmdi-face mr-1" />
+            {article.author.username}
+          </span>
+          <div className="date-and-read-time">
             <span className="publication-date">
-              <i className="zmdi zmdi-calendar" />
+              <i className="zmdi zmdi-calendar mr-1" />
               &nbsp;
               {moment(article.updatedAt).format('ll')}
             </span>
@@ -39,6 +41,7 @@ const ArticleView = ({ article, className }) => {
               {article.readTime}
             </span>
           </div>
+          <div className="mt-3 mb-3 ml-0">{renderTags(article.tagList)}</div>
         </div>
         <button className="btn btn-icon btn-bookmark" type="button">
           <i className="material-icons">bookmark_border</i>
@@ -50,10 +53,13 @@ const ArticleView = ({ article, className }) => {
 
 const TrendingArticleView = ({ article, id }) => (
   <Link className="trending-article" to={`/articles/${article.slug}`}>
-    <div className="order">{id}</div>
+    <div className="order pr-3">{`${id}.`}</div>
     <div className="trending-article-container">
-      <h3 className="title">{article.title}</h3>
-      <span className="author-name">{article.author.username}</span>
+      <h3 className="side-head-title">{article.title}</h3>
+      <span className="author-name">
+        <i className="zmdi zmdi-face mr-1" />
+        {article.author.username}
+      </span>
       <span className="publication-date">
         <i className="zmdi zmdi-calendar" />
         &nbsp;

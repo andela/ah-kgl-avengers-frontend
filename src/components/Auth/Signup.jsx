@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import Side from './Side';
 import img from '../../assets/developers_2_A1_Rectangle_58_pattern.png';
 import { userRegister, registerLoad } from '../../redux/action-creators/signup';
+import SocialLogin from './socialLogin';
 
 export class Register extends Component {
   state = {
@@ -82,13 +83,13 @@ export class Register extends Component {
     return (
       <Fragment>
         <div className="wrapper">
-          <section className="col-12 col-lg-8 col-md-10 col-sm-10">
-            <div className="container">
+          <section className="col-12 col-lg-12 col-md-10 col-sm-10">
+            <div className="container shadow">
               <div className="row">
-                <div className="col-12 col-md-10 col-lg-7 signup-container text-center">
+                <div className="col-12  col-md-4 col-lg-5 signup-container text-center">
                   <Side img={img} />
                 </div>
-                <div className="col-12 col-md-10 col-lg-5 sign-up">
+                <div className="col-12 col-md-8 col-lg-7 sign-up">
                   <Form>
                     <h3 className="sign-up-title mt-4 text-center">
                       sign
@@ -144,7 +145,7 @@ export class Register extends Component {
                         <div className="error">{passwordError}</div>
                       </div>
                     </FormGroup>
-                    <div className="text-center mb-4">
+                    <div className="text-center">
                       <button
                         type="button"
                         onClick={this.onSubmit}
@@ -152,16 +153,19 @@ export class Register extends Component {
                       >
                         Signup
                       </button>
+                      <SocialLogin login="sign up" />
                     </div>
-
-                    <div className="sign-up-footer">
-                      <p>
+                    <div className="sign-up-footer border rounded-sm">
+                      <div className="lead conditional-text-01 ml-4">
                         Already have an account?
-                        <Link to="/login"> sign in</Link>
-                      </p>
-                      <p>
-                        <Link to="/">Back</Link>
-                      </p>
+                        <Link to="/login"><span className="lead small font-weight-bolder text-primary"> sign in </span></Link>
+                      </div>
+                      <Link to="/">
+                        <div className="lead small font-weight-bolder text-primary float-right mt-3 mb-3 pt-3">
+                          <i className="d-none d-md-inline mr-1 zmdi zmdi-home" />
+                        Go back Home
+                        </div>
+                      </Link>
                     </div>
                   </Form>
                 </div>
@@ -197,7 +201,7 @@ export const mapStateToProps = ({ user }) => ({
   email: user.register.email,
   password: user.register.password,
   message: user.register.message,
-  errors: user.errors,
+  errors: user.register.localErrors,
 });
 
 Register.defaultProps = {

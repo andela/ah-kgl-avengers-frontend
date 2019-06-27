@@ -3,7 +3,15 @@
  * login, signup and profile
  */
 
-import { loginSuccess, loginFailed } from '../action-types/user';
+import {
+  loginSuccess,
+  loginFailed,
+  GOOGLE_SOCIAL_ACCESS_SUCCESS,
+  FACEBOOK_SOCIAL_ACCESS_SUCCESS,
+  GOOGLE_SOCIAL_ACCESS_FAILED,
+  FACEBOOK_SOCIAL_ACCESS_FAILED,
+  RELOAD_SOCIAL_MEDIA,
+} from '../action-types/user';
 import {
   REGISTER_FORM_SEND,
   REGISTER_SUCCESS,
@@ -36,6 +44,31 @@ export default (
   { type, payload },
 ) => {
   switch (type) {
+    case FACEBOOK_SOCIAL_ACCESS_SUCCESS:
+      return {
+        ...state,
+        user: payload,
+      };
+    case FACEBOOK_SOCIAL_ACCESS_FAILED:
+      return {
+        ...state,
+        errors: payload,
+      };
+    case GOOGLE_SOCIAL_ACCESS_SUCCESS:
+      return {
+        ...state,
+        user: payload,
+      };
+    case GOOGLE_SOCIAL_ACCESS_FAILED:
+      return {
+        ...state,
+        errors: payload,
+      };
+    case RELOAD_SOCIAL_MEDIA:
+      return {
+        ...state,
+        errors: payload,
+      };
     case loginSuccess:
       return {
         ...state,
@@ -45,7 +78,7 @@ export default (
     case loginFailed:
       return {
         ...state,
-        errors: payload,
+        localErrors: payload,
       };
 
     case REGISTER_LOAD:
@@ -66,7 +99,7 @@ export default (
     case REGISTER_FAIL:
       return {
         ...state,
-        errors: payload.errors,
+        localErrors: payload.errors,
       };
 
     case REDIRECT_TO:

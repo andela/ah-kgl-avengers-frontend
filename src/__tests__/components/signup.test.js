@@ -7,13 +7,7 @@ import thunk from 'redux-thunk';
 import { Register } from '../../components/Auth/Signup';
 
 const mockStore = configureMockStore([thunk]);
-const store = mockStore({});
-const mockFn = jest.fn();
-
-const props = {
-  registerSubmit: jest.fn().mockImplementation(() => Promise.resolve({ status: 201 })),
-  onInputChange: mockFn,
-  history: { push: mockFn },
+const store = mockStore({
   user: {
     errors: [],
     register: {
@@ -22,6 +16,13 @@ const props = {
       username: '',
     },
   },
+});
+const mockFn = jest.fn();
+
+const props = {
+  registerSubmit: jest.fn().mockImplementation(() => Promise.resolve({ status: 201 })),
+  onInputChange: mockFn,
+  history: { push: mockFn },
 };
 
 const defaultState = {
@@ -39,18 +40,20 @@ describe('<Register />', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  
+
   const component = shallow(<Register {...props} />);
   it('should render without crashing', () => {
     expect(component).toMatchSnapshot();
   });
   test('should render <Register />', () => {
     const wrapper = mount(
-      <Router>
-        <Register {...props} />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <Register {...props} />
+        </Router>
+      </Provider>,
     );
-    expect(wrapper.find('Register').props().user).toBeDefined();
+    expect(wrapper.find('Register')).toBeDefined();
   });
 
   test('should call registerSubmit', () => {
