@@ -13,14 +13,16 @@ import {
   UncontrolledDropdown,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Title from '../../assets/images/ah-logo-text.png';
 import Logo from '../../assets/images/ah_logo.png';
 import ImageAvatar from '../imageAvatar';
+import helpers from '../../helpers/decodeToken';
 
 class AppBar extends Component {
   state = {
     isToggled: false,
-    isLoggedIn: true,
+    isLoggedIn: false,
   };
 
   componentDidMount = () => {
@@ -28,9 +30,10 @@ class AppBar extends Component {
   };
 
   checkLogin = () => {
-    if (localStorage.token === undefined) {
-      const { isLoggedIn } = this.state;
-      this.setState({ isLoggedIn: !isLoggedIn });
+    const { isLoggedIn } = this.state;
+    const profile = helpers.decodeToken();
+    if (profile) {
+      this.setState({ isLoggedIn: !isLoggedIn, userName: profile.username });
     }
   };
 
@@ -40,17 +43,18 @@ class AppBar extends Component {
   };
 
   render() {
-    const { isToggled, isLoggedIn } = this.state;
+    const { isToggled, isLoggedIn, userName } = this.state;
+    const { image, minimal } = this.props;
     if (isLoggedIn) {
       return (
         <Navbar dark className="nav-top shadow-sm " expand="sm">
           <Container>
-            <NavbarBrand href="/" className="nav-logo">
-              <img src={Logo} alt="logo" />
+            <Link to="/" className="nav-logo navbar-brand">
+              <img src={Logo} alt="logo" className={minimal ? 'nav-logo-hidden' : ''} />
               <img src={Title} alt="title" />
-            </NavbarBrand>
+            </Link>
             <NavbarToggler onClick={this.toggle}>
-              <ImageAvatar />
+              <ImageAvatar image={image} />
             </NavbarToggler>
             <Collapse isOpen={isToggled} navbar>
               <Nav className="ml-auto login-img" navbar>
@@ -67,14 +71,13 @@ class AppBar extends Component {
 
                     <DropdownItem divider />
                     <Link to="/my-articles">
-                      {' '}
                       <li>My Articles</li>
                     </Link>
                     <Link to="/">
                       <li>Bookmarks</li>
                     </Link>
                     <DropdownItem divider />
-                    <Link to="/">
+                    <Link to={`/${userName}`}>
                       <li>Profile</li>
                     </Link>
                     <DropdownItem divider />
@@ -84,19 +87,20 @@ class AppBar extends Component {
                     </Link>
                   </ul>
                   <DropdownToggle className="button01">
-                    <ImageAvatar />
+                    <ImageAvatar image={image} />
                   </DropdownToggle>
                   <DropdownMenu>
-                    <div className="up-chev"><i className="zmdi zmdi-caret-up zmdi-hc-3x" /></div>
+                    <div className="up-chev">
+                      <i className="zmdi zmdi-caret-up zmdi-hc-3x" />
+                    </div>
                     <Link to="/my-articles">
-                      {' '}
                       <DropdownItem>My Articles</DropdownItem>
                     </Link>
                     <Link to="/">
                       <DropdownItem>Bookmarks</DropdownItem>
                     </Link>
                     <DropdownItem divider />
-                    <Link to="/">
+                    <Link to={`/${userName}`}>
                       <DropdownItem>Profile</DropdownItem>
                     </Link>
                     <DropdownItem divider />
@@ -115,11 +119,9 @@ class AppBar extends Component {
     return (
       <Navbar dark className="nav-top shadow-sm p-3" expand="sm">
         <Container>
-          <Link to="/">
-            <NavbarBrand className="nav-logo">
-              <img src={Logo} alt="logo" />
-              <img src={Title} alt="title" />
-            </NavbarBrand>
+          <Link to="/" className="navbar-brand nav-logo">
+            <img src={Logo} alt="logo" />
+            <img src={Title} alt="title" />
           </Link>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={isToggled} navbar>
@@ -141,5 +143,15 @@ class AppBar extends Component {
     );
   }
 }
+
+AppBar.propTypes = {
+  image: PropTypes.string,
+  minimal: PropTypes.bool,
+};
+
+AppBar.defaultProps = {
+  image: '',
+  minimal: false,
+};
 
 export default AppBar;

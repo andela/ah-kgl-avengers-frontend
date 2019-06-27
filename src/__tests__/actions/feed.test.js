@@ -19,12 +19,11 @@ describe('Article action', () => {
     moxios.install(axios);
     store.clearActions();
   });
-  afterEach(() => {
+  afterEach(() => { 
     moxios.uninstall(axios);
   });
 
   test('It should FETCH_FEEDS', async () => {
-    // jest.setTimeout(30000);
     const articles = [
       {
         title: 'a new article',

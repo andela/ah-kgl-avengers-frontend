@@ -6,42 +6,47 @@ import Chip from './functional/chip';
 
 const renderTags = (tags) => {
   if (tags.length > 0) {
-    return tags.slice(0, 5).map(tag => (<Chip key={tag} value={tag} />));
+    return tags.slice(0, 5).map(tag => <Chip key={tag} value={tag} />);
   }
   return null;
 };
 
-const ArticleView = ({ article, className }) => (
-  <Link className={`article-container ${className}`} to={`/articles/${article.slug}`}>
-    <div className="article-img">
-      <img src={article.featuredImage} alt={article.title} />
-    </div>
-    <h3 className="title">{article.title}</h3>
-    <p className="article-description">{article.description}</p>
-    <div className="article-meta">
-      <div>
-        <span className="author-name">{article.author.username}</span>
-        <div>{renderTags(article.tagList)}</div>
-        <div>
-          <span className="publication-date">
-            <i className="zmdi zmdi-calendar" />
-            &nbsp;
-            {moment(article.updatedAt).format('ll')}
-          </span>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <span className="read-time">
-            <i className="zmdi zmdi-time" />
-            &nbsp;
-            {article.readTime}
-          </span>
-        </div>
+const ArticleView = ({ article, className }) => {
+  if (article.User) {
+    article.author = article.User;
+  }
+  return (
+    <Link className={`article-container ${className}`} to={`/articles/${article.slug}`}>
+      <div className="article-img">
+        <img src={article.featuredImage} alt={article.title} />
       </div>
-      <button className="btn btn-icon btn-bookmark" type="button">
-        <i className="material-icons">bookmark_border</i>
-      </button>
-    </div>
-  </Link>
-);
+      <h3 className="title">{article.title}</h3>
+      <p className="article-description">{article.description}</p>
+      <div className="article-meta">
+        <div>
+          <span className="author-name">{article.author.username}</span>
+          <div>{renderTags(article.tagList)}</div>
+          <div>
+            <span className="publication-date">
+              <i className="zmdi zmdi-calendar" />
+              &nbsp;
+              {moment(article.updatedAt).format('ll')}
+            </span>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <span className="read-time">
+              <i className="zmdi zmdi-time" />
+              &nbsp;
+              {article.readTime}
+            </span>
+          </div>
+        </div>
+        <button className="btn btn-icon btn-bookmark" type="button">
+          <i className="material-icons">bookmark_border</i>
+        </button>
+      </div>
+    </Link>
+  );
+};
 
 const TrendingArticleView = ({ article, id }) => (
   <Link className="trending-article" to={`/articles/${article.slug}`}>
