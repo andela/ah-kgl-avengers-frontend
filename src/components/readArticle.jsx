@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
+import '@fortawesome/fontawesome-free/js/all';
+import Rating from 'react-rating';
 import ImageAvatar from './imageAvatar';
 import Description from './description';
 import ArticleTitle from './articleTitle';
@@ -14,15 +16,22 @@ import readArticle from '../redux/action-creators/readArticle';
 import readArticleHelper from '../helpers/readArticle';
 import Footer from './functional/footer';
 import Navbar from './functional/navBar';
+import rateArticle from '../redux/action-creators/rateArticle';
 
 class ReadArticle extends Component {
-  state = {};
-
   componentDidMount() {
     const { match } = this.props;
     const { params } = match;
     const { readArticles } = this.props;
     readArticles(params.slug);
+  }
+
+  rate = (value) => {
+    const { rateArticle: request, article } = this.props;
+    const newRating = {
+      rating: value,
+    };
+    request(newRating, article.slug);
   }
 
   renderTags = (tags) => {
@@ -37,11 +46,14 @@ class ReadArticle extends Component {
   };
 
   render() {
-    const { article } = this.props;
+    const {
+      article, error, success,
+    } = this.props;
     if (!Object.prototype.hasOwnProperty.call(article, 'body')) return null;
     const {
-      title, body, readTime, author, createdAt, tagList,
+      title, body, readTime, author, createdAt, tagList, ratings, totalRatings,
     } = article;
+
     const newBody = ReactHtmlParser(body);
     const desc = readArticleHelper.description(body);
     const formatDate = readArticleHelper.timeFormat(createdAt);
@@ -86,7 +98,21 @@ class ReadArticle extends Component {
                   <ReadTime className="lead lead-rt-sm text-left text-md-left text-black-50  ml-2">
                     {readTime}
                   </ReadTime>
-                  <i className=" zmdi zmdi-star lead lead-rt-sm text-left text-md-left text-black-50  ml-2 pb-2" />
+                  <Rating
+                    className="small-icon"
+                    emptySymbol="far fa-star"
+                    fullSymbol="fas fa-star"
+                    initialRating={ratings}
+                    readonly
+                  />
+                </div>
+                <div className="author-details row align-items-center">
+                  Average rating: &nbsp;
+                  {ratings}
+                /5 out of &nbsp;
+                  {totalRatings}
+                  {' '}
+                ratings
                 </div>
               </div>
             </div>
@@ -105,6 +131,20 @@ class ReadArticle extends Component {
             </TextArea>
           </div>
           {tagList && <div className="article-taglist">{this.renderTags(tagList)}</div>}
+          Rate this article:
+          <Rating
+            className="ratings"
+            emptySymbol="far fa-star"
+            fullSymbol="fas fa-star"
+            fractions={1}
+            initialRating={0}
+            start={0}
+            stop={5}
+            step={1}
+            onClick={this.rate}
+          />
+          <div><span className="error">{error}</span></div>
+          <div><span className="message">{success}</span></div>
           <Footer />
         </section>
 
@@ -113,16 +153,27 @@ class ReadArticle extends Component {
   }
 }
 
+ReadArticle.defaultProps = {
+  error: '',
+  success: '',
+};
+
 ReadArticle.propTypes = {
   readArticles: PropTypes.func.isRequired,
+  rateArticle: PropTypes.func.isRequired,
   article: PropTypes.instanceOf(Object).isRequired,
+  error: PropTypes.string,
+  success: PropTypes.string,
+  match: PropTypes.instanceOf(Object).isRequired,
 };
 
 const mapStateToProps = ({ article: articleReducer }) => ({
   article: articleReducer.article,
+  error: articleReducer.error,
+  success: articleReducer.success,
 });
 
 export default connect(
   mapStateToProps,
-  { readArticles: readArticle },
+  { readArticles: readArticle, rateArticle },
 )(ReadArticle);

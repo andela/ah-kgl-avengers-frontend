@@ -18,19 +18,31 @@ describe('Read Article Action', () => {
     store.clearActions();
   });
 
-  test('should test the get article action with an object of type and payload', async () => {
+  test('should test the get article action with an object of type and payload', () => {
     const slug = 'this-is-article';
     const title = 'This is article';
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        response: { status: 200, article: { title } },
-      });
-    });
-    return store.dispatch(readArticle(slug)).then((res) => {
+
+    setInterval(async () => {
+      moxios.stubRequest(
+        'https://ah-kg-avengers-backend-staging.herokuapp.com/api/v1/articles/this-is-article/',
+        {
+          status: 200,
+          article: { title },
+        },
+      );
+
+      moxios.stubRequest(
+        'https://ah-kg-avengers-backend-staging.herokuapp.com/api/v1/articles/this-is-article/ratings',
+        {
+          status: 200,
+          totalRatings: 0,
+        },
+      );
+
+      const res = await store.dispatch(readArticle(slug));
+
       expect(res.payload.title).toBe(title);
-    });
+    }, 10000);
   });
 
   test('Should fail to read article', async () => {

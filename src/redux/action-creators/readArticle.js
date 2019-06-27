@@ -7,22 +7,25 @@ import {
   FETCH_ARTICLE_FAIL,
 } from '../action-types';
 
-const readArticle = slug => (dispatch) => {
-  const url = `${process.env.REACT_APP_API}/articles/${slug}`;
+const readArticle = slug => async (dispatch) => {
+  const url = `https://ah-kg-avengers-backend-staging.herokuapp.com/api/v1/articles/${slug}`;
+  const ratingUrl = `https://ah-kg-avengers-backend-staging.herokuapp.com/api/v1/articles/${slug}/ratings`;
   dispatch({ type: FETCH_ARTICLE_START, payload: {} });
-  return axios
-    .get(url, optRequest)
-    .then((response) => {
-      const { article } = response.data;
-      return dispatch({ type: FETCH_ARTICLE_SUCCESS, payload: article });
-    })
-    .catch((error) => {
-      const { errors } = error.response;
-      return dispatch({ type: FETCH_ARTICLE_FAIL, payload: { text: errors, type: 'error' } });
-    })
-    .finally(() => {
-      dispatch({ type: FETCH_ARTICLE_END, payload: {} });
-    });
+  try {
+    const resp = await axios.get(url, optRequest);
+    const { article } = resp.data;
+    const ratings = await axios.get(ratingUrl, optRequest);
+    let { totalRatings } = ratings.data;
+    if (!totalRatings) {
+      totalRatings = 0;
+    }
+    article.totalRatings = totalRatings;
+    return dispatch({ type: FETCH_ARTICLE_SUCCESS, payload: article });
+  } catch (error) {
+    const { errors } = error.response;
+    return dispatch({ type: FETCH_ARTICLE_FAIL, payload: { text: errors, type: 'error' } });
+  } finally {
+    dispatch({ type: FETCH_ARTICLE_END, payload: {} });
+  }
 };
-
 export default readArticle;

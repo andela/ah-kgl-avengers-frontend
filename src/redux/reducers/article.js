@@ -19,6 +19,10 @@ import {
   articleSuccess,
   articleFailed,
 } from '../action-types/getArticles';
+import {
+  rateSuccess,
+  rateFailed,
+} from '../action-types/rateArticle';
 
 import initialState from '../initialState';
 
@@ -57,6 +61,8 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         article: payload,
+        error: '',
+        success: '',
       };
 
     case DELETE_ARTICLE_SUCCESS: {
@@ -106,6 +112,25 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         articles: payload,
+      };
+
+    case rateFailed:
+      return {
+        ...state,
+        error: payload.error,
+        success: '',
+      };
+
+    case rateSuccess:
+      return {
+        ...state,
+        article: {
+          ...state.article,
+          ratings: payload,
+          totalRatings: state.article.totalRatings + 1,
+        },
+        success: 'Thank you for rating this article',
+        error: '',
       };
 
     default:
