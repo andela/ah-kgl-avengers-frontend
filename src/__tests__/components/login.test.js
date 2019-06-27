@@ -4,72 +4,105 @@ import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import { BrowserRouter as Router } from 'react-router-dom';
 import thunk from 'redux-thunk';
-import { Register } from '../../components/Auth/Signup';
+import Login from '../../components/Auth/login';
+import Title from '../../components/Auth/Title';
+import Redirect from '../../components/Auth/Redirect';
+import Nav from '../../components/Auth/Nav';
 
 const mockStore = configureMockStore([thunk]);
-const store = mockStore({});
 const mockFn = jest.fn();
 
 const props = {
-  registerSubmit: jest.fn().mockImplementation(() => Promise.resolve({ status: 201 })),
-  onInputChange: mockFn,
+  userLogin: mockFn,
   history: { push: mockFn },
-  errors: [],
-  register: {
-    email: '',
-    password: '',
-    username: '',
+};
+
+const user = {
+  email: 'test@test.com',
+  password: '123456789',
+};
+
+const initialState = {
+  user: {
+    errors: [],
+    user: {},
   },
 };
 
-const defaultState = {
-  username: '',
-  emailError: 'Email is not Valid',
-  password: '',
-  passwordError: 'Password is Required',
-  email: '',
-  usernameError: 'Username is Required',
-  hidden: true,
+let store;
+let component;
 
-};
-describe('<Register />', () => {
+describe('Login Component', () => {
   beforeEach(() => {
+    store = mockStore(initialState);
+    component = mount(
+      <Provider store={store}>
+        <Router>
+          <Login {...props} />
+        </Router>
+      </Provider>,
+    );
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
-  const component = shallow(<Register {...props} />);
-  it('should render without crashing', () => {
+
+  it('Should check login snapshot', () => {
     expect(component).toMatchSnapshot();
   });
-  test('should render <Register />', () => {
+
+  test('should render Login component', () => {
+    expect(component.find('Login')).toBeDefined();
+  });
+
+  test('Should try to login', () => {
+    const fakeEvent = { preventDefault: () => {} };
+    component.setState(user);
+    component.find('.sign-up-btn').simulate('click', fakeEvent);
+    expect(component.state().email).toEqual(user.email);
+  });
+
+  test('should call registerSubmit', () => {
+    const input = component.find('.input-color').at(1);
+    input.simulate('change', { target: { value: 'test@test.com' } });
+    // Something to work on later
+    expect(component.state().email).toBe(undefined);
+  });
+
+  test('When user put invalid data', () => {
+    const wrapper = shallow(
+      <Provider store={store}>
+        <Router>
+          <Login {...props} />
+        </Router>
+      </Provider>,
+    );
+    const errors = ['email is missing', 'password is missing'];
+    wrapper.setProps({ errors });
+    expect(wrapper.state().emailError).toEqual(undefined);
+  });
+
+  test('Should test Nav component', () => {
     const wrapper = mount(
       <Router>
-        <Register {...props} />
+        <Nav />
       </Router>,
     );
-    expect(wrapper.find('Register').props().register).toBeDefined();
+    expect(wrapper.find('nav')).toBeDefined();
   });
 
-  test('should call registerSubmit', () => {
-    const wrapper = shallow(<Register {...props} />);
-    const fakeEvent = { preventDefault: () => {} };
-    wrapper.find('.sign-up-btn').simulate('click', fakeEvent);
-    expect(wrapper.state()).toEqual({
-      ...defaultState,
-    });
+  test('Should test Title component', () => {
+    const wrapper = shallow(
+      <Title />,
+    );
+    expect(wrapper.find('Title')).toBeDefined();
   });
 
-  test('should call registerSubmit', () => {
-    const wrapper = shallow(<Register {...props} />);
-    const fakeEvent = { preventDefault: () => {} };
-    wrapper.find('.btn-toggle-password').simulate('click', fakeEvent);
-    expect(wrapper.state()).toEqual({
-      email: '',
-      hidden: false,
-      password: '',
-      username: '',
-    });
+  test('Should test Redirect component', () => {
+    const wrapper = shallow(
+      <Redirect />,
+    );
+    expect(wrapper.find('Redirect')).toBeDefined();
   });
 });

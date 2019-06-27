@@ -2,6 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import propTypes from 'prop-types';
+import Chip from './functional/chip';
+
+const renderTags = (tags) => {
+  if (tags.length > 0) {
+    return tags.slice(0, 5).map(tag => (<Chip key={tag} value={tag} />));
+  }
+  return null;
+};
 
 const ArticleView = ({ article, className }) => (
   <Link className={`article-container ${className}`} to={`/articles/${article.slug}`}>
@@ -13,6 +21,7 @@ const ArticleView = ({ article, className }) => (
     <div className="article-meta">
       <div>
         <span className="author-name">{article.author.username}</span>
+        <div>{renderTags(article.tagList)}</div>
         <div>
           <span className="publication-date">
             <i className="zmdi zmdi-calendar" />

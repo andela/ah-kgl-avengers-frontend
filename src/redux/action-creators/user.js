@@ -19,7 +19,7 @@ const userLogin = user => async (dispatch) => {
     })
     .catch((error) => {
       // handle error
-    dispatch(
+      dispatch(
         actionDispatch(
           loginFailed,
           (error.response.data.error && [error.response.data.error]) || error.response.data.errors,

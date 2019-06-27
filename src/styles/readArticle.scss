@@ -48,17 +48,20 @@
 // Added changes
 figure {
   padding-top: 8px;
+
   img {
     height: 500px;
     width: 100%;
   }
 }
+
 figcaption {
   padding: 8px;
   font-size: 1rem;
   font-weight: 500;
   text-align: center;
   color: #111111;
+
   &::first-letter {
     text-transform: uppercase;
   }
@@ -73,6 +76,7 @@ p {
   font-weight: 300;
   font-size: 1.2rem;
 }
+
 blockquote {
   width: 70%;
   margin: 16px auto;
@@ -82,6 +86,7 @@ blockquote {
   font-style: italic;
   font-size: 1.4rem;
   color: #00000090;
+
   p {
     margin: 0;
     padding: 0;
@@ -143,6 +148,7 @@ p img {
 .article-taglist {
   width: 90%;
   margin: 0 auto;
+
   .article-tag {
     display: inline-block;
     color: #2ea8f7;
@@ -152,6 +158,7 @@ p img {
     border-radius: 2px;
     background-color: #e6ebec;
     line-height: 32px;
+
     &::first-letter {
       text-transform: uppercase;
     }

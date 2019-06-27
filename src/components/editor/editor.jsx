@@ -40,7 +40,7 @@ class Editor extends Component {
     const {
       user, article, onSaveArticle, message, isProgressOn,
     } = this.props;
-    
+
     return (
       <Fragment>
         <NavBar />

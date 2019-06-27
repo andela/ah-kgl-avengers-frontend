@@ -45,7 +45,7 @@ class Welcome extends Component {
                       <section className="articles-main">
                         <ArticleView article={feeds.main} className="article-main" />
                       </section>
-                    )} 
+                    )}
                     <section className="articles-user-feed">
                       {feeds.secondary.length > 0 && feeds.secondary[5] && this.secondaryArticle(feeds.secondary)}
                     </section>

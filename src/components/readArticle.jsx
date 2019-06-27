@@ -33,13 +33,12 @@ class ReadArticle extends Component {
         </div>
       ));
     }
-    return <div className="chip article-tag">#notags</div>;
+    return null;
   };
 
   render() {
     const { article } = this.props;
     if (!Object.prototype.hasOwnProperty.call(article, 'body')) return null;
-    
     const {
       title, body, readTime, author, createdAt, tagList,
     } = article;

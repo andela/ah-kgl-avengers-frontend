@@ -2,11 +2,11 @@
   margin-top: 30px;
 }
 
-.articles h3{ 
+.articles h3 {
   text-align: center;
 }
 
-.articles h4{
+.articles h4 {
   margin-bottom: 20px;
   margin-top: 20px;
   cursor: pointer;
@@ -28,6 +28,7 @@
   background: none;
   border: none;
 }
+
 .article-details .edit {
   color: #238100;
   cursor: pointer;
@@ -42,13 +43,15 @@
   border-bottom: .8px solid #38c4b0;
   font-size: 20px;
   font-weight: bold;
-  button{
+
+  button {
     background: none;
     border: none;
     padding-right: 8px;
     margin-right: 16px;
-    
+
   }
+
   .bold {
     border-bottom: 4px solid #38c4b0;
     padding-bottom: 5px;
@@ -56,7 +59,17 @@
   }
 }
 
-
+.small-chip {
+  color: black;
+  font-size: 13px;
+  width: 60px;
+  background-color: #ebe8e8;
+  padding: 5px;
+  margin-right: 5px;
+  border-radius: 3px;
+  border: 1px solid #ffffff;
+  position: relative;
+}
 
 .normal {
   color: grey;
@@ -71,6 +84,7 @@ a {
   text-decoration: none;
   color: black;
 }
+
 a:hover {
   text-decoration: none;
   color: black;

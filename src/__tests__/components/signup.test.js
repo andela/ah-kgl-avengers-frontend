@@ -39,6 +39,7 @@ describe('<Register />', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
+  
   const component = shallow(<Register {...props} />);
   it('should render without crashing', () => {
     expect(component).toMatchSnapshot();

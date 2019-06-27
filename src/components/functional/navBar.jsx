@@ -21,7 +21,6 @@ class AppBar extends Component {
   state = {
     isToggled: false,
     isLoggedIn: true,
-    dropdownOpen: false,
   };
 
   componentDidMount = () => {
@@ -38,20 +37,6 @@ class AppBar extends Component {
   toggle = () => {
     const { isToggled } = this.state;
     this.setState({ isToggled: !isToggled });
-  };
-
-  toggleDrop = () => {
-    this.setState(prevState => ({
-      dropdownOpen: !prevState.dropdownOpen,
-    }));
-  };
-
-  onMouseEnter = () => {
-    this.setState({ dropdownOpen: true });
-  };
-
-  onMouseLeave = () => {
-    this.setState({ dropdownOpen: false });
   };
 
   render() {
