@@ -22,23 +22,47 @@ import {
   dislikeArticle,
   fetchLikedArticle,
 } from '../action-types/getArticles';
-import { rateSuccess, rateFailed } from '../action-types/rateArticle';
+import {
+  rateSuccess,
+  rateFailed,
+} from '../action-types/rateArticle';
+
+import {
+  BOOKMARK_SEND,
+  BOOKMARK_SUCCESS,
+  BOOKMARK_FAIL,
+  BOOKMARK_GET_ALL,
+  BOOKMARK_GET_ALL_FAIL,
+  BOOKMARK_DELETE,
+  BOOKMARK_DELETE_FAIL,
+  BOOKMARK_DELETE_SUCCESS,
+} from '../action-types/bookmark';
 
 import initialState from '../initialState';
 
-export default (state = initialState, { type, payload }) => {
+export default (state = initialState, {
+  type,
+  payload,
+}) => {
   switch (type) {
     case UPDATE_ARTICLE_SUCCESS: {
-      return { ...state, editorArticle: payload };
+      return {
+        ...state,
+        editorArticle: payload,
+      };
     }
 
     case DELETE_ARTICLE_FAIL:
     case UPDATE_ARTICLE_FAIL:
-      return { ...state, message: payload };
+      return {
+        ...state, message: payload,
+      };
 
     case CREATE_ARTICLE_STARTED:
     case CREATE_ARTICLE_FINISHED:
-      return { ...state, isProgressOn: !state.isProgressOn };
+      return {
+        ...state, isProgressOn: !state.isProgressOn,
+      };
 
     case FETCH_FEEDS_SUCCESS:
       return {
@@ -47,23 +71,32 @@ export default (state = initialState, { type, payload }) => {
       };
 
     case FETCH_ARTICLE_START:
-      return { ...state, isProgressOn: true };
+      return {
+        ...state, isProgressOn: true,
+      };
 
     case FETCH_ARTICLE_END:
-      return { ...state, isProgressOn: false };
+      return {
+        ...state, isProgressOn: false,
+      };
 
     case FETCH_ARTICLE_FAIL:
-      return { ...state, message: payload };
+      return {
+        ...state, message: payload,
+      };
 
     case REDIRECT_TO:
-      return { ...state, redirect: payload };
-    case FETCH_ARTICLE_SUCCESS:
+      return {
+        ...state, redirect: payload,
+      };
+    case FETCH_ARTICLE_SUCCESS: {
       return {
         ...state,
         article: payload,
         error: '',
         success: '',
       };
+    }
 
     case DELETE_ARTICLE_SUCCESS: {
       let newArticles = [];
@@ -82,7 +115,9 @@ export default (state = initialState, { type, payload }) => {
     }
 
     case 'EDIT_REQUEST':
-      return { ...state, editorArticle: payload };
+      return {
+        ...state, editorArticle: payload,
+      };
 
     case draftFailed:
       return {
@@ -114,14 +149,15 @@ export default (state = initialState, { type, payload }) => {
         articles: payload,
       };
 
-    case rateFailed:
+    case rateFailed: {
       return {
         ...state,
         error: payload.error,
         success: '',
       };
+    }
 
-    case rateSuccess:
+    case rateSuccess: {
       return {
         ...state,
         article: {
@@ -132,6 +168,55 @@ export default (state = initialState, { type, payload }) => {
         success: 'Thank you for rating this article',
         error: '',
       };
+    }
+
+    /**
+     * Reducers related to bookmark article and return all bookmarked
+     */
+    case BOOKMARK_SEND: {
+      return state;
+    }
+    case BOOKMARK_SUCCESS: {
+      return {
+        ...state,
+        bookmark: payload,
+      };
+    }
+    case BOOKMARK_FAIL: {
+      return {
+        ...state,
+        bookmark: payload,
+      };
+    }
+    case BOOKMARK_GET_ALL_FAIL: {
+      return {
+        ...state,
+        bookmark: payload,
+      };
+    }
+    case BOOKMARK_GET_ALL: {
+      return {
+        ...state,
+        bookmarks: payload.data,
+      };
+    }
+    case BOOKMARK_DELETE: {
+      return {
+        ...state,
+      };
+    }
+    case BOOKMARK_DELETE_FAIL: {
+      return {
+        ...state,
+        bookmark: payload,
+      };
+    }
+    case BOOKMARK_DELETE_SUCCESS: {
+      return {
+        ...state,
+        bookmarks: state.bookmarks.filter(article => article.slug !== payload),
+      };
+    }
 
     /*
      * Like an article and change the database
@@ -142,18 +227,18 @@ export default (state = initialState, { type, payload }) => {
         likedArticle: state.article,
       };
 
-    /*
-     * Dislike an article and change the database
-     */
+      /*
+       * Dislike an article and change the database
+       */
     case dislikeArticle:
       return {
         ...state,
         dislikeArticle: state.article,
       };
 
-    /*
-     * Fetch the updated article with total count of likes and dislikes
-     */
+      /*
+       * Fetch the updated article with total count of likes and dislikes
+       */
     case fetchLikedArticle:
       return {
         ...state,

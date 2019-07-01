@@ -1,12 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Container } from 'reactstrap';
+import { toast } from 'react-toastify';
 import propTypes from 'prop-types';
 import fetchFeeds from '../../redux/action-creators/feed';
-import Navigation from '../functional/navigation';
 import Footer from '../functional/footer';
 import AppBar from '../functional/navBar';
 import { ArticleView, TrendingArticleView } from '../singleArticle';
+import { bookmarkArticle } from '../../redux/action-creators/bookmark';
 
 class Welcome extends Component {
   constructor(props) {
@@ -19,8 +20,21 @@ class Welcome extends Component {
     onFetchArticles();
   }
 
+  bookmarkArticle = async (slug) => {
+    const { bookmarking } = this.props;
+    await bookmarking(slug);
+    const { bookmark } = this.props;
+    if (bookmark) {
+      if (bookmark.includes('jwt')) {
+        toast.error('First login to bookmark the article');
+        return;
+      }
+      bookmark.includes('You') ? toast.error(bookmark): toast.success(bookmark);
+    }
+  }
+
   trendingArticle = articles => articles.map((single, index) => (
-    <TrendingArticleView article={single} key={single.slug} id={index + 1} />
+    <TrendingArticleView article={single} key={single.slug} id={index + 1} bookmark={this.bookmarkArticle} />
   ));
 
   secondaryArticle = articles => articles.map(
@@ -44,14 +58,14 @@ class Welcome extends Component {
                 <Fragment>
                   <section className="main col-12 col-md-9">
                     {feeds.main.hasOwnProperty('title') && (
-                      <section className="articles-main">
-                        <ArticleView article={feeds.main} className="article-main" />
-                      </section>
+                    <section className="articles-main">
+                      <ArticleView article={feeds.main} className="article-main" bookmark={this.bookmarkArticle} />
+                    </section>
                     )}
                     <section className="articles-user-feed">
                       {feeds.secondary.length > 0
-                        && feeds.secondary[5]
-                        && this.secondaryArticle(feeds.secondary)}
+                          && feeds.secondary[5]
+                          && this.secondaryArticle(feeds.secondary)}
                     </section>
                   </section>
                   <aside className="col-12 col-md-3">
@@ -74,8 +88,10 @@ class Welcome extends Component {
 
 Welcome.propTypes = {
   onFetchArticles: propTypes.func.isRequired,
+  bookmarking: propTypes.func.isRequired,
   feeds: propTypes.objectOf(propTypes.any).isRequired,
   isProgressOn: propTypes.bool.isRequired,
+  bookmark: propTypes.string.isRequired,
   user: propTypes.instanceOf(Object),
 };
 
@@ -84,16 +100,24 @@ Welcome.defaultProps = {
 };
 
 const mapStateToProps = ({ article: articleReducer, user: userReducer }) => {
-  const { feeds, isProgressOn } = articleReducer;
+  const {
+    feeds, isProgressOn, bookmark,
+  } = articleReducer;
   const { user } = userReducer;
   return {
     user,
     feeds,
     isProgressOn,
+    bookmark,
   };
 };
 
+const mapDispatchToProps = dispatch => ({
+  onFetchArticles: () => dispatch(fetchFeeds()),
+  bookmarking: slug => dispatch(bookmarkArticle(slug)),
+});
+
 export default connect(
   mapStateToProps,
-  { onFetchArticles: fetchFeeds },
+  mapDispatchToProps,
 )(Welcome);

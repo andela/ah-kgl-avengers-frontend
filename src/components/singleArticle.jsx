@@ -11,17 +11,19 @@ const renderTags = (tags) => {
   return null;
 };
 
-const ArticleView = ({ article, className }) => {
+const ArticleView = ({ article, className, bookmark }) => {
   if (article.User) {
     article.author = article.User;
   }
   return (
-    <Link className={`article-container ${className}`} to={`/articles/${article.slug}`}>
-      <div className="article-img">
-        <img src={article.featuredImage} alt={article.title} />
-      </div>
-      <h3 className="title font-weight-bolder">{article.title}</h3>
-      <p className="article-description">{article.description}</p>
+    <div className={`article-container ${className}`}>
+      <Link to={`/articles/${article.slug}`}>
+        <div className="article-img">
+          <img src={article.featuredImage} alt={article.title} />
+        </div>
+        <h3 className="title">{article.title}</h3>
+        <p className="article-description">{article.description}</p>
+      </Link>
       <div className="article-meta">
         <div>
           <span className="author-name">
@@ -43,46 +45,48 @@ const ArticleView = ({ article, className }) => {
           </div>
           <div className="mt-3 mb-3 ml-0">{renderTags(article.tagList)}</div>
         </div>
-        <button className="btn btn-icon btn-bookmark" type="button">
+        <button className="btn btn-icon btn-bookmark" type="button" onClick={() => bookmark(article.slug)}>
           <i className="material-icons">bookmark_border</i>
         </button>
       </div>
-    </Link>
+    </div>
   );
 };
 
-const TrendingArticleView = ({ article, id }) => (
-  <Link className="trending-article" to={`/articles/${article.slug}`}>
-    <div className="order pr-3">{`${id}.`}</div>
+const TrendingArticleView = ({ article, id, bookmark }) => (
+  <div className="trending-article">
+    <div className="order">{id}</div>
     <div className="trending-article-container">
-      <h3 className="side-head-title">{article.title}</h3>
-      <span className="author-name">
-        <i className="zmdi zmdi-face mr-1" />
-        {article.author.username}
-      </span>
-      <span className="publication-date">
-        <i className="zmdi zmdi-calendar" />
-        &nbsp;
-        {moment(article.updatedAt).format('ll')}
-      </span>
-      <span className="read-time">
-        <i className="zmdi zmdi-time" />
-        &nbsp;
-        {article.readTime}
-      </span>
+      <Link to={`/articles/${article.slug}`}>
+        <h3 className="title">{article.title}</h3>
+        <span className="author-name">{article.author.username}</span>
+        <span className="publication-date">
+          <i className="zmdi zmdi-calendar" />
+          &nbsp;
+          {moment(article.updatedAt).format('ll')}
+        </span>
+        <span className="read-time">
+          <i className="zmdi zmdi-time" />
+          &nbsp;
+          {article.readTime}
+        </span>
+
+      </Link>
     </div>
-    <button className="btn btn-icon btn-bookmark" type="button">
+    <button className="btn btn-icon btn-bookmark" type="button" onClick={() => bookmark(article.slug)}>
       <i className="material-icons">bookmark_border</i>
     </button>
-  </Link>
+  </div>
 );
 
 ArticleView.propTypes = {
+  bookmark: propTypes.func.isRequired,
   article: propTypes.objectOf(propTypes.any).isRequired,
   className: propTypes.string,
 };
 
 TrendingArticleView.propTypes = {
+  bookmark: propTypes.func.isRequired,
   article: propTypes.objectOf(propTypes.any).isRequired,
   id: propTypes.number.isRequired,
 };
