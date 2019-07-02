@@ -9,6 +9,13 @@ import DeleteModal from '../../components/delete/deleteConfirmation';
 import { ArticleView, TrendingArticleView } from '../../components/singleArticle';
 
 const initialState = {
+  user: {
+    redirect: {},
+    loggedIn: true,
+    user: {
+      username: 'user',
+    },
+  },
   article: {
     articles: [
       {
@@ -87,22 +94,13 @@ describe('Articles', () => {
 
   it('Render trending article component', () => {
     const wrapper = shallow(
-      <TrendingArticleView
-        className="m-2"
-        id="123"
-        article={initialState.article.article}
-      />,
+      <TrendingArticleView className="m-2" id="123" article={initialState.article.article} />,
     );
     expect(wrapper.find('TrendingArticleView')).toBeDefined();
   });
 
   it('Render ArticleView  component', () => {
-    const wrapper = shallow(
-      <ArticleView
-        className="m-2"
-        article={initialState.article.article}
-      />,
-    );
+    const wrapper = shallow(<ArticleView className="m-2" article={initialState.article.article} />);
     expect(wrapper.find('TrendingArticleView')).toBeDefined();
   });
 
@@ -118,12 +116,7 @@ describe('Articles', () => {
       createdAt: '2019-06-21T08:13:05.567Z',
       tagList: [],
     };
-    const wrapper = shallow(
-      <ArticleView
-        className="m-2"
-        article={noTags}
-      />,
-    );
+    const wrapper = shallow(<ArticleView className="m-2" article={noTags} />);
     expect(wrapper.find('TrendingArticleView')).toBeDefined();
   });
 

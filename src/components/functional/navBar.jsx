@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter, Link } from 'react-router-dom';
 import {
   Collapse,
   Navbar,
@@ -11,8 +13,9 @@ import {
   DropdownItem,
   UncontrolledDropdown,
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
+import { logoutUser } from '../../redux/action-creators/user';
 import Title from '../../assets/images/ah-logo-text.png';
 import Logo from '../../assets/images/ah_logo.png';
 import ImageAvatar from '../imageAvatar';
@@ -28,11 +31,35 @@ class AppBar extends Component {
     this.checkLogin();
   };
 
+  componentDidUpdate = (prevProps) => {
+    const { redirect, history } = this.props;
+    if (prevProps.redirect !== redirect) {
+      history.push('/');
+    }
+  };
+
+  static getDerivedStateFromProps(props) {
+    const { loggedIn } = props;
+    if (typeof loggedIn !== 'undefined' && !loggedIn) {
+      return { isLoggedIn: false };
+    }
+    return null;
+  }
+
   checkLogin = () => {
     const { isLoggedIn } = this.state;
     const profile = helpers.decodeToken();
     if (profile) {
-      this.setState({ isLoggedIn: !isLoggedIn, userName: profile.username });
+      this.setState({ isLoggedIn: !isLoggedIn });
+    }
+  };
+
+  logout = () => {
+    const { isLoggedIn } = this.state;
+    const { onLogoutUser, match } = this.props;
+    if (isLoggedIn) {
+      const { path: location } = match;
+      onLogoutUser({ location });
     }
   };
 
@@ -42,8 +69,9 @@ class AppBar extends Component {
   };
 
   render() {
-    const { isToggled, isLoggedIn, userName } = this.state;
-    const { image, minimal } = this.props;
+    const { isToggled, isLoggedIn } = this.state;
+    const { image, minimal, user } = this.props;
+    const { username: userName } = user;
     if (isLoggedIn) {
       return (
         <Navbar dark className="nav-top shadow-sm " expand="sm">
@@ -81,12 +109,14 @@ class AppBar extends Component {
                     </Link>
                     <DropdownItem divider />
                     <DropdownItem />
-                    <Link to="/">
-                      <li className="list-footer">Log Out</li>
-                    </Link>
+                    <li>
+                      <DropdownItem className="list-footer" onClick={this.logout}>
+                        Log Out
+                      </DropdownItem>
+                    </li>
                   </ul>
                   <DropdownToggle className="button01">
-                    <ImageAvatar image={image} />
+                    <ImageAvatar image={image || user.image} />
                   </DropdownToggle>
                   <DropdownMenu>
                     <div className="up-chev">
@@ -104,9 +134,7 @@ class AppBar extends Component {
                     </Link>
                     <DropdownItem divider />
                     <DropdownItem />
-                    <Link to="/">
-                      <DropdownItem>Log Out</DropdownItem>
-                    </Link>
+                    <DropdownItem onClick={this.logout}>Log Out</DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
               </Nav>
@@ -146,11 +174,29 @@ class AppBar extends Component {
 AppBar.propTypes = {
   image: PropTypes.string,
   minimal: PropTypes.bool,
+  redirect: PropTypes.instanceOf(Object),
+  onLogoutUser: PropTypes.func.isRequired,
+  match: PropTypes.instanceOf(Object).isRequired,
+  history: PropTypes.instanceOf(Object).isRequired,
+  user: PropTypes.instanceOf(Object).isRequired,
 };
 
 AppBar.defaultProps = {
   image: '',
   minimal: false,
+  redirect: { to: '' },
 };
 
-export default AppBar;
+const mapStateToProps = ({ user: userReducer }) => {
+  const { redirect, loggedIn, user } = userReducer;
+  return {
+    redirect,
+    loggedIn,
+    user,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { onLogoutUser: logoutUser },
+)(withRouter(AppBar));

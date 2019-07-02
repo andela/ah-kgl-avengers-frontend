@@ -3,10 +3,10 @@ import axios from 'axios';
 import {
   FETCH_START,
   FETCH_END,
-  FETCH_USER_FAIL,
-  FETCH_USER_SUCCESS,
-  UPDATE_USER_SUCCESS,
-  UPDATE_USER_FAIL,
+  FETCH_PROFILE_FAIL,
+  FETCH_PROFILE_SUCCESS,
+  UPDATE_PROFILE_SUCCESS,
+  UPDATE_PROFILE_FAIL,
 } from '../action-types';
 
 /**
@@ -15,38 +15,6 @@ import {
  * get user data and user published articles
  * create  FETCH_USER_SUCCESS action
  */
-// export const getUser = username => (dispatch) => {
-//   // get the token from the store
-//   const token = localStorage.getItem('token');
-//   dispatch({ type: FETCH_START, payload: {} });
-//   return axios
-//     .get(`${process.env.REACT_APP_API}/users/profile/${username}`, {
-//       headers: { authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-//     })
-//     .then(async (response) => {
-//       const { profile } = response.data;
-//       let articles = [];
-
-//       // get all published articles
-//       const userArticles = await axios.get(
-//         `${process.env.REACT_APP_API}/user/${username}/articles`,
-//         {
-//           headers: { authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-//         },
-//       );
-//       if (userArticles.status === 200) {
-//         // TODO: refactor
-//         articles = userArticles.data.data;
-//       }
-//       return dispatch({ type: FETCH_USER_SUCCESS, payload: { user: profile, articles } });
-//     })
-//     .catch((error) => {
-//       const { data } = error;
-//       return dispatch({ type: FETCH_USER_FAIL, payload: data.error || 'user not found' });
-//     })
-//     .finally(() => dispatch({ type: FETCH_END, payload: {} }));
-// };
-
 export const getUser = username => async (dispatch) => {
   // get the token from the store
   const token = localStorage.getItem('token');
@@ -71,10 +39,10 @@ export const getUser = username => async (dispatch) => {
     if (userArticles.status === 200) {
       articles = userArticles.data.data;
     }
-    return dispatch({ type: FETCH_USER_SUCCESS, payload: { user: profile, articles } });
+    return dispatch({ type: FETCH_PROFILE_SUCCESS, payload: { user: profile, articles } });
   } catch (error) {
     const { data } = error.response;
-    return dispatch({ type: FETCH_USER_FAIL, payload: data.error || 'user not found' });
+    return dispatch({ type: FETCH_PROFILE_FAIL, payload: data.error || 'user not found' });
   } finally {
     dispatch({ type: FETCH_END, payload: {} });
   }
@@ -86,7 +54,6 @@ export const getUser = username => async (dispatch) => {
  * updates the logged in user, the token and data is required to updated the profile
  */
 export const updateUser = ({ username, data }) => async (dispatch) => {
-  // TODO: get the token from the store
   const token = localStorage.getItem('token');
   dispatch({ type: FETCH_START, payload: {} });
   try {
@@ -98,10 +65,10 @@ export const updateUser = ({ username, data }) => async (dispatch) => {
       },
     );
     const { profile } = updateRequest.data;
-    return dispatch({ type: UPDATE_USER_SUCCESS, payload: { ...profile } });
+    return dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: { ...profile } });
   } catch (error) {
     const { errors } = error;
-    return dispatch({ type: UPDATE_USER_FAIL, payload: errors || 'user not found' });
+    return dispatch({ type: UPDATE_PROFILE_FAIL, payload: errors || 'user not found' });
   } finally {
     dispatch({ type: FETCH_END, payload: {} });
   }

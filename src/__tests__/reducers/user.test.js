@@ -8,15 +8,22 @@ import {
 import {
   FETCH_START,
   FETCH_END,
-  FETCH_USER_FAIL,
-  FETCH_USER_SUCCESS,
-  UPDATE_USER_SUCCESS,
-  UPDATE_USER_FAIL,
-  FETCH_FOLLOWERS_FAIL,
-  FETCH_FOLLOWERS_SUCCESS,
+  FETCH_PROFILE_FAIL,
+  FETCH_PROFILE_SUCCESS,
+  UPDATE_PROFILE_SUCCESS,
+  UPDATE_PROFILE_FAIL,
   REDIRECT_TO,
+  LOGOUT_SUCCESS,
 } from '../../redux/action-types';
-import { loginSuccess, loginFailed } from '../../redux/action-types/user';
+import {
+  LOGIN_SUCCESS,
+  LOGIN_FAILED,
+  FACEBOOK_SOCIAL_ACCESS_FAILED,
+  FACEBOOK_SOCIAL_ACCESS_SUCCESS,
+  RELOAD_SOCIAL_MEDIA,
+  GOOGLE_SOCIAL_ACCESS_FAILED,
+  GOOGLE_SOCIAL_ACCESS_SUCCESS,
+} from '../../redux/action-types/user';
 
 const state = {
   register: {
@@ -32,17 +39,66 @@ describe('Article Reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(state, {})).toEqual(state);
   });
+
   it('should add the user object to the state', () => {
-    expect(reducer(state, { type: loginSuccess, payload: { token: '' } })).toEqual({
+    expect(reducer(state, { type: LOGIN_SUCCESS, payload: { token: '' } })).toEqual({
       ...state,
       user: { token: '' },
+      loggedIn: true,
+    });
+  });
+
+  it('should add the user object to the state', () => {
+    expect(
+      reducer(state, { type: FACEBOOK_SOCIAL_ACCESS_SUCCESS, payload: { token: '' } }),
+    ).toEqual({
+      ...state,
+      user: { token: '' },
+      loggedIn: true,
+    });
+  });
+
+  it('should add the user object to the state', () => {
+    expect(reducer(state, { type: GOOGLE_SOCIAL_ACCESS_SUCCESS, payload: { token: '' } })).toEqual({
+      ...state,
+      user: { token: '' },
+      loggedIn: true,
+    });
+  });
+
+  it('should empty the user object', () => {
+    expect(reducer(state, { type: LOGOUT_SUCCESS, payload: {} })).toEqual({
+      ...state,
+      user: {},
+      loggedIn: false,
     });
   });
 
   it('should add login errors to the state', () => {
-    expect(reducer(state, { type: loginFailed, payload: [] })).toEqual({
+    expect(reducer(state, { type: LOGIN_FAILED, payload: [] })).toEqual({
       ...state,
       localErrors: [],
+    });
+  });
+
+  it('should add login errors to the state', () => {
+    expect(reducer(state, { type: RELOAD_SOCIAL_MEDIA, payload: [] })).toEqual({
+      ...state,
+      errors: [],
+    });
+  });
+
+  it('should add login errors to the state', () => {
+    expect(reducer(state, { type: FACEBOOK_SOCIAL_ACCESS_FAILED, payload: [] })).toEqual({
+      ...state,
+      errors: [],
+    });
+  });
+
+  it('should add login errors to the state', () => {
+    expect(reducer(state, { type: GOOGLE_SOCIAL_ACCESS_FAILED, payload: [] })).toEqual({
+      ...state,
+      errors: [],
     });
   });
 
@@ -86,14 +142,14 @@ describe('Article Reducer', () => {
   });
 
   it('should update the user after updating the profile', () => {
-    expect(reducer(state, { type: UPDATE_USER_SUCCESS, payload: {} })).toEqual({
+    expect(reducer(state, { type: UPDATE_PROFILE_SUCCESS, payload: {} })).toEqual({
       ...state,
-      user: {},
+      profile: {},
     });
   });
 
   it('should add an error after UPDATE_FAIL', () => {
-    expect(reducer(state, { type: UPDATE_USER_FAIL, payload: 'user not found' })).toEqual({
+    expect(reducer(state, { type: UPDATE_PROFILE_FAIL, payload: 'user not found' })).toEqual({
       ...state,
       errors: 'user not found',
     });
@@ -101,12 +157,12 @@ describe('Article Reducer', () => {
 
   it('should update the user object after FETCH_USER', () => {
     expect(
-      reducer(state, { type: FETCH_USER_SUCCESS, payload: { user: {}, articles: {} } }),
-    ).toEqual({ ...state, user: {}, userArticles: {} });
+      reducer(state, { type: FETCH_PROFILE_SUCCESS, payload: { user: {}, articles: {} } }),
+    ).toEqual({ ...state, profile: {}, userArticles: {} });
   });
 
   it('should add an error after FETCH_USER fail', () => {
-    expect(reducer(state, { type: FETCH_USER_FAIL, payload: 'user not found' })).toEqual({
+    expect(reducer(state, { type: FETCH_PROFILE_FAIL, payload: 'user not found' })).toEqual({
       ...state,
       errors: 'user not found',
     });

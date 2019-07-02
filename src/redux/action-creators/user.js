@@ -5,14 +5,35 @@
 import axios from 'axios';
 import { actionDispatch } from '../../helpers/config';
 import {
-  loginSuccess,
-  loginFailed,
+  LOGIN_SUCCESS,
+  LOGIN_FAILED,
   GOOGLE_SOCIAL_ACCESS_SUCCESS,
   FACEBOOK_SOCIAL_ACCESS_SUCCESS,
   GOOGLE_SOCIAL_ACCESS_FAILED,
   FACEBOOK_SOCIAL_ACCESS_FAILED,
   RELOAD_SOCIAL_MEDIA,
 } from '../action-types/user';
+import {
+  FETCH_USER_SUCCESS,
+  FETCH_USER_FAIL,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAIL,
+  REDIRECT_TO,
+} from '../action-types';
+
+export const loadUser = () => (dispatch) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return dispatch(actionDispatch(FETCH_USER_FAIL, {}));
+  }
+  let user = localStorage.getItem('user');
+  user = user ? JSON.parse(user) : {};
+
+  if (!Object.prototype.hasOwnProperty.call(user, 'token')) {
+    Object.defineProperty(user, 'token', { value: token });
+  }
+  return dispatch(actionDispatch(FETCH_USER_SUCCESS, user));
+};
 
 export const userLogin = user => async (dispatch) => {
   const url = `${process.env.REACT_APP_API}/auth/login`;
@@ -21,15 +42,17 @@ export const userLogin = user => async (dispatch) => {
     .post(url, user)
     .then((response) => {
       // dispatch the action and pass the payload
-      const { token } = response.data.user;
+      const { user: userData } = response.data;
+      const { token } = userData;
       localStorage.setItem('token', token);
-      dispatch(actionDispatch(loginSuccess, response.data.user));
+      localStorage.setItem('user', JSON.stringify(userData));
+      dispatch(actionDispatch(LOGIN_SUCCESS, response.data.user));
     })
     .catch((error) => {
       // handle error
       dispatch(
         actionDispatch(
-          loginFailed,
+          LOGIN_FAILED,
           (error.response.data.error && [error.response.data.error]) || error.response.data.errors,
         ),
       );
@@ -86,4 +109,45 @@ export const facebookSocialAccess = accessToken => async (dispatch) => {
 
 export const removeErrorMessage = () => async (dispatch) => {
   dispatch({ type: RELOAD_SOCIAL_MEDIA, payload: {} });
+};
+
+/**
+ * @param {string} location
+ * clear user token in local storage
+ * call the backend to blacklist the token
+ * if the user was on a page that is authenticated, redirect to the homepage
+ * use the location parameter to check if the user should be redirected
+ */
+export const logoutUser = ({ location }) => async (dispatch) => {
+  const url = `${process.env.REACT_APP_API}/auth/logout`;
+  const token = localStorage.getItem('token');
+  let shouldRedirect;
+
+  // switch through predefined redirect location cases
+  switch (location) {
+    case '/:username/edit':
+    case 'my-articles':
+      shouldRedirect = true;
+      break;
+    default:
+      shouldRedirect = false;
+      break;
+  }
+
+  try {
+    await axios.post(url, null, {
+      headers: { authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    });
+    localStorage.clear('token');
+    localStorage.clear('user');
+    dispatch({ type: LOGOUT_SUCCESS, payload: {} });
+
+    if (shouldRedirect) {
+      dispatch({ type: REDIRECT_TO, payload: { to: '/' } });
+    }
+  } catch (error) {
+    const { response } = error;
+    const message = response.data.errors || 'failed to logout, tyr again';
+    return dispatch({ type: LOGOUT_FAIL, payload: message });
+  }
 };

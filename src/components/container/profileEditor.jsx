@@ -21,7 +21,7 @@ class ProfileEditor extends Component {
 
   /**
    * check if the logged in user is the one accessing this profile page
-   * i.e: the username in URL params should match the username from the token
+   * i.e: the user name in URL params should match the username from the token
    */
   componentDidMount() {
     const { onGetUser, match, history } = this.props;
@@ -62,7 +62,7 @@ class ProfileEditor extends Component {
    * calls onUpdateUser action creator to save user info and update the state
    */
   handleUpdate = () => {
-    const { onUpdateUser, user, match } = this.props;
+    const { onUpdateUser, profile, match } = this.props;
     const { username } = match.params;
     const {
       userName = username, bio, imageLocal, firstName, lastName,
@@ -70,29 +70,29 @@ class ProfileEditor extends Component {
 
     const data = {
       userName,
-      firstName: firstName || user.firstName,
-      lastName: lastName || user.lastName,
-      bio: bio || user.bio,
-      image: imageLocal || user.image,
+      firstName: firstName || profile.firstName,
+      lastName: lastName || profile.lastName,
+      bio: bio || profile.bio,
+      image: imageLocal || profile.image,
     };
     onUpdateUser({ username: userName, data });
   };
 
   handleCancelUpdate = (evt) => {
     evt.preventDefault();
-    const { history, user } = this.props;
-    history.push(`/${user.username}`);
+    const { history, profile } = this.props;
+    history.push(`/${profile.username}`);
   };
 
   render() {
     const { imageLocal } = this.state;
-    const { user, isRequestOn } = this.props;
+    const { user, profile, isRequestOn } = this.props;
     const {
       username: userName, bio, image, firstName, lastName,
-    } = user;
+    } = profile;
     return (
       <Fragment>
-        <AppBar image={imageLocal || image} minimal />
+        <AppBar image={user.username === userName ? imageLocal || image : ''} minimal />
         <Container className="container-profile-editor">
           <div className="container-fluid">
             <div className="row">
@@ -198,24 +198,22 @@ class ProfileEditor extends Component {
 }
 
 ProfileEditor.propTypes = {
-  user: PropTypes.instanceOf(Object),
+  user: PropTypes.instanceOf(Object).isRequired,
   history: PropTypes.instanceOf(Object).isRequired,
   onGetUser: PropTypes.func.isRequired,
   onUpdateUser: PropTypes.func.isRequired,
   match: PropTypes.instanceOf(Object).isRequired,
   isRequestOn: PropTypes.bool.isRequired,
-};
-
-ProfileEditor.defaultProps = {
-  user: [],
+  profile: PropTypes.instanceOf(Object).isRequired,
 };
 
 const mapStateToProps = ({ user: userReducer }) => {
   const {
-    user, isRequestOn, userArticles: articles,
+    user, isRequestOn, userArticles: articles, profile,
   } = userReducer;
   return {
     user,
+    profile,
     articles,
     isRequestOn,
   };

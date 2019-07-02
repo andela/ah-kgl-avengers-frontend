@@ -23,6 +23,13 @@ class Welcome extends Component {
     onFetchArticles();
   }
 
+  componentDidUpdate(prevProps) {
+    const { loggedIn } = this.props;
+    if (loggedIn !== undefined && prevProps.loggedIn !== loggedIn && loggedIn === false) {
+      this.notifyLogout('Logged out successfully!');
+    }
+  }
+
   bookmarkArticle = async (slug) => {
     const { bookmarking } = this.props;
     await bookmarking(slug);
@@ -32,21 +39,26 @@ class Welcome extends Component {
         toast.error('First login to bookmark the article');
         return;
       }
-      bookmark.includes('You') ? toast.error(bookmark): toast.success(bookmark);
+      bookmark.includes('You') ? toast.error(bookmark) : toast.success(bookmark);
     }
-  }
+  };
 
   trendingArticle = articles => articles.map((single, index) => (
-    <TrendingArticleView article={single} key={single.slug} id={index + 1} bookmark={this.bookmarkArticle} />
+    <TrendingArticleView
+      article={single}
+      key={single.slug}
+      id={index + 1}
+      bookmark={this.bookmarkArticle}
+    />
   ));
 
   secondaryArticle = (articles) => {
     const { available } = this.state;
     const views = articles.slice(0, available);
     return views.map(single => <ArticleView article={single} key={single.slug} />);
-  }
+  };
 
-  loadmore() {
+  loadmore = () => {
     const { available } = this.state;
     const { feeds } = this.props;
     this.setState({ available: available + 10 });
@@ -54,6 +66,12 @@ class Welcome extends Component {
       this.setState({ fullyloaded: true });
     }
   }
+
+  notifyLogout = (message) => {
+    toast(message, {
+      className: 'mt-5 text-primary',
+    });
+  };
 
   render() {
     const { feeds, isProgressOn, user } = this.props;
@@ -73,24 +91,24 @@ class Welcome extends Component {
                 <Fragment>
                   <section className="main col-12 col-md-9">
                     {feeds.main.hasOwnProperty('title') && (
-                    <section className="articles-main">
-                      <ArticleView article={feeds.main} className="article-main" bookmark={this.bookmarkArticle} />
-                    </section>
+                      <section className="articles-main">
+                        <ArticleView
+                          article={feeds.main}
+                          className="article-main"
+                          bookmark={this.bookmarkArticle}
+                        />
+                      </section>
                     )}
                     <section className="articles-user-feed">
                       {feeds.secondary.length > 0
-                          && feeds.secondary[5]
-                          && this.secondaryArticle(feeds.secondary)}
+                        && feeds.secondary[5]
+                        && this.secondaryArticle(feeds.secondary)}
                     </section>
-                    {
-                      feeds.secondary[10]
-                      && (fullyloaded === false)
-                      && (
+                    {feeds.secondary[10] && fullyloaded === false && (
                       <section className="loadmore" onClick={() => this.loadmore()}>
                         <button>Load more</button>
                       </section>
-                      )
-                    }
+                    )}
                   </section>
                   <aside className="col-12 col-md-3">
                     <div className="aside-title">Trending</div>
@@ -110,7 +128,6 @@ class Welcome extends Component {
   }
 }
 
-
 Welcome.propTypes = {
   onFetchArticles: propTypes.func.isRequired,
   bookmarking: propTypes.func.isRequired,
@@ -118,18 +135,19 @@ Welcome.propTypes = {
   isProgressOn: propTypes.bool.isRequired,
   bookmark: propTypes.string.isRequired,
   user: propTypes.instanceOf(Object),
+  loggedIn: propTypes.bool,
 };
 
 Welcome.defaultProps = {
   user: {},
+  loggedIn: undefined,
 };
 
 const mapStateToProps = ({ article: articleReducer, user: userReducer }) => {
-  const {
-    feeds, isProgressOn, bookmark,
-  } = articleReducer;
-  const { user } = userReducer;
+  const { feeds, isProgressOn, bookmark } = articleReducer;
+  const { user, loggedIn } = userReducer;
   return {
+    loggedIn,
     user,
     feeds,
     isProgressOn,

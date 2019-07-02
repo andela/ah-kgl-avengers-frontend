@@ -45,7 +45,11 @@ const ArticleView = ({ article, className, bookmark }) => {
           </div>
           <div className="mt-3 mb-3 ml-0">{renderTags(article.tagList)}</div>
         </div>
-        <button className="btn btn-icon btn-bookmark" type="button" onClick={() => bookmark(article.slug)}>
+        <button
+          className="btn btn-icon btn-bookmark"
+          type="button"
+          onClick={() => bookmark(article.slug)}
+        >
           <i className="material-icons">bookmark_border</i>
         </button>
       </div>
@@ -70,10 +74,13 @@ const TrendingArticleView = ({ article, id, bookmark }) => (
           &nbsp;
           {article.readTime}
         </span>
-
       </Link>
     </div>
-    <button className="btn btn-icon btn-bookmark" type="button" onClick={() => bookmark(article.slug)}>
+    <button
+      className="btn btn-icon btn-bookmark"
+      type="button"
+      onClick={() => bookmark(article.slug)}
+    >
       <i className="material-icons">bookmark_border</i>
     </button>
   </div>

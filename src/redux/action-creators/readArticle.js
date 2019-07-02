@@ -17,9 +17,11 @@ export const readArticle = slug => async (dispatch) => {
   try {
     const resp = await axios.get(url, optRequest);
     const { article } = resp.data;
-    const ratings = await axios.get(ratingUrl, optRequest);
-    let { totalRatings } = ratings.data;
-    if (!totalRatings) {
+    let totalRatings;
+    try {
+      const ratings = await axios.get(ratingUrl, optRequest);
+      totalRatings = ratings.data.totalRatings;
+    } catch (error) {
       totalRatings = 0;
     }
     article.totalRatings = totalRatings;
@@ -36,12 +38,16 @@ export const likeArticle = slug => async (dispatch) => {
   const url = `${process.env.REACT_APP_API}/articles/${slug}/like`;
   const fetchAgain = `${process.env.REACT_APP_API}/articles/${slug}`;
   try {
-    const makeRequest = await axios.post(url, {}, {
-      headers: {
-        Authorization: `Bearer ${localStorage.token}`,
-        Accept: 'application/json',
+    const makeRequest = await axios.post(
+      url,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          Accept: 'application/json',
+        },
       },
-    });
+    );
     const likedArticle = await axios.get(fetchAgain, optRequest);
     dispatch({ type: LIKE_ARTICLE, payload: makeRequest });
     dispatch({ type: FETCH_AGAIN_LIKES, payload: likedArticle });

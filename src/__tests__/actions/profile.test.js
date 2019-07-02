@@ -5,10 +5,10 @@ import thunk from 'redux-thunk';
 import {
   FETCH_START,
   FETCH_END,
-  FETCH_USER_FAIL,
-  FETCH_USER_SUCCESS,
-  UPDATE_USER_SUCCESS,
-  UPDATE_USER_FAIL,
+  FETCH_PROFILE_FAIL,
+  FETCH_PROFILE_SUCCESS,
+  UPDATE_PROFILE_SUCCESS,
+  UPDATE_PROFILE_FAIL,
 } from '../../redux/action-types';
 
 import { updateUser, getUser } from '../../redux/action-creators/profile';
@@ -61,7 +61,7 @@ describe('Article action', () => {
     const expectedActions = [
       { type: FETCH_START, payload: {} },
       {
-        type: FETCH_USER_SUCCESS,
+        type: FETCH_PROFILE_SUCCESS,
         payload: { user: profile, articles: [] },
       },
       { type: FETCH_END, payload: {} },
@@ -72,7 +72,7 @@ describe('Article action', () => {
     });
   });
 
-  it('it should dispatch FETCH_USER_FAIL action', () => {
+  it('it should dispatch FETCH_PROFILE_FAIL action', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -87,7 +87,7 @@ describe('Article action', () => {
     const expectedActions = [
       { type: FETCH_START, payload: {} },
       {
-        type: FETCH_USER_FAIL,
+        type: FETCH_PROFILE_FAIL,
         payload: 'user not found',
       },
       { type: FETCH_END, payload: {} },
@@ -98,7 +98,7 @@ describe('Article action', () => {
     });
   });
 
-  it('it should dispatch UPDATE_USER_SUCCESS action', () => {
+  it('it should dispatch UPDATE_PROFILE_SUCCESS action', () => {
     const profile = {
       username: 'username',
       image:
@@ -123,7 +123,7 @@ describe('Article action', () => {
     const expectedActions = [
       { type: FETCH_START, payload: {} },
       {
-        type: UPDATE_USER_SUCCESS,
+        type: UPDATE_PROFILE_SUCCESS,
         payload: profile,
       },
       { type: FETCH_END, payload: {} },
@@ -152,7 +152,7 @@ describe('Article action', () => {
     const expectedActions = [
       { type: FETCH_START, payload: {} },
       {
-        type: UPDATE_USER_FAIL,
+        type: UPDATE_PROFILE_FAIL,
         payload: 'user not found',
       },
       { type: FETCH_END, payload: {} },
