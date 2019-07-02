@@ -19,6 +19,7 @@ import ProfileEditor from './components/container/profileEditor';
 import socialLogin from './components/Auth/socialLogin';
 import './index.scss';
 
+import Follow from './components/container/follower';
 import 'react-toastify/dist/ReactToastify.css';
 
 toast.configure({
@@ -49,6 +50,7 @@ class App extends Component {
           <Route exact path="/updatePassword/:token" component={UpdatePassword} />
           <Route exact path="/:username" component={Profile} />
           <Route exact path="/:username/edit" component={ProfileEditor} />
+          <Route exact path="/:username/follow" component={Follow} />
         </Switch>
       </Router>
     );

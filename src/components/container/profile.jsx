@@ -7,6 +7,7 @@ import {
 } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { getUser } from '../../redux/action-creators/profile';
+import { getFollowers } from '../../redux/action-creators/user';
 import Footer from '../functional/footer';
 import AppBar from '../functional/navBar';
 import { ArticleView } from '../singleArticle';
@@ -25,10 +26,11 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    const { onGetUser, match } = this.props;
+    const { onGetUser, match, followersCount } = this.props;
     const { username } = match.params;
     // call get user profile action creator
     onGetUser(username);
+    followersCount(username);
     // check if the user logged in is the profile owner
     const loggedInUser = helper.decodeToken();
     if (loggedInUser && loggedInUser.username === username) {
@@ -45,7 +47,7 @@ class Profile extends Component {
     }
     return null;
   }
-  
+
   handleClick = (i) => {
     const { pageSize } = this.state;
     this.setState({
@@ -65,12 +67,15 @@ class Profile extends Component {
       isLoggedInUser, currentPage, pageSize, start,
     } = this.state;
     const end = start + pageSize;
-    const { user, isRequestOn, articles, profile } = this.props;
+    const {
+      user, isRequestOn, articles, profile, followers,
+    } = this.props;
     const pages = Math.ceil(articles.length / pageSize);
     const views = articles.slice(start, end);
     const {
       username: userName, bio, image, firstName, lastName, email = 'No email',
     } = profile;
+
     return (
       <Fragment>
         <AppBar image={image} minimal />
@@ -79,7 +84,10 @@ class Profile extends Component {
             <div className="row py-3">
               <div className="col-12 col-md-6 px-3 pt-1 px-md-5">
                 <div className="profile-names">
-                  <span className={`profile-name ${firstName && 'profile-names-hasvalue'}`}>
+                  <span
+                    className={`profile-name ${firstName
+                      && 'profile-names-hasvalue'}`}
+                  >
                     {`${firstName || 'unkown'} ${lastName || 'unkown'}`}
                   </span>
                   &nbsp;
@@ -93,10 +101,17 @@ class Profile extends Component {
                 <div>Bio</div>
                 <div className="profile-user-bio">{bio || 'no bio yet'}</div>
                 <div className="profile-btn-group">
-                  <button className="btn btn-icon btn-profile-followers" type="button">
-                    <i className="material-icons">supervisor_account</i>
-0 followers
-                  </button>
+                  <Link to={`/${userName}/follow`}>
+                    <button
+                      className="btn btn-icon btn-profile-followers"
+                      type="button"
+                    >
+                      <i className="material-icons">supervisor_account</i>
+                      { followers === undefined ? null : followers.data.count}
+                      {' '}
+                    followers
+                    </button>
+                  </Link>
                   {isLoggedInUser ? (
                     <Link
                       className="btn btn-icon btn-edit-profile"
@@ -107,7 +122,10 @@ class Profile extends Component {
                       Update
                     </Link>
                   ) : (
-                    <button className="btn btn-icon btn-follow-profile" type="button">
+                    <button
+                      className="btn btn-icon btn-follow-profile"
+                      type="button"
+                    >
                       <i className="material-icons">account_circle</i>
                       follow
                     </button>
@@ -138,7 +156,9 @@ class Profile extends Component {
                 {articles.length > 0 ? (
                   this.renderArticles(articles)
                 ) : (
-                  <div className="profile-no-articles">No articles published yet</div>
+                  <div className="profile-no-articles">
+                    No articles published yet
+                  </div>
                 )}
               </div>
               <hr />
@@ -198,7 +218,7 @@ Profile.defaultProps = {
 
 const mapStateToProps = ({ user: userReducer }) => {
   const {
-    user, isRequestOn, userArticles: articles, profile, loggedIn,
+    user, isRequestOn, userArticles: articles, profile, loggedIn, followers,
   } = userReducer;
   return {
     loggedIn,
@@ -206,10 +226,11 @@ const mapStateToProps = ({ user: userReducer }) => {
     profile,
     articles,
     isRequestOn,
+    followers,
   };
 };
 
 export default connect(
   mapStateToProps,
-  { onGetUser: getUser },
+  { onGetUser: getUser, followersCount: getFollowers },
 )(Profile);

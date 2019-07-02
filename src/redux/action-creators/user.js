@@ -3,7 +3,7 @@
  * of the Authors Haven
  */
 import axios from 'axios';
-import { actionDispatch } from '../../helpers/config';
+import { actionDispatch, optRequest } from '../../helpers/config';
 import {
   LOGIN_SUCCESS,
   LOGIN_FAILED,
@@ -12,6 +12,11 @@ import {
   GOOGLE_SOCIAL_ACCESS_FAILED,
   FACEBOOK_SOCIAL_ACCESS_FAILED,
   RELOAD_SOCIAL_MEDIA,
+  USER_FOLLOW_COUNT,
+  USER_FOLLOWING_COUNT,
+  FOLLOW_SUCCESS,
+  UN_FOLLOW_SUCCESS,
+  FOLLOW_FAIL,
 } from '../action-types/user';
 import {
   FETCH_USER_SUCCESS,
@@ -149,5 +154,51 @@ export const logoutUser = ({ location }) => async (dispatch) => {
     const { response } = error;
     const message = response.data.errors || 'failed to logout, tyr again';
     return dispatch({ type: LOGOUT_FAIL, payload: message });
+  }
+};
+
+export const getFollowers = username => async (dispatch) => {
+  const url = `${process.env.REACT_APP_API}/profile/${username}/followers`;
+
+  try {
+    const getFollowersCount = await axios.get(url);
+    return dispatch({ type: USER_FOLLOW_COUNT, payload: getFollowersCount });
+  } catch (error) {
+    return error;
+  }
+};
+
+export const getFollowing = username => async (dispatch) => {
+  const url = `${process.env.REACT_APP_API}/profile/${username}/following`;
+
+  try {
+    const getFollowersCount = await axios.get(url);
+
+    return dispatch({ type: USER_FOLLOWING_COUNT, payload: getFollowersCount });
+  } catch (error) {
+    return error;
+  }
+};
+
+export const follow = username => async (dispatch) => {
+  const url = `${process.env.REACT_APP_API}/profiles/${username.username}/follow`;
+
+  try {
+    const followUser = await axios.post(url, {}, optRequest);
+    return dispatch({ type: FOLLOW_SUCCESS, payload: followUser });
+  } catch (error) {
+    dispatch({ type: FOLLOW_FAIL, payload: error.response.data });
+    return error;
+  }
+};
+
+export const unFollow = username => async (dispatch) => {
+  const url = `${process.env.REACT_APP_API}/profiles/${username.username}/follow`;
+
+  try {
+    const followUser = await axios.delete(url, optRequest);
+    return dispatch({ type: UN_FOLLOW_SUCCESS, payload: followUser });
+  } catch (error) {
+    return error;
   }
 };

@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
 import '@fortawesome/fontawesome-free/js/all';
 import Rating from 'react-rating';
+import { toast } from 'react-toastify';
 import ImageAvatar from './imageAvatar';
 import Description from './description';
 import ArticleTitle from './articleTitle';
-import Status from './status';
 import ArticleCreatedDate from './date';
 import ReadTime from './readTime';
 import UserName from './userNames';
@@ -21,22 +21,50 @@ import readArticleHelper from '../helpers/readArticle';
 import Footer from './functional/footer';
 import Navbar from './functional/navBar';
 import rateArticle from '../redux/action-creators/rateArticle';
+import {
+  follow,
+  unFollow,
+  getFollowers,
+  getFollowing,
+} from '../redux/action-creators/user';
+import userLoggedIns from '../helpers/decodeToken';
 
 class ReadArticle extends Component {
+  state = {
+    isFollowed: false,
+  };
+
   componentDidMount() {
+    const user = userLoggedIns.decodeToken();
     const { match } = this.props;
     const { params } = match;
-    const { readArticles } = this.props;
-    readArticles(params.slug);
+    const { readArticles, getFollowers, getFollowing } = this.props;
+    readArticles(params.slug).then((res) => {
+      getFollowers(res.payload.author.username);
+      getFollowing(res.payload.author.username);
+    });
   }
 
-  rate = (value) => {
-    const { rateArticle: request, article } = this.props;
+  notifyError = (message) => {
+    toast.error(message);
+  };
+
+  rate = async (value) => {
+    const {
+      rateArticle: request, article, error, success,
+    } = this.props;
     const newRating = {
       rating: value,
     };
-    request(newRating, article.slug);
-  }
+    await request(newRating, article.slug);
+    if (error !== '' && error !== undefined) {
+      this.notifyError(error === 'jwt malformed' ? 'Please Login' : error);
+    }
+
+    if (success !== '' && error !== undefined) {
+      this.notifyError(success);
+    }
+  };
 
   likeArts = async (slug) => {
     const { likeArticles } = this.props;
@@ -59,6 +87,25 @@ class ReadArticle extends Component {
     return null;
   };
 
+  notifySuccess = (username) => {
+    toast(`You have successfully followed ${username}`);
+  };
+
+  follow = async (username) => {
+    const { follow, history, getFollowers } = this.props;
+    follow(username).then((res) => {
+      getFollowers(res.payload.data.profile.username);
+    });
+    if (this.props.userErrors.status === 401) {
+      history.push('/login');
+    }
+  };
+
+  unFollow = (username) => {
+    const { unFollow } = this.props;
+    unFollow(username);
+  };
+
   render() {
     const {
       article, likes, dislikes, newLikes, error, success,
@@ -67,7 +114,15 @@ class ReadArticle extends Component {
     if (!Object.prototype.hasOwnProperty.call(article, 'body')) return null;
 
     const {
-      title, body, readTime, author, createdAt, tagList, ratings, totalRatings,description,
+      title,
+      body,
+      readTime,
+      author,
+      createdAt,
+      tagList,
+      ratings,
+      totalRatings,
+      description,
     } = article;
 
     const newBody = ReactHtmlParser(body);
@@ -106,7 +161,26 @@ class ReadArticle extends Component {
                   <UserName className="lead lead-un-sm lead-un-md lead-un-lg text-left text-md-left text-black-50 ml-4 mt-2">
                     {author.username}
                   </UserName>
-                  <Status className="btn-follow-author">Follow</Status>
+                  {userLoggedIns.decodeToken() !== null
+                  && userLoggedIns.decodeToken().username
+                    === author.username ? null : (
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() => this.follow(author)}
+                          className="btn-follow-author"
+                        >
+                        Follow
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => this.unFollow(author)}
+                          className="btn-follow-author"
+                        >
+                        UnFollow
+                        </button>
+                      </div>
+                    )}
                 </div>
                 <div className="row align-items-center">
                   <ArticleCreatedDate className="lead lead-rt-sm text-left text-md-left text-black-50 ml-4">
@@ -115,21 +189,6 @@ class ReadArticle extends Component {
                   <ReadTime className="lead lead-rt-sm text-left text-md-left text-black-50  ml-2">
                     {readTime}
                   </ReadTime>
-                  <Rating
-                    className="small-icon"
-                    emptySymbol="far fa-star"
-                    fullSymbol="fas fa-star"
-                    initialRating={ratings}
-                    readonly
-                  />
-                </div>
-                <div className="author-details row align-items-center">
-                  Average rating: &nbsp;
-                  {ratings}
-                /5 out of &nbsp;
-                  {totalRatings}
-                  {' '}
-                ratings
                 </div>
               </div>
             </div>
@@ -147,44 +206,70 @@ class ReadArticle extends Component {
               {newBody}
             </TextArea>
           </div>
-          Rate this article:
-          <Rating
-            className="ratings"
-            emptySymbol="far fa-star"
-            fullSymbol="fas fa-star"
-            fractions={1}
-            initialRating={0}
-            start={0}
-            stop={5}
-            step={1}
-            onClick={this.rate}
-          />
-          <div><span className="error">{error}</span></div>
-          <div><span className="message">{success}</span></div>
-          <div className="article-likes mb-1 mt-2">
+          <div>
+            <span className="message">{success}</span>
+          </div>
+
+          <div className="author-details border d-flex justify-content-between rounded-lg mt-4 mb-5 p-3 row align-items-center">
             <div>
-              <button
-                type="button"
-                onClick={() => this.likeArts(article.slug)}
-                className="btn-follow-author"
-              >
-                <i className="zmdi zmdi-thumb-up mr-2" />
-                {newLikes === undefined ? likes : newLikes.data.article.likes}
-                {' '}
-              likes
-              </button>
+              <Rating
+                className="small-icon"
+                emptySymbol="far fa-star"
+                fullSymbol="fas fa-star"
+                initialRating={ratings}
+                readonly
+              />
+              <span>
+                {ratings}
+                <span> out of </span>
+                <span className="mr-1">{totalRatings}</span>
+                <span>time(s)</span>
+              </span>
             </div>
-            <div>
-              <button
-                type="button"
-                onClick={() => this.dislikeArts(article.slug)}
-                className="dislike"
-              >
-                <i className="zmdi zmdi-thumb-down mr-2" />
-                {newLikes === undefined ? dislikes : newLikes.data.article.dislikes}
-                {' '}
-              dislikes
-              </button>
+            <span className="ml-3">
+              Rate this article:
+              <Rating
+                className="ratings"
+                emptySymbol="far fa-star"
+                fullSymbol="fas fa-star"
+                fractions={1}
+                initialRating={0}
+                start={0}
+                stop={5}
+                step={1}
+                onClick={this.rate}
+              />
+            </span>
+
+            <div className="article-likes row mr-2">
+              <div className="ml-1">
+                <button
+                  type="button"
+                  onClick={() => this.likeArts(article.slug)}
+                  className="btn-follow-author"
+                >
+                  <i className="zmdi zmdi-thumb-up mr-2" />
+                  {newLikes === undefined
+                    ? likes
+                    : newLikes.data.article.likes}
+                  {' '}
+                  likes
+                </button>
+              </div>
+              <div className="mr-1">
+                <button
+                  type="button"
+                  onClick={() => this.dislikeArts(article.slug)}
+                  className="dislike"
+                >
+                  <i className="zmdi zmdi-thumb-down mr-2" />
+                  {newLikes === undefined
+                    ? dislikes
+                    : newLikes.data.article.dislikes}
+                  {' '}
+                  dislikes
+                </button>
+              </div>
             </div>
           </div>
           {tagList && (
@@ -216,13 +301,15 @@ ReadArticle.propTypes = {
   newLikes: PropTypes.instanceOf(Object).isRequired,
 };
 
-const mapStateToProps = ({ article: articleReducer }) => ({
+const mapStateToProps = ({ article: articleReducer, user }) => ({
   article: articleReducer.article,
   error: articleReducer.error,
   success: articleReducer.success,
   likes: articleReducer.article.likes,
   dislikes: articleReducer.article.dislikes,
   newLikes: articleReducer.newLiked,
+  authorFollowers: user.followers,
+  userErrors: user.errors,
 });
 
 export default connect(
@@ -232,5 +319,9 @@ export default connect(
     likeArticles: likeArticle,
     dislikeArticles: dislikeArticle,
     rateArticle,
+    follow,
+    unFollow,
+    getFollowers,
+    getFollowing,
   },
 )(ReadArticle);

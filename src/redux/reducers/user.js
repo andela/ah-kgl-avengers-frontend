@@ -11,6 +11,11 @@ import {
   GOOGLE_SOCIAL_ACCESS_FAILED,
   FACEBOOK_SOCIAL_ACCESS_FAILED,
   RELOAD_SOCIAL_MEDIA,
+  FOLLOW_SUCCESS,
+  UN_FOLLOW_SUCCESS,
+  USER_FOLLOW_COUNT,
+  USER_FOLLOWING_COUNT,
+  FOLLOW_FAIL,
 } from '../action-types/user';
 import {
   REGISTER_FORM_SEND,
@@ -146,6 +151,17 @@ export default (
     case REDIRECT_TO:
       return { ...state, redirect: payload };
 
+    case FOLLOW_SUCCESS:
+      return { ...state, followedUser: payload };
+
+    case FOLLOW_FAIL:
+      return { ...state, errors: payload };
+    case UN_FOLLOW_SUCCESS:
+      return { ...state, message: payload };
+    case USER_FOLLOW_COUNT:
+      return { ...state, followers: payload };
+    case USER_FOLLOWING_COUNT:
+      return { ...state, following: payload };
     default:
       return state;
   }

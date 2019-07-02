@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import propTypes from 'prop-types';
 import Chip from './functional/chip';
+import { follow } from '../redux/action-creators/user';
+import ImageAvatar from './imageAvatar';
 
 const renderTags = (tags) => {
   if (tags.length > 0) {
@@ -86,6 +88,44 @@ const TrendingArticleView = ({ article, id, bookmark }) => (
   </div>
 );
 
+const FollowerView = ({ follower, followEvent }) => (
+  <div className="col-12 ">
+    <div className="followers-container">
+      <div className="follower-content">
+        <div className="follower-img">
+          {follower.image === null ? <ImageAvatar /> : <img src={follower.image} alt="" />}
+        </div>
+        <div className="profile-names">
+          <span className="profile-name">{follower.username}</span>
+        </div>
+        <button type="button" className="btn btn-icon btn-follow-profile" onClick={() => followEvent(follower)}>
+          <i className="material-icons">account_circle</i>
+          Follow Back
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
+const FollowingView = ({ follower, unfollowEvent }) => (
+  <div className="col-12 ">
+    <div className="followers-container">
+      <div className="follower-content">
+        <div className="follower-img">
+          {follower.image === null ? <ImageAvatar /> : <img src={follower.image} alt="" />}
+        </div>
+        <div className="profile-names">
+          <span className="profile-name">{follower.username}</span>
+        </div>
+        <button type="button" className="btn btn-icon btn-follow-profile" onClick={() => unfollowEvent(follower)}>
+          <i className="material-icons">account_circle</i>
+          UnFollow
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
 ArticleView.propTypes = {
   bookmark: propTypes.func.isRequired,
   article: propTypes.objectOf(propTypes.any).isRequired,
@@ -102,4 +142,6 @@ ArticleView.defaultProps = {
   className: '',
 };
 
-export { ArticleView, TrendingArticleView };
+export {
+  ArticleView, TrendingArticleView, FollowerView, FollowingView,
+};
