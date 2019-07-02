@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-  TabContent, TabPane, Row, Col,
+  TabContent, TabPane, Row, Col, Pagination, PaginationItem, PaginationLink,
 } from 'reactstrap';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import Footer from './functional/footer';
@@ -18,6 +18,7 @@ class Articles extends Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
+
     this.state = {
       activeTab: '1',
       draftClass: false,
@@ -25,14 +26,23 @@ class Articles extends Component {
       modal: false,
       slug: '',
       status: '',
+      currentPage: 0,
+      pageSize: 10,
+      tab: 1,
     };
   }
 
   componentDidMount() {
-    const { getArticles: getMyArticles, getDrafts: getDraftArticles } = this.props;
+    const { getArticles: getMyArticles, getDrafts: getMyDrafts } = this.props;
     getMyArticles();
-    getDraftArticles();
+    getMyDrafts();
   }
+
+  handleClick = (i) => {
+    this.setState({
+      currentPage: i,
+    });
+  };
 
   toggleDelete = () => {
     const { modal } = this.state;
@@ -47,12 +57,15 @@ class Articles extends Component {
   };
 
   toggle(tab) {
-    const { activeTab, draftClass, pubClass } = this.state;
+    const {
+      activeTab, draftClass, pubClass,
+    } = this.state;
     if (activeTab !== tab) {
       this.setState({
         activeTab: tab,
         draftClass: !draftClass,
         pubClass: !pubClass,
+        currentPage: 0,
       });
     }
   }
@@ -64,12 +77,18 @@ class Articles extends Component {
   }
 
   render() {
-    const { articles: data } = this.props;
-    const { slug, modal } = this.state;
-    if (data === undefined) return null;
-
-    const { activeTab, draftClass, pubClass } = this.state;
     const { articles, drafts } = this.props;
+
+    const {
+      activeTab, draftClass, pubClass, currentPage, pageSize, defaultPages, slug, modal, tab,
+    } = this.state;
+
+    const viewArticles = articles.slice(pageSize * currentPage, pageSize * currentPage + pageSize);
+    const viewDrafts = drafts.slice(pageSize * currentPage, pageSize * currentPage + pageSize);
+    let pages = 1;
+    (tab === 1) && (pages = Math.ceil(articles.length / pageSize));
+    (tab === 2) && (pages = Math.ceil(drafts.length / pageSize));
+
     return (
       <Fragment>
         <div>
@@ -88,6 +107,7 @@ class Articles extends Component {
               type="button"
               onClick={() => {
                 this.toggle('1');
+                this.setState({ tab: 1 });
               }}
               className={pubClass ? 'bold' : 'normal'}
             >
@@ -97,6 +117,7 @@ class Articles extends Component {
               type="button"
               onClick={() => {
                 this.toggle('2');
+                this.setState({ tab: 2 });
               }}
               className={draftClass ? 'bold' : 'normal'}
             >
@@ -104,8 +125,8 @@ class Articles extends Component {
             </button>
           </div>
           <TabContent activeTab={activeTab}>
-            {articles
-              && articles.map(article => (
+            {viewArticles
+              && viewArticles.map(article => (
                 <TabPane tabId="1" key={article.slug}>
                   <Row>
                     <Col className="article col-12">
@@ -134,8 +155,8 @@ class Articles extends Component {
                   <hr />
                 </TabPane>
               ))}
-            {drafts
-              && drafts.map(draft => (
+            {viewDrafts
+              && viewDrafts.map(draft => (
                 <TabPane tabId="2" key={draft.slug}>
                   <Row>
                     <Col className="article col-12">
@@ -162,6 +183,38 @@ class Articles extends Component {
                   <hr />
                 </TabPane>
               ))}
+            {
+              (pages > 1) && (
+              <div className="pagination-wrapper">
+                <Pagination aria-label="Page navigation example">
+
+                  <PaginationItem disabled={currentPage <= 0}>
+                    <PaginationLink
+                      onClick={e => this.handleClick(currentPage - 1)}
+                      previous
+                      href="#"
+                    />
+                  </PaginationItem>
+                  {
+                    [...Array(pages || defaultPages)].map((page, i) => (
+                      <PaginationItem active={i === currentPage} key={i}>
+                        <PaginationLink onClick={() => this.handleClick(i)}>
+                          {i + 1}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))
+                  }
+                  <PaginationItem disabled={currentPage === pages - 1}>
+                    <PaginationLink
+                      onClick={() => this.handleClick(currentPage + 1)}
+                      next
+                      href="#"
+                    />
+                  </PaginationItem>
+                </Pagination>
+              </div>
+              )
+            }
           </TabContent>
         </div>
         <Footer />

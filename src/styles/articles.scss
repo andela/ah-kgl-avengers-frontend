@@ -89,3 +89,20 @@ a:hover {
   text-decoration: none;
   color: black;
 }
+
+.pagination-wrapper {
+  overflow-x:auto;
+}
+
+.pagination {
+  justify-content: center;
+  margin:30px;
+}
+.page-link {
+  color: #38c4b0;
+}
+.page-item.active .page-link {
+    color: #fff;
+    background-color: #38c4b0;
+    border-color: #38c4b0;
+}
