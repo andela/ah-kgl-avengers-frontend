@@ -52,7 +52,7 @@ class ReadArticle extends Component {
     if (tags.length > 0) {
       return tags.map(tag => (
         <div className="chip article-tag" key={tag}>
-          {`#${tag}`}
+          {`${tag}`}
         </div>
       ));
     }
@@ -67,11 +67,10 @@ class ReadArticle extends Component {
     if (!Object.prototype.hasOwnProperty.call(article, 'body')) return null;
 
     const {
-      title, body, readTime, author, createdAt, tagList, ratings, totalRatings,
+      title, body, readTime, author, createdAt, tagList, ratings, totalRatings,description,
     } = article;
 
     const newBody = ReactHtmlParser(body);
-    const desc = readArticleHelper.description(body);
     const formatDate = readArticleHelper.timeFormat(createdAt);
     return (
       <Fragment>
@@ -87,7 +86,7 @@ class ReadArticle extends Component {
               {title}
             </ArticleTitle>
             <Description className="text-lg-left text-md-left text-sm-left text-black-50 mb-2 mb-lg-8">
-              {desc}
+              {description}
             </Description>
           </div>
         </section>

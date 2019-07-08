@@ -10,7 +10,10 @@ import ProfileEditor from '../../components/container/profileEditor';
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
   user: {
-    user: {},
+    user: {
+      username: 'user',
+    },
+    profile: { username: '' },
     userArticles: [],
     isRequestOn: false,
   },

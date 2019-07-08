@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import {
   Pagination, PaginationItem, PaginationLink, Container,
 } from 'reactstrap';
+import { toast } from 'react-toastify';
 import { getUser } from '../../redux/action-creators/profile';
 import Footer from '../functional/footer';
 import AppBar from '../functional/navBar';
@@ -35,6 +36,16 @@ class Profile extends Component {
     }
   }
 
+  static getDerivedStateFromProps({ loggedIn }) {
+    if (typeof loggedIn !== 'undefined' && !loggedIn) {
+      toast('Logged out successfully!', {
+        className: 'mt-5 text-primary',
+      });
+      return { isLoggedInUser: false };
+    }
+    return null;
+  }
+  
   handleClick = (i) => {
     const { pageSize } = this.state;
     this.setState({
@@ -47,17 +58,19 @@ class Profile extends Component {
     article => <ArticleView article={article} key={article.slug} />,
   );
 
+  renderArticles = articles => articles.map(article => <ArticleView article={article} key={article.slug} />);
+
   render() {
     const {
       isLoggedInUser, currentPage, pageSize, start,
     } = this.state;
     const end = start + pageSize;
-    const { user, isRequestOn, articles } = this.props;
+    const { user, isRequestOn, articles, profile } = this.props;
     const pages = Math.ceil(articles.length / pageSize);
     const views = articles.slice(start, end);
     const {
       username: userName, bio, image, firstName, lastName, email = 'No email',
-    } = user;
+    } = profile;
     return (
       <Fragment>
         <AppBar image={image} minimal />
@@ -82,7 +95,7 @@ class Profile extends Component {
                 <div className="profile-btn-group">
                   <button className="btn btn-icon btn-profile-followers" type="button">
                     <i className="material-icons">supervisor_account</i>
-                    0 followers
+0 followers
                   </button>
                   {isLoggedInUser ? (
                     <Link
@@ -115,14 +128,18 @@ class Profile extends Component {
             </div>
             <div className="profile-articles-title">{`Written by ${userName}`}</div>
             {isRequestOn && (
-            <div className="article-request-loading">
-Loading&nbsp;
-              <i className="zmdi zmdi-spinner zmdi-hc-spin" />
-            </div>
+              <div className="article-request-loading">
+                Loading&nbsp;
+                <i className="zmdi zmdi-spinner zmdi-hc-spin" />
+              </div>
             )}
-            <div className="row profile">
+            <div className="row">
               <div className="col-12 main-articles profile-articles-container">
-                {articles.length > 0 ? this.renderArticles(views) : (<div className="profile-no-articles">No articles published yet</div>)}
+                {articles.length > 0 ? (
+                  this.renderArticles(articles)
+                ) : (
+                  <div className="profile-no-articles">No articles published yet</div>
+                )}
               </div>
               <hr />
               {(pages > 1) && (
@@ -167,6 +184,7 @@ Loading&nbsp;
 
 Profile.propTypes = {
   user: PropTypes.instanceOf(Object),
+  profile: PropTypes.instanceOf(Object).isRequired,
   onGetUser: PropTypes.func.isRequired,
   match: PropTypes.instanceOf(Object).isRequired,
   articles: PropTypes.instanceOf(Array),
@@ -174,16 +192,18 @@ Profile.propTypes = {
 };
 
 Profile.defaultProps = {
-  user: [],
+  user: {},
   articles: [],
 };
 
 const mapStateToProps = ({ user: userReducer }) => {
   const {
-    user, isRequestOn, userArticles: articles,
+    user, isRequestOn, userArticles: articles, profile, loggedIn,
   } = userReducer;
   return {
+    loggedIn,
     user,
+    profile,
     articles,
     isRequestOn,
   };

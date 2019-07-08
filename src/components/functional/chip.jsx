@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 const Chip = ({ value }) => (
   <span className="small-chip">
-    #
     {value}
   </span>
 );

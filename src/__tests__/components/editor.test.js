@@ -8,8 +8,13 @@ import Editor from '../../components/editor/editor';
 
 const mockStore = configureMockStore([thunk]);
 const store = mockStore({
+  user: {
+    loggedIn: true,
+    user: {
+      username: 'user',
+    },
+  },
   article: {
-    user: {},
     article: {},
     message: {},
     isProgressOn: false,

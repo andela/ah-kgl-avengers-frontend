@@ -9,8 +9,8 @@ import {
 
 const initialState = {};
 
-export default (state = initialState, action) => {
-  switch (action.type) {
+export default (state = initialState, { type, payload }) => {
+  switch (type) {
     case REQUEST_RESET:
       return {
         ...state,
@@ -18,17 +18,17 @@ export default (state = initialState, action) => {
     case REQUEST_RESET_SENT:
       return {
         ...state,
-        data: action.payload,
+        data: payload,
       };
     case REQUEST_RESET_FAIL:
       return {
         ...state,
-        data: action.payload,
+        data: payload,
       };
     case RESET_PASS_FAIL:
       return {
         ...state,
-        data: action.payload,
+        data: payload,
       };
     case RESETTING_PASSWORD:
       return {
@@ -37,7 +37,7 @@ export default (state = initialState, action) => {
     case RESET_PASS_SUCCESS:
       return {
         ...state,
-        data: action.payload,
+        data: payload,
       };
     default:
       return state;

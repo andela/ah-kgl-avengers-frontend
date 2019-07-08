@@ -4,8 +4,8 @@
  */
 
 import {
-  loginSuccess,
-  loginFailed,
+  LOGIN_SUCCESS,
+  LOGIN_FAILED,
   GOOGLE_SOCIAL_ACCESS_SUCCESS,
   FACEBOOK_SOCIAL_ACCESS_SUCCESS,
   GOOGLE_SOCIAL_ACCESS_FAILED,
@@ -24,9 +24,13 @@ import {
   FETCH_END,
   FETCH_USER_FAIL,
   FETCH_USER_SUCCESS,
-  UPDATE_USER_SUCCESS,
-  UPDATE_USER_FAIL,
+  UPDATE_PROFILE_SUCCESS,
+  FETCH_PROFILE_SUCCESS,
+  FETCH_PROFILE_FAIL,
+  UPDATE_PROFILE_FAIL,
   REDIRECT_TO,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAIL,
 } from '../action-types';
 
 export default (
@@ -37,6 +41,7 @@ export default (
       errors: [],
     },
     user: { token: '' },
+    profile: {},
     errors: [],
     isRequestOn: false,
     userArticles: [],
@@ -47,39 +52,58 @@ export default (
     case FACEBOOK_SOCIAL_ACCESS_SUCCESS:
       return {
         ...state,
+        loggedIn: true,
         user: payload,
       };
+
     case FACEBOOK_SOCIAL_ACCESS_FAILED:
       return {
         ...state,
         errors: payload,
       };
+
     case GOOGLE_SOCIAL_ACCESS_SUCCESS:
       return {
         ...state,
+        loggedIn: true,
         user: payload,
       };
+
     case GOOGLE_SOCIAL_ACCESS_FAILED:
       return {
         ...state,
         errors: payload,
       };
+
     case RELOAD_SOCIAL_MEDIA:
       return {
         ...state,
         errors: payload,
       };
-    case loginSuccess:
+
+    case FETCH_USER_SUCCESS:
+    case LOGIN_SUCCESS:
       return {
         ...state,
         user: payload,
+        loggedIn: true,
       };
 
-    case loginFailed:
+    case LOGOUT_SUCCESS:
+      return {
+        ...state,
+        user: {},
+        loggedIn: false,
+      };
+
+    case LOGIN_FAILED:
       return {
         ...state,
         localErrors: payload,
       };
+
+    case LOGOUT_FAIL:
+      return { ...state, error: payload };
 
     case REGISTER_LOAD:
     case REGISTER_FORM_SEND:
@@ -102,17 +126,15 @@ export default (
         localErrors: payload.errors,
       };
 
-    case REDIRECT_TO:
-      return { ...state, redirect: payload };
+    case UPDATE_PROFILE_SUCCESS:
+      return { ...state, profile: payload };
 
-    case UPDATE_USER_SUCCESS:
-      return { ...state, user: payload };
+    case FETCH_PROFILE_SUCCESS:
+      return { ...state, profile: payload.user, userArticles: payload.articles };
 
-    case FETCH_USER_SUCCESS:
-      return { ...state, user: payload.user, userArticles: payload.articles };
-
+    case FETCH_PROFILE_FAIL:
     case FETCH_USER_FAIL:
-    case UPDATE_USER_FAIL:
+    case UPDATE_PROFILE_FAIL:
       return { ...state, errors: payload };
 
     case FETCH_START:
@@ -120,6 +142,9 @@ export default (
 
     case FETCH_END:
       return { ...state, isRequestOn: false };
+
+    case REDIRECT_TO:
+      return { ...state, redirect: payload };
 
     default:
       return state;

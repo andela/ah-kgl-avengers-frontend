@@ -12,6 +12,12 @@ import ReadTime from '../../components/readTime';
 import Status from '../../components/status';
 
 const initialState = {
+  user: {
+    redirect: {},
+    user: {
+      username: 'user',
+    },
+  },
   article: {
     article: {
       title: 'Mock title',

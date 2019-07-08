@@ -1,10 +1,10 @@
 /*
-* The action types will be imported here.
-*
-*/
-export const loginSuccess = 'USER_LOGIN_SUCCESS';
-export const loginFailed = 'USER_LOGIN_FAILED';
-export const signup = 'USER_SIGNUP';
+ * The action types will be imported here.
+ *
+ */
+export const LOGIN_SUCCESS = 'USER_LOGIN_SUCCESS';
+export const LOGIN_FAILED = 'USER_LOGIN_FAILED';
+export const SIGNUP = 'USER_SIGNUP';
 export const GOOGLE_SOCIAL_ACCESS_SUCCESS = 'GOOGLE_SOCIAL_ACCESS_SUCCESS';
 export const GOOGLE_SOCIAL_ACCESS_FAILED = 'GOOGLE_SOCIAL_ACCESS_FAILED';
 export const FACEBOOK_SOCIAL_ACCESS_SUCCESS = 'FACEBOOK_SOCIAL_ACCESS_SUCCESS';

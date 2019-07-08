@@ -36,7 +36,7 @@ class Chips extends Component {
     if (chips.length > 0) {
       return chips.map(chip => (
         <div className="chip" key={chip}>
-          <span>{`#${chip}`}</span>
+          <span>{`${chip}`}</span>
           <button
             type="button"
             onClick={(e) => {
@@ -51,7 +51,7 @@ class Chips extends Component {
     }
     return (
       <div className="chip" key="default">
-        <span>#none</span>
+        <span>none</span>
         <button type="button">
           <i className="zmdi zmdi-edit" />
         </button>

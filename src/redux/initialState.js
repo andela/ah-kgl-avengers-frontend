@@ -16,4 +16,5 @@ export default {
   success: '',
   bookmark: '',
   bookmarks: [],
+  loggedIn: false,
 };

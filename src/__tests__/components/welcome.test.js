@@ -7,7 +7,11 @@ import thunk from 'redux-thunk';
 import Welcome from '../../components/container/Welcome';
 
 const initialState = {
-  user: { user: {} },
+  user: {
+    user: {
+      username: 'user',
+    },
+  },
   article: {
     feeds: {
       main: {

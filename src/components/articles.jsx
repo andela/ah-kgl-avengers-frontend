@@ -32,10 +32,19 @@ class Articles extends Component {
     };
   }
 
+  /**
+   * check if the user is logged
+   */
   componentDidMount() {
-    const { getArticles: getMyArticles, getDrafts: getMyDrafts } = this.props;
+    const {
+      loggedIn,
+      history,
+      getArticles: getMyArticles,
+      getDrafts: getDraftArticles,
+    } = this.props;
+    if (!loggedIn) return history.push('/');
     getMyArticles();
-    getMyDrafts();
+    return getDraftArticles();
   }
 
   handleClick = (i) => {
@@ -237,12 +246,14 @@ Articles.propTypes = {
   drafts: PropTypes.arrayOf(PropTypes.object),
   history: PropTypes.objectOf(PropTypes.any),
   deleteArticle: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = ({ article }) => ({
+const mapStateToProps = ({ article, user: userReducer }) => ({
   articles: article.articles,
   drafts: article.drafts,
   article: article.article,
+  loggedIn: userReducer.loggedIn,
 });
 
 export default connect(

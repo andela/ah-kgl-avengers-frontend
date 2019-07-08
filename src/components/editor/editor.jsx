@@ -17,7 +17,7 @@ class Editor extends Component {
     super(props);
     this.titleRef = createRef();
     this.state = {
-      title: 'Your title here',
+      title: undefined,
       body: '',
       isSaved: false,
       tagList: [],
@@ -26,12 +26,60 @@ class Editor extends Component {
     };
   }
 
+  /**
+   * check if the user is logged
+   */
+  componentDidMount() {
+    const { loggedIn, history } = this.props;
+    if (!loggedIn) return history.push('/');
+    return null;
+  }
+
   componentDidUpdate(prevProps) {
     const { redirect, history } = this.props;
     if (prevProps.redirect !== redirect) {
       history.push(redirect.to);
     }
   }
+
+  // TODO: use a function to display the errors
+  // toastManager
+
+  /**
+   * save article
+   */
+  saveArticle = () => {
+    const { body, title, tagList } = this.state;
+    const { user, article, onSaveArticle } = this.props;
+    onSaveArticle({
+      article: {
+        body,
+        title: (title || article.title).replace(/<\/?[^>]+(>|$)/g, ''),
+        slug: article.slug || undefined,
+        tagList,
+        status: article.status || 'draft',
+      },
+      token: user.token,
+    });
+  };
+
+  /**
+   * publish article
+   */
+  publishArticle = () => {
+    const { body, title, tagList } = this.state;
+    const { user, article, onSaveArticle } = this.props;
+    onSaveArticle({
+      article: {
+        body,
+        title,
+        slug: article.slug || undefined,
+        tagList,
+        status: 'published',
+      },
+      token: user.token,
+    });
+  };
 
   render() {
     const {
@@ -60,17 +108,7 @@ class Editor extends Component {
                 className="btn btn-save-edit"
                 type="button"
                 disabled={!body}
-                onClick={() => onSaveArticle({
-                  article: {
-                    body,
-                    title,
-                    slug: article.slug || undefined,
-                    tagList,
-                    status: article.status || 'draft',
-                  },
-                  token: user.token,
-                })
-                }
+                onClick={this.saveArticle}
               >
                 <i className="zmdi zmdi-floppy" />
                 Save
@@ -79,17 +117,7 @@ class Editor extends Component {
                 className="btn btn-publish-edit"
                 type="button"
                 disabled={!body}
-                onClick={() => onSaveArticle({
-                  article: {
-                    body,
-                    title,
-                    slug: article.slug || undefined,
-                    tagList,
-                    status: 'published',
-                  },
-                  token: user.token,
-                })
-                }
+                onClick={this.publishArticle}
               >
                 <i className="zmdi zmdi-upload" />
                 Publish
@@ -101,18 +129,18 @@ class Editor extends Component {
             <ContentEditable
               className="article-title"
               innerRef={this.titleRef}
-              html={article.title || title}
+              html={title || article.title || 'Your title here'}
               onFocus={(evt) => {
                 evt.preventDefault();
-                if (!tittleChanged) {
-                  this.setState({ tittleChanged: true, title: '' });
+                if (!tittleChanged && !article.title) {
+                  this.setState({ tittleChanged: true, title: ' ' });
                 }
               }}
               onChange={(evt) => {
                 this.setState({ title: evt.target.value });
               }}
               disabled={false}
-              tagName="h1"
+              tagName="div"
             />
 
             <CKEditor
@@ -142,7 +170,7 @@ class Editor extends Component {
             <Chips
               label="Add tags"
               suggestion={[]}
-              value={tagList}
+              value={article.tagList || tagList}
               onChange={(values) => {
                 this.setState({ tagList: values });
               }}
@@ -163,22 +191,25 @@ Editor.propTypes = {
   isProgressOn: propTypes.bool.isRequired,
   message: propTypes.objectOf(propTypes.any).isRequired,
   onSaveArticle: propTypes.func.isRequired,
+  loggedIn: propTypes.bool.isRequired,
 };
 
 Editor.defaultProps = {
   article: {},
 };
 
-const mapStateToProps = ({ article: articleReducer }) => {
+const mapStateToProps = ({ article: articleReducer, user: userReducer }) => {
   const {
     user, editorArticle: article, message, isProgressOn, redirect,
   } = articleReducer;
+  const { loggedIn } = userReducer;
   return {
     user,
     article,
     message,
     redirect,
     isProgressOn,
+    loggedIn,
   };
 };
 

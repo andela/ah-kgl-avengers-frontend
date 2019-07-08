@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { optRequest } from '../../helpers/config';
+// import { optRequest } from '../../helpers/config';
 import {
   FETCH_ARTICLE_END,
   FETCH_FEEDS_SUCCESS,
@@ -9,9 +9,21 @@ import {
 
 const fetchFeeds = () => (dispatch) => {
   const url = `${process.env.REACT_APP_API}/articles/feeds`;
+  const token = localStorage.getItem('token');
+
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
+  if (token) {
+    Object.defineProperty(headers, 'Authorization', {
+      value: `Bearer ${localStorage.getItem('token')}`,
+    });
+  }
+
   dispatch({ type: FETCH_ARTICLE_START, payload: {} });
   axios
-    .get(url, optRequest)
+    .get(url, {})
     .then((response) => {
       const { articles } = response.data;
       const articleLength = articles.length;
