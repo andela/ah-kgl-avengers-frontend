@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -31,12 +32,23 @@ class SocialLogin extends Component {
     }, 4000);
   }
 
-  componentWillReceiveProps({ errors, googleUser, facebookUser }) {
-    this.setState({ socialUser: errors.message, googleUser, facebookUser });
+  componentWillReceiveProps({ errors }) {
+    this.setState({ socialUser: errors.message });
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
+  }
+
+
+  notifyError = (errorMessage) => {
+    toast.error(errorMessage);
+  }
+
+  notifySuccess = (successMessage) => {
+    toast(successMessage, {
+      className: 'mt-5 text-primary',
+    });
   }
 
   responseGoogle = ({ response, provider }) => {
@@ -57,9 +69,11 @@ class SocialLogin extends Component {
   };
 
   onErrors = (errorMessage) => {
-    const { history } = this.props;
-    const { socialUser, facebookUser, googleUser } = this.state;
-    if (socialUser === undefined && (googleUser || facebookUser)) {
+    const { history, user } = this.props;
+    const { message } = user;
+    const { socialUser } = this.state;
+    if (socialUser === undefined || message) {
+      this.notifySuccess(message);
       return history.push('/');
     }
 
@@ -68,28 +82,14 @@ class SocialLogin extends Component {
     if (facebookProvider) {
       return (
         <div>
-          <div className="social-caret-error-on">
-            <div className="triangle-caret-on">
-              <i className="zmdi zmdi-caret-up zmdi-hc-3x triangle-caret" />
-            </div>
-            <span className="btn btn-danger social-error-fb">
-              <span>{errorMessage}</span>
-            </span>
-          </div>
+          {this.notifyError(errorMessage)}
         </div>
       );
     }
     if (googleProvider) {
       return (
         <div>
-          <div className="social-caret-error-on">
-            <div className="triangle-caret-fb">
-              <i className="zmdi zmdi-caret-up zmdi-hc-3x triangle-caret" />
-            </div>
-            <span className="btn btn-danger social-error">
-              <span>{errorMessage}</span>
-            </span>
-          </div>
+          {this.notifyError(errorMessage)}
         </div>
       );
     }
@@ -101,8 +101,8 @@ class SocialLogin extends Component {
     const onSocialErrors = socialUser === null ? null : this.onErrors(socialUser);
 
     return (
-      <div className="social-login-buttons">
-        <p className="lead text-black-50 text-center">or with</p>
+      <div className="social-login-buttons mt-4">
+        <p className="lead text-black-50 small-text text-center">--------------OR--------------</p>
         <div className="social-login-buttons-google">
           {' '}
           <GoogleLogin
@@ -168,8 +168,7 @@ export const mapStateToProps = ({ user }) => ({
 
 SocialLogin.propTypes = {
   errors: PropTypes.instanceOf(Object),
-  googleUser: PropTypes.instanceOf(Object),
-  facebookUser: PropTypes.instanceOf(Object),
+  user: PropTypes.instanceOf(Object),
   history: PropTypes.instanceOf(Object).isRequired,
   googleSocialAccess: PropTypes.func.isRequired,
   facebookSocialAccess: PropTypes.func.isRequired,
@@ -179,8 +178,7 @@ SocialLogin.propTypes = {
 
 SocialLogin.defaultProps = {
   errors: {},
-  googleUser: {},
-  facebookUser: {},
+  user: {},
   login: 'string',
 };
 

@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Welcome from './components/container/Welcome';
 import Signup from './components/Auth/Signup';
 import Redirect from './components/Auth/Redirect';
@@ -13,6 +15,11 @@ import Profile from './components/container/profile';
 import ProfileEditor from './components/container/profileEditor';
 import './index.scss';
 import socialLogin from './components/Auth/socialLogin';
+
+toast.configure({
+  autoClose: 5000,
+  draggable: false,
+});
 
 const App = () => (
   <Router>

@@ -47,7 +47,7 @@ export default (
     case FACEBOOK_SOCIAL_ACCESS_SUCCESS:
       return {
         ...state,
-        facebookUser: payload,
+        user: payload,
       };
     case FACEBOOK_SOCIAL_ACCESS_FAILED:
       return {
@@ -57,7 +57,7 @@ export default (
     case GOOGLE_SOCIAL_ACCESS_SUCCESS:
       return {
         ...state,
-        googleUser: payload,
+        user: payload,
       };
     case GOOGLE_SOCIAL_ACCESS_FAILED:
       return {

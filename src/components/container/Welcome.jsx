@@ -23,7 +23,9 @@ class Welcome extends Component {
     <TrendingArticleView article={single} key={single.slug} id={index + 1} />
   ));
 
-  secondaryArticle = articles => articles.map(single => <ArticleView article={single} key={single.slug} />);
+  secondaryArticle = articles => articles.map(
+    single => <ArticleView article={single} key={single.slug} />,
+  );
 
   render() {
     const { feeds, isProgressOn, user } = this.props;
@@ -31,8 +33,7 @@ class Welcome extends Component {
     return (
       <Fragment>
         <AppBar image={image} />
-        <Container className="landing-page-container">
-          <Navigation />
+        <Container className="landing-page-container mt-5">
           <div className="container-fluid">
             <div className="row">
               {isProgressOn ? (

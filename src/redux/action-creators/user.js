@@ -37,7 +37,7 @@ export const userLogin = user => async (dispatch) => {
 };
 
 export const googleSocialAccess = accessToken => async (dispatch) => {
-  const url = `${process.env.REACT_APP_API}oauth/google`;
+  const url = `${process.env.REACT_APP_API}/oauth/google`;
   try {
     const googleAccess = await axios.post(
       url,
@@ -52,6 +52,7 @@ export const googleSocialAccess = accessToken => async (dispatch) => {
     const { token, data, message } = googleAccess.data;
     const googleData = { ...data, message };
     localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(googleData));
     return dispatch({ type: GOOGLE_SOCIAL_ACCESS_SUCCESS, payload: googleData });
   } catch (error) {
     const { data } = error.response;
@@ -60,7 +61,7 @@ export const googleSocialAccess = accessToken => async (dispatch) => {
 };
 
 export const facebookSocialAccess = accessToken => async (dispatch) => {
-  const url = `${process.env.REACT_APP_API}oauth/facebook`;
+  const url = `${process.env.REACT_APP_API}/oauth/facebook`;
   try {
     const facebookAccess = await axios.post(
       url,
@@ -75,6 +76,7 @@ export const facebookSocialAccess = accessToken => async (dispatch) => {
     const { token, data, message } = facebookAccess.data;
     const facebookData = { ...data, message };
     localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(facebookData));
     return dispatch({ type: FACEBOOK_SOCIAL_ACCESS_SUCCESS, payload: facebookData });
   } catch (error) {
     const { data } = error.response;

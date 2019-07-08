@@ -123,24 +123,31 @@ html {
   flex-grow: 1;
 }
 
-.sign-up-footer p {
+.sign-up-footer div {
   color: #8093b5;
-  font-weight: 300;
+  font-size: 100;
+}
+.conditional-text-01 {
+  font-size: 15px;
+  padding-right: 2em;
+}
+.conditional-text-02 {
+  font-size: 14px;
+  padding-left: 2em;
 }
 
-.sign-up-footer p a {
+.sign-up-footer div a {
   text-transform: capitalize;
 }
 
-.sign-up-footer p a:hover,
-.card-action p a:hover {
+.sign-up-footer div a:hover,
+.card-action div a:hover {
   text-decoration: underline;
 }
 
 .sign-up-footer {
-  justify-self: flex-end;
-  padding: 2rem 8px;
-  text-align: center;
+  margin: 2em 0 0 0;
+  padding: 1em;
 }
 
 .errors {
@@ -172,9 +179,13 @@ html {
 }
 
 // Social login styling starts
+.small-text{
+  font-size: 14px;
+}
 .social-spacing-facebook {
   margin-left: 2em;
   outline: none;
+  text-transform: capitalize;
 
   .social-separator-facebook {
     border-right: .1px solid;
@@ -193,6 +204,7 @@ html {
 .social-spacing-google {
   margin-left: 0;
   outline: none;
+  text-transform: capitalize;
 
   .social-separator-google {
     border-right: .1px solid;
@@ -214,24 +226,13 @@ html {
   opacity: 0;
 }
 
-.triangle-caret-on {
+.triangle-caret-facebook{
   position: relative;
   z-index: 1;
-  margin-left: .4em;
+  margin-right: 5em;
   margin-bottom: -.5em;
   color: #da2120;
-}
 
-.triangle-caret-fb {
-  position: relative;
-  z-index: 1;
-  margin-left: 20em;
-  margin-bottom: -.5em;
-  color: #da2120;
-}
-
-.social-caret-error-on {
-  margin-top: -1em;
 }
 
 .triangle-caret-off {
@@ -247,14 +248,6 @@ html {
   opacity: 0;
 }
 
-.social-error-fb {
-  margin-top: -1em;
-  margin-left: 10em;
-}
-
-.social-error {
-  margin-top: -1em;
-}
 
 .social-login-content {
   margin: 2em 0 2em 0;
@@ -293,11 +286,23 @@ html {
 
 
 @media all and (min-width: 768px) {
-
   .pt-md-11, .pt-md-11 {
     padding-top: 8rem !important;
   }
 }
+
+@media all and (min-width: 768px) and   (max-width: 885px){
+  .social-spacing-google {
+    margin-bottom: 1.2em;
+  }
+
+  .social-spacing-facebook, .social-spacing-google {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 
 @media all and (min-width: 992px) {
 
@@ -310,12 +315,9 @@ html {
     display: block;
   }
 
-}
-
-@media all and (max-width: 1200px) {
-  .social-login-options .btn {
-    margin: 0 2em 0 1em;
-    padding: 0 1.5em 0 1.5em;
+  .social-login-buttons {
+    margin-left: auto;
+    margin-right: auto;
   }
 
 }
@@ -323,5 +325,41 @@ html {
 @media all and (min-width: 320px) {
   .sign-up-title {
     padding: 2rem 0 2rem 0 !important;
+  }
+  
+}
+
+@media all and (min-width: 992px) and   (max-width: 1235px){
+  .social-spacing-google {
+    margin-bottom: 1.2em;
+  }
+
+  .social-spacing-facebook, .social-spacing-google {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+
+
+@media all and (max-width: 464px){
+  .social-spacing-google {
+    margin-bottom: 1.2em;
+  }
+
+  .social-spacing-facebook, .social-spacing-google {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .triangle-caret-facebook{
+    position: relative;
+    z-index: 1;
+    margin-right: 2em;
+    margin-bottom: -.5em;
+    color: #da2120;
+  
   }
 }
