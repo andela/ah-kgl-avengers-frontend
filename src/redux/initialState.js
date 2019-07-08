@@ -14,4 +14,6 @@ export default {
   message: { type: '', text: [] },
   error: '',
   success: '',
+  bookmark: '',
+  bookmarks: [],
 };

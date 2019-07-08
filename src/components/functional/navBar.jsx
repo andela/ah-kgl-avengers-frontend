@@ -3,7 +3,6 @@ import {
   Collapse,
   Navbar,
   NavbarToggler,
-  NavbarBrand,
   Nav,
   Button,
   Container,
@@ -73,7 +72,7 @@ class AppBar extends Component {
                     <Link to="/my-articles">
                       <li>My Articles</li>
                     </Link>
-                    <Link to="/">
+                    <Link to="/me/bookmarks">
                       <li>Bookmarks</li>
                     </Link>
                     <DropdownItem divider />
@@ -96,7 +95,7 @@ class AppBar extends Component {
                     <Link to="/my-articles">
                       <DropdownItem>My Articles</DropdownItem>
                     </Link>
-                    <Link to="/">
+                    <Link to="/me/bookmarks">
                       <DropdownItem>Bookmarks</DropdownItem>
                     </Link>
                     <DropdownItem divider />
