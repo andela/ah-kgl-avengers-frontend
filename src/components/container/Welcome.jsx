@@ -12,7 +12,10 @@ import { bookmarkArticle } from '../../redux/action-creators/bookmark';
 class Welcome extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      available: 10,
+      fullyloaded: false,
+    };
   }
 
   componentDidMount() {
@@ -37,12 +40,24 @@ class Welcome extends Component {
     <TrendingArticleView article={single} key={single.slug} id={index + 1} bookmark={this.bookmarkArticle} />
   ));
 
-  secondaryArticle = articles => articles.map(
-    single => <ArticleView article={single} key={single.slug} />,
-  );
+  secondaryArticle = (articles) => {
+    const { available } = this.state;
+    const views = articles.slice(0, available);
+    return views.map(single => <ArticleView article={single} key={single.slug} />);
+  }
+
+  loadmore() {
+    const { available } = this.state;
+    const { feeds } = this.props;
+    this.setState({ available: available + 10 });
+    if (available + 10 >= feeds.secondary.length) {
+      this.setState({ fullyloaded: true });
+    }
+  }
 
   render() {
     const { feeds, isProgressOn, user } = this.props;
+    const { fullyloaded } = this.state;
     const { image = null } = user;
     return (
       <Fragment>
@@ -67,6 +82,15 @@ class Welcome extends Component {
                           && feeds.secondary[5]
                           && this.secondaryArticle(feeds.secondary)}
                     </section>
+                    {
+                      feeds.secondary[10]
+                      && (fullyloaded === false)
+                      && (
+                      <section className="loadmore" onClick={() => this.loadmore()}>
+                        <button>Load more</button>
+                      </section>
+                      )
+                    }
                   </section>
                   <aside className="col-12 col-md-3">
                     <div className="aside-title">Trending</div>
@@ -85,6 +109,7 @@ class Welcome extends Component {
     );
   }
 }
+
 
 Welcome.propTypes = {
   onFetchArticles: propTypes.func.isRequired,

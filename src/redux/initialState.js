@@ -8,7 +8,7 @@ export default {
   isProgressOn: false,
   redirect: {},
   article: {},
-  drafts: null,
+  drafts: [],
   articles: [],
   feeds: { main: {}, secondary: {}, trending: {} },
   message: { type: '', text: [] },
