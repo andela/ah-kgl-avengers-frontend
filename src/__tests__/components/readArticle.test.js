@@ -16,6 +16,8 @@ const initialState = {
     redirect: {},
     user: {
       username: 'user',
+      authorFollowers: [{ username: 'hello', image: 'helllos' }],
+      userErrors: [],
     },
   },
   article: {

@@ -1,4 +1,4 @@
-.acronym {
+acronym {
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -13,14 +13,12 @@
   border-bottom: 0.5px #38c4b0 solid;
   background-color: #38c4b0;
 }
-
 .avatar {
   vertical-align: middle;
   width: 50px;
   height: 50px;
   border-radius: 50%;
 }
-
 // Button Styling
 .btn-follow-author {
   border: 1px solid #2ea8f7;
@@ -33,40 +31,33 @@
   text-align: center;
   display: table-cell;
 }
-
 .btn-follow-author:hover {
   color: #ffffff;
   background-color: #2ea8f7;
 }
-
 .images {
   border: 1px solid #2ea8f7;
   border-radius: 4px;
   height: 560px;
 }
-
 // Added changes
 figure {
   padding-top: 8px;
-
   img {
-    height: 500px;
+    height: auto;
     width: 100%;
   }
 }
-
 figcaption {
   padding: 8px;
   font-size: 1rem;
   font-weight: 500;
   text-align: center;
   color: #111111;
-
   &::first-letter {
     text-transform: uppercase;
   }
 }
-
 p {
   text-align: left;
   font-style: normal;
@@ -76,7 +67,6 @@ p {
   font-weight: 300;
   font-size: 1.2rem;
 }
-
 blockquote {
   width: 70%;
   margin: 16px auto;
@@ -86,7 +76,6 @@ blockquote {
   font-style: italic;
   font-size: 1.4rem;
   color: #00000090;
-
   p {
     margin: 0;
     padding: 0;
@@ -94,61 +83,60 @@ blockquote {
     font-size: 1.4rem;
   }
 }
-
 .text {
   font-size: 0.7em;
   padding-top: 5px;
 }
-
 p img {
   max-width: 100%;
   height: auto;
 }
-
 @media all and (min-width: 320px) {
   .lead-un-sm {
     font-size: 0.9em;
     text-transform: capitalize;
   }
-
   .lead-rt-sm {
     font-size: 0.7em;
     text-transform: capitalize;
   }
-
   .follow {
     width: 2em;
     height: 1.5em;
   }
 }
-
 @media all and (min-width: 968px) {
   .text {
     font-size: 0.9em;
   }
 }
-
+@media all and (min-width: 150px) and (max-width: 955px) {
+  .author-details {
+    margin: 0;
+    justify-content: center !important;
+    padding: 1rem .5rem 1rem .5rem !important;
+  }
+  .article-likes {
+    margin: 1.5em 0 .5em 0 !important;
+  }
+}
 @media all and (min-width: 576px) {
   .lead-un-sm {
     font-size: 0.9em;
     text-transform: capitalize;
   }
-
   .lead-rt-sm {
     font-size: 0.7em;
     text-transform: capitalize;
   }
-
   .follow {
     width: 2em;
     height: 1.5em;
   }
 }
-
 .article-taglist {
   width: 90%;
   margin: 0 auto;
-
   .article-tag {
     display: inline-block;
     color: #2ea8f7;
@@ -158,56 +146,40 @@ p img {
     border-radius: 2px;
     background-color: #e6ebec;
     line-height: 32px;
-
     &::first-letter {
       text-transform: uppercase;
     }
   }
 }
-
 .small-icon {
   font-size: 10px;
   display: inline-block;
-  margin-left: 5px;
-  margin-bottom: 10px;
+  margin: 0 10px 0 5px;
   color: #38c4b0;
 }
-
 .ratings {
   color: #38c4b0;
   margin-left: 10px;
 }
-
 .rating-message {
   animation: cssAnimation 0s 5s forwards;
   visibility: visible;
 }
-
 .error {
   color: red;
 }
-
 .message {
   color: #38c4b0;
 }
-
 .author-details {
   font-weight: bold;
-  margin-left: 10px;
-  font-size: 0.7em;
+  margin-left: auto;
+  font-size: 0.8em;
   color: rgba(0,0,0,.5) !important;
 } 
-
-
 @keyframes cssAnimation {
   to   { visibility: hidden; }
 }
-.article-likes {
-  width: 90%;
-  margin: 0 auto;
-  display: flex;
-}
-
 .dislike {
   border: 1px solid #f72e38;
   border-radius: 4px;
