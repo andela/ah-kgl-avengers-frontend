@@ -36,6 +36,22 @@ class SocialLogin extends Component {
     this.setState({ socialUser: errors.message });
   }
 
+  componentDidUpdate() {
+    const { socialUser } = this.state;
+    const { user, history } = this.props;
+    const { message } = user;
+    switch (true) {
+      case message === undefined:
+        return null;
+      case socialUser === undefined:
+        return (
+          this.notifySuccess(message),
+          history.push('/'));
+      default:
+        return this.notifySuccess(message);
+    }
+  }
+
   componentWillUnmount() {
     clearInterval(this.interval);
   }
@@ -69,12 +85,9 @@ class SocialLogin extends Component {
   };
 
   onErrors = (errorMessage) => {
-    const { history, user } = this.props;
-    const { message } = user;
     const { socialUser } = this.state;
-    if (socialUser === undefined || message) {
-      this.notifySuccess(message);
-      return history.push('/');
+    if (socialUser === undefined) {
+      return null;
     }
 
     const googleProvider = socialUser.includes('google');

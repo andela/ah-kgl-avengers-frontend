@@ -110,7 +110,7 @@ class Welcome extends Component {
                       </section>
                     )}
                   </section>
-                  <aside className="col-12 col-md-3">
+                  <aside className="col-12 col-md-3 trending-side">
                     <div className="aside-title">Trending</div>
                     <div className="aside-content">
                       {feeds.trending.length > 0 && this.trendingArticle(feeds.trending)}
