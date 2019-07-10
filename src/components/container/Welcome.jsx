@@ -34,12 +34,13 @@ class Welcome extends Component {
     const { bookmarking } = this.props;
     await bookmarking(slug);
     const { bookmark } = this.props;
-    if (bookmark) {
-      if (bookmark.includes('jwt')) {
-        toast.error('Please login to bookmark');
+    const { status, message } = bookmark;
+    if (status) {
+      if (status === 401) {
+        toast.error('First login to bookmark the article');
         return;
       }
-      bookmark.includes('You') ? toast.error(bookmark) : toast.success(bookmark);
+      status === 400 ? toast.error(message) : toast.success(message);
     }
   };
 
@@ -133,7 +134,7 @@ Welcome.propTypes = {
   bookmarking: propTypes.func.isRequired,
   feeds: propTypes.objectOf(propTypes.any).isRequired,
   isProgressOn: propTypes.bool.isRequired,
-  bookmark: propTypes.string.isRequired,
+  bookmark: propTypes.instanceOf(Object).isRequired,
   user: propTypes.instanceOf(Object),
   loggedIn: propTypes.bool,
 };
