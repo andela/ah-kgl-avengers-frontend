@@ -37,12 +37,12 @@ class Articles extends Component {
    */
   componentDidMount() {
     const {
-      loggedIn,
       history,
       getArticles: getMyArticles,
       getDrafts: getDraftArticles,
     } = this.props;
-    if (!loggedIn) return history.push('/');
+    const token = localStorage.getItem('token');
+    if (!token) return history.push('/');
     getMyArticles();
     return getDraftArticles();
   }

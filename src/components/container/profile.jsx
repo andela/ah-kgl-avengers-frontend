@@ -20,7 +20,7 @@ class Profile extends Component {
     this.state = {
       isLoggedInUser: false,
       currentPage: 0,
-      pageSize: 6,
+      pageSize: 9,
       start: 0,
     };
   }
@@ -60,7 +60,6 @@ class Profile extends Component {
     article => <ArticleView article={article} key={article.slug} />,
   );
 
-  renderArticles = articles => articles.map(article => <ArticleView article={article} key={article.slug} />);
 
   render() {
     const {
@@ -154,7 +153,7 @@ class Profile extends Component {
             <div className="row">
               <div className="col-12 main-articles profile-articles-container">
                 {articles.length > 0 ? (
-                  this.renderArticles(articles)
+                  this.renderArticles(views)
                 ) : (
                   <div className="profile-no-articles">
                     No articles published yet

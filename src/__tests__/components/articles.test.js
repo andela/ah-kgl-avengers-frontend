@@ -11,7 +11,7 @@ import { ArticleView, TrendingArticleView } from '../../components/singleArticle
 const initialState = {
   user: {
     redirect: {},
-    loggedIn: true,
+    token: true,
     user: {
       username: 'user',
     },
