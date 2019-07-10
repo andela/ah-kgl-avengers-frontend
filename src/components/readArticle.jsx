@@ -14,6 +14,7 @@ import UserName from './userNames';
 import TextArea from './textArea';
 import {
   readArticle,
+  resetArticle,
   likeArticle,
   dislikeArticle,
 } from '../redux/action-creators/readArticle';
@@ -57,6 +58,11 @@ class ReadArticle extends Component {
     if (likeErrors !== prevProps.likeErrors) {
       this.notifyError(likeErrors.error === 'jwt malformed' ? 'Please Login' : likeErrors.error);
     }
+  }
+
+  componentWillUnmount() {
+    const { reset } = this.props;
+    reset();
   }
 
   notifyError = (message) => {
@@ -201,7 +207,7 @@ class ReadArticle extends Component {
                     {author.username}
                   </UserName>
                   {userLoggedIns.decodeToken() !== null
-                  && userLoggedIns.decodeToken().username
+                    && userLoggedIns.decodeToken().username
                     === author.username ? null : (
                       <div>
                         <button
@@ -209,7 +215,7 @@ class ReadArticle extends Component {
                           onClick={() => this.follow(author)}
                           className="btn-follow-author"
                         >
-                        Follow
+                          Follow
                         </button>
                       </div>
                     )}
@@ -324,6 +330,7 @@ ReadArticle.propTypes = {
   rateArticle: PropTypes.func.isRequired,
   article: PropTypes.instanceOf(Object).isRequired,
   dislikeArticles: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
   error: PropTypes.string,
   success: PropTypes.string,
   likes: PropTypes.number.isRequired,
@@ -351,6 +358,7 @@ export default connect(
     readArticles: readArticle,
     likeArticles: likeArticle,
     dislikeArticles: dislikeArticle,
+    reset: resetArticle,
     rateArticle,
     follow,
     unFollow,

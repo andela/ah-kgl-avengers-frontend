@@ -6,7 +6,6 @@ import {
 } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import Side from './Side';
 import img from '../../assets/developers_2_A1_Rectangle_58_pattern.png';
 import { userRegister, registerLoad } from '../../redux/action-creators/signup';
