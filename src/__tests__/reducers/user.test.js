@@ -45,6 +45,7 @@ describe('Article Reducer', () => {
       ...state,
       user: { token: '' },
       loggedIn: true,
+      localErrors: {},
     });
   });
 

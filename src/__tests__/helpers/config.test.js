@@ -2,7 +2,7 @@ import { optRequest, actionDispatch } from '../../helpers/config';
 
 describe('Config', () => {
   it('should get all the config objects', () => {
-    expect(optRequest).toEqual({
+    expect(optRequest()).toEqual({
       headers: { 'Content-Type': 'application/json', Authorization: 'Bearer null' },
     });
   });

@@ -71,12 +71,20 @@ class ReadArticle extends Component {
 
   rate = async (value) => {
     const {
-      rateArticle: request, article,
+      rateArticle: request, article, success,
     } = this.props;
     const newRating = {
       rating: value,
     };
     await request(newRating, article.slug);
+    const { error } = this.props;
+    if (error !== '' && error !== undefined) {
+      this.notifyError(error === 'jwt malformed' ? 'Please Login' : error);
+    }
+
+    if (success !== '' && error !== undefined) {
+      this.notifyError(success);
+    }
   };
 
   likeArts = async (slug) => {

@@ -47,7 +47,6 @@ export const userLogin = user => async (dispatch) => {
   return axios
     .post(url, user, { })
     .then((response) => {
-      console.log(response);
       // dispatch the action and pass the payload
       const { user: userData } = response.data;
       const { token } = userData;
@@ -188,7 +187,7 @@ export const follow = username => async (dispatch) => {
   const url = `${process.env.REACT_APP_API}/profiles/${username.username}/follow`;
 
   try {
-    const followUser = await axios.post(url, {}, optRequest);
+    const followUser = await axios.post(url, {}, optRequest());
     return dispatch({ type: FOLLOW_SUCCESS, payload: followUser });
   } catch (error) {
     dispatch({ type: FOLLOW_FAIL, payload: error.response.data });
@@ -200,7 +199,7 @@ export const unFollow = username => async (dispatch) => {
   const url = `${process.env.REACT_APP_API}/profiles/${username.username}/follow`;
 
   try {
-    const followUser = await axios.delete(url, optRequest);
+    const followUser = await axios.delete(url, optRequest());
     return dispatch({ type: UN_FOLLOW_SUCCESS, payload: followUser });
   } catch (error) {
     dispatch({ type: UN_FOLLOW_FAIL, payload: error.response.data });

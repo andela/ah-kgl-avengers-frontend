@@ -21,7 +21,7 @@ export const readArticle = slug => async (dispatch) => {
     const { article } = resp.data;
     let totalRatings;
     try {
-      const ratings = await axios.get(ratingUrl, optRequest);
+      const ratings = await axios.get(ratingUrl, optRequest());
       totalRatings = ratings.data.totalRatings;
     } catch (error) {
       totalRatings = 0;
@@ -54,7 +54,7 @@ export const likeArticle = slug => async (dispatch) => {
         },
       },
     );
-    const likedArticle = await axios.get(fetchAgain, optRequest);
+    const likedArticle = await axios.get(fetchAgain, optRequest());
     dispatch({ type: LIKE_ARTICLE, payload: makeRequest });
     dispatch({ type: FETCH_AGAIN_LIKES, payload: likedArticle });
   } catch (errors) {
@@ -73,7 +73,7 @@ export const dislikeArticle = slug => async (dispatch) => {
         Authorization: `Bearer ${localStorage.token}`,
       },
     });
-    const likedArticle = await axios.get(fetchAgain, optRequest);
+    const likedArticle = await axios.get(fetchAgain, optRequest());
     dispatch({ type: DISLIKE_ARTICLE, payload: makeRequest });
     dispatch({ type: FETCH_AGAIN_LIKES, payload: likedArticle });
   } catch (errors) {

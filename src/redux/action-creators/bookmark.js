@@ -15,7 +15,7 @@ export const bookmarkArticle = slug => async (dispatch) => {
   const url = `${process.env.REACT_APP_API}/bookmarks/${slug}`;
   dispatch(actionDispatch(BOOKMARK_SEND));
   try {
-    const { data } = await Axios.post(url, null, optRequest);
+    const { data } = await Axios.post(url, null, optRequest());
     return dispatch(actionDispatch(BOOKMARK_SUCCESS, data));
   } catch (error) {
     const { status, data } = error.response;
@@ -31,7 +31,7 @@ export const bookmarkArticle = slug => async (dispatch) => {
 export const getAllBookmarks = () => async (dispatch) => {
   const url = `${process.env.REACT_APP_API}/bookmarks`;
   try {
-    const { data } = await Axios.get(url, optRequest);
+    const { data } = await Axios.get(url, optRequest());
     return dispatch(actionDispatch(BOOKMARK_GET_ALL, data));
   } catch (error) {
     const { message } = error.response.data;
@@ -43,7 +43,7 @@ export const removeBookmark = slug => async (dispatch) => {
   const url = `${process.env.REACT_APP_API}/bookmarks/${slug}`;
   dispatch(actionDispatch(BOOKMARK_DELETE));
   try {
-    await Axios.delete(url, optRequest);
+    await Axios.delete(url, optRequest());
     return dispatch(actionDispatch(BOOKMARK_DELETE_SUCCESS, slug));
   } catch (error) {
     const { message } = error.response.data;

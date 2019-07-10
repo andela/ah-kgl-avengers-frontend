@@ -36,14 +36,23 @@ class Articles extends Component {
    */
   componentDidMount() {
     const {
-      loggedIn,
       history,
+      loggedIn,
       getArticles: getMyArticles,
       getDrafts: getDraftArticles,
     } = this.props;
-    if (!loggedIn) return history.push('/');
+    if (typeof loggedIn !== 'undefined' && !loggedIn) return history.push('/');
     getMyArticles();
     return getDraftArticles();
+  }
+
+  componentDidUpdate() {
+    const {
+      history,
+      loggedIn,
+    } = this.props;
+    if (typeof loggedIn !== 'undefined' && !loggedIn) return history.push('/');
+    return null;
   }
 
   handleClick = (i) => {
