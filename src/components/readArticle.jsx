@@ -45,25 +45,33 @@ class ReadArticle extends Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    const { error, success, likeErrors } = this.props;
+    if (error !== '' && prevProps.error !== undefined && error !== prevProps.error) {
+      this.notifyError(error === 'jwt malformed' ? 'Please Login to rate this article' : error);
+    }
+
+    if (success !== '' && prevProps.success !== undefined) {
+      this.notifyRateSuccess(success);
+    }
+
+    if (likeErrors !== prevProps.likeErrors) {
+      this.notifyError(likeErrors.error === 'jwt malformed' ? 'Please Login' : likeErrors.error);
+    }
+  }
+
   notifyError = (message) => {
     toast.error(message);
   };
 
   rate = async (value) => {
     const {
-      rateArticle: request, article, error, success,
+      rateArticle: request, article,
     } = this.props;
     const newRating = {
       rating: value,
     };
     await request(newRating, article.slug);
-    if (error !== '' && error !== undefined) {
-      this.notifyError(error === 'jwt malformed' ? 'Please Login' : error);
-    }
-
-    if (success !== '' && error !== undefined) {
-      this.notifyError(success);
-    }
   };
 
   likeArts = async (slug) => {
@@ -91,24 +99,56 @@ class ReadArticle extends Component {
     toast(`You have successfully followed ${username}`);
   };
 
+  notifyUnFollow = (username) => {
+    toast(`You have successfully unFollowed ${username}`);
+  };
+
+  notifyRateSuccess = (message) => {
+    toast(message);
+  };
+
   follow = async (username) => {
-    const { follow, history, getFollowers } = this.props;
-    follow(username).then((res) => {
-      getFollowers(res.payload.data.profile.username);
+    const {
+      follow, getFollowers,
+    } = this.props;
+    follow(username).then(async (res) => {
+      if (res.payload === undefined && res.response.data.status === 401) {
+        this.notifyError(res.response.data.error === 'jwt malformed' ? 'Please Login to follow this author' : 'userErrors.error');
+      }
+      if (res.payload !== undefined && res.payload.data.status === 201) {
+        this.notifySuccess(username.username);
+        getFollowers(res.payload.data.profile.username);
+      }
+
+      if (res.payload === undefined && res.response.status === 400) {
+        this.notifyError(res.response.data.message);
+      }
     });
-    if (this.props.userErrors.status === 401) {
-      history.push('/login');
-    }
   };
 
   unFollow = (username) => {
-    const { unFollow } = this.props;
-    unFollow(username);
+    const {
+      unFollow, getFollowers, userErrors,
+    } = this.props;
+    unFollow(username).then(async (res) => {
+      if (res.payload === undefined && res.response.data.status === 401) {
+        this.notifyError(res.response.data.error === 'jwt malformed' ? 'Please Login to unFollow this author' : userErrors.error);
+      }
+
+      if (res.payload !== undefined && res.payload.data.status === 200) {
+        this.notifyUnFollow(username.username);
+        getFollowers(res.payload.data.profile.username);
+      }
+
+      if (res.payload === undefined && res.response.status === 400) {
+        this.notifyError(res.response.data.message);
+      }
+    });
   };
 
   render() {
     const {
-      article, likes, dislikes, newLikes, error, success,
+      article, likes, dislikes, newLikes, success,
     } = this.props;
 
     if (!Object.prototype.hasOwnProperty.call(article, 'body')) return null;
@@ -171,13 +211,6 @@ class ReadArticle extends Component {
                           className="btn-follow-author"
                         >
                         Follow
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => this.unFollow(author)}
-                          className="btn-follow-author"
-                        >
-                        UnFollow
                         </button>
                       </div>
                     )}
@@ -299,6 +332,7 @@ ReadArticle.propTypes = {
   dislikes: PropTypes.number.isRequired,
   match: PropTypes.instanceOf(Object).isRequired,
   newLikes: PropTypes.instanceOf(Object).isRequired,
+  likeErrors: PropTypes.instanceOf(Object).isRequired,
 };
 
 const mapStateToProps = ({ article: articleReducer, user }) => ({
@@ -310,6 +344,7 @@ const mapStateToProps = ({ article: articleReducer, user }) => ({
   newLikes: articleReducer.newLiked,
   authorFollowers: user.followers,
   userErrors: user.errors,
+  likeErrors: articleReducer.likedErrors,
 });
 
 export default connect(

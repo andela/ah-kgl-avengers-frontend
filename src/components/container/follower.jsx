@@ -48,7 +48,7 @@ export class Follow extends Component {
   };
 
   notifyUnFollow = (message) => {
-    toast.info(`You have successfully unFollowed ${message}`);
+    toast(`You have successfully unFollowed ${message}`);
   };
 
   renderFollowers = followers => followers.map(follower => (
@@ -64,6 +64,9 @@ export class Follow extends Component {
         if (followBack.response.data.status === 400) {
           return this.notifyError(this.props.errors.message);
         }
+        if (followBack.response.status === 401) {
+          return this.notifyError(followBack.response.data.error === 'jwt malformed' ? 'Please Login to Follow' : followBack.response.data.error)  ;
+        }
         return null;
       }}
     />
@@ -78,6 +81,9 @@ export class Follow extends Component {
         if (unFollowMe.payload !== undefined && unFollowMe.payload.status === 200) {
           await this.props.getFollowing(this.props.user.username);
           this.notifyUnFollow(follower.username);
+        }
+        if (unFollowMe.response.status === 401) {
+          return this.notifyError(unFollowMe.response.data.error === 'jwt malformed' ? 'Please Login to unFollow' : unFollowMe.response.data.error);
         }
       }}
     />
