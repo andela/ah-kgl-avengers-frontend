@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import {
-  Pagination, PaginationItem, PaginationLink, Container,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  Container,
 } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { getUser } from '../../redux/action-creators/profile';
 import { getFollowers } from '../../redux/action-creators/user';
-import Footer from '../functional/footer';
 import AppBar from '../functional/navBar';
 import { ArticleView } from '../singleArticle';
 import helper from '../../helpers/decodeToken';
@@ -56,11 +58,13 @@ class Profile extends Component {
     });
   };
 
-  renderArticles = articles => articles.map(
-    article => <ArticleView article={article} key={article.slug} />,
-  );
+  renderArticles = articles => articles.map(article => (
+    <ArticleView article={article} key={article.slug} />
+  ));
 
-  renderArticles = articles => articles.map(article => <ArticleView article={article} key={article.slug} />);
+  renderArticles = articles => articles.map(article => (
+    <ArticleView article={article} key={article.slug} />
+  ));
 
   render() {
     const {
@@ -73,7 +77,12 @@ class Profile extends Component {
     const pages = Math.ceil(articles.length / pageSize);
     const views = articles.slice(start, end);
     const {
-      username: userName, bio, image, firstName, lastName, email = 'No email',
+      username: userName,
+      bio,
+      image,
+      firstName,
+      lastName,
+      email = 'No email',
     } = profile;
 
     return (
@@ -107,9 +116,11 @@ class Profile extends Component {
                       type="button"
                     >
                       <i className="material-icons">supervisor_account</i>
-                      { followers === undefined ? null : followers.data.count}
+                      {followers === undefined
+                        ? null
+                        : followers.data.count}
                       {' '}
-                    followers
+                      followers
                     </button>
                   </Link>
                   {isLoggedInUser ? (
@@ -157,45 +168,40 @@ class Profile extends Component {
                   this.renderArticles(articles)
                 ) : (
                   <div className="profile-no-articles">
-                    No articles published yet
+                    <p>No articles published yet</p>
                   </div>
                 )}
               </div>
               <hr />
-              {(pages > 1) && (
-              <div className="pagination-wrapper">
-                <Pagination aria-label="Page navigation example">
-
-                  <PaginationItem disabled={currentPage <= 0}>
-                    <PaginationLink
-                      onClick={e => this.handleClick(e, currentPage - 1)}
-                      previous
-                      href="#"
-                    />
-                  </PaginationItem>
-                  {
-                    [...Array(pages)].map((page, i) => (
+              {pages > 1 && (
+                <div className="pagination-wrapper">
+                  <Pagination aria-label="Page navigation example">
+                    <PaginationItem disabled={currentPage <= 0}>
+                      <PaginationLink
+                        onClick={e => this.handleClick(e, currentPage - 1)}
+                        previous
+                        href="#"
+                      />
+                    </PaginationItem>
+                    {[...Array(pages)].map((page, i) => (
                       <PaginationItem active={i === currentPage} key={i}>
                         <PaginationLink onClick={() => this.handleClick(i)}>
                           {i + 1}
                         </PaginationLink>
                       </PaginationItem>
-                    ))
-                  }
-                  <PaginationItem disabled={currentPage === pages - 1}>
-                    <PaginationLink
-                      onClick={e => this.handleClick(e, currentPage + 1)}
-                      next
-                      href="#"
-                    />
-                  </PaginationItem>
-                </Pagination>
-              </div>
+                    ))}
+                    <PaginationItem disabled={currentPage === pages - 1}>
+                      <PaginationLink
+                        onClick={e => this.handleClick(e, currentPage + 1)}
+                        next
+                        href="#"
+                      />
+                    </PaginationItem>
+                  </Pagination>
+                </div>
               )}
-
             </div>
           </div>
-          <Footer />
         </Container>
       </Fragment>
     );
@@ -218,7 +224,12 @@ Profile.defaultProps = {
 
 const mapStateToProps = ({ user: userReducer }) => {
   const {
-    user, isRequestOn, userArticles: articles, profile, loggedIn, followers,
+    user,
+    isRequestOn,
+    userArticles: articles,
+    profile,
+    loggedIn,
+    followers,
   } = userReducer;
   return {
     loggedIn,

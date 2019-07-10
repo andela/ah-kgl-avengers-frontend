@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {
   Form, FormGroup, Label, Input,
 } from 'reactstrap';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import Side from './Side';
 import img from '../../assets/developers_2_A1_Rectangle_58_pattern.png';
@@ -20,6 +21,10 @@ export class Register extends Component {
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
+  };
+
+  notifyError = (message) => {
+    toast.error(message);
   };
 
   onSubmit = (e) => {
@@ -59,6 +64,9 @@ export class Register extends Component {
       });
     }
     registerSubmit({ username, email, password }).then((res) => {
+      if (res.response !== undefined && res.response.data.status === 400) {
+        this.notifyError(res.response.data.errors[0]);
+      }
       if (res.payload.status === 201) {
         history.push('/redirect');
       }
@@ -105,9 +113,6 @@ export class Register extends Component {
                         onChange={this.onChange}
                         value={username}
                       />
-                      <div className="errors">
-                        <div className="error">{usernameError}</div>
-                      </div>
                     </FormGroup>
                     <FormGroup>
                       <Label className="label-color">Email</Label>
@@ -119,9 +124,6 @@ export class Register extends Component {
                         onChange={this.onChange}
                         value={email}
                       />
-                      <div className="errors">
-                        <div className="error">{emailError}</div>
-                      </div>
                     </FormGroup>
                     <FormGroup>
                       <Label className="label-color">Password</Label>
@@ -141,9 +143,6 @@ export class Register extends Component {
                       >
                         <i className="zmdi zmdi-eye" />
                       </button>
-                      <div className="errors">
-                        <div className="error">{passwordError}</div>
-                      </div>
                     </FormGroup>
                     <div className="text-center">
                       <button

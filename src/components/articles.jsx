@@ -6,7 +6,6 @@ import {
   TabContent, TabPane, Row, Col, Pagination, PaginationItem, PaginationLink,
 } from 'reactstrap';
 import { MdDelete, MdEdit } from 'react-icons/md';
-import Footer from './functional/footer';
 import Navbar from './functional/navBar';
 import getArticles from '../redux/action-creators/getArticles';
 import getDrafts from '../redux/action-creators/getDrafts';
@@ -133,6 +132,9 @@ class Articles extends Component {
               Drafts
             </button>
           </div>
+          <div className={articles.length === 0 ? 'no-content' : 'disabled'}>
+            <p>No content</p>
+          </div>
           <TabContent activeTab={activeTab}>
             {viewArticles
               && viewArticles.map(article => (
@@ -226,7 +228,6 @@ class Articles extends Component {
             }
           </TabContent>
         </div>
-        <Footer />
       </Fragment>
     );
   }

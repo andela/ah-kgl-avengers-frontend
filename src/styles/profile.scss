@@ -123,10 +123,23 @@
 
 // styles for the  view  profile page
 .container-profile-view {
-  .profile-no-articles,
   .article-request-loading{
     padding-left: 1.6rem;
     color: #2ea8f7;
+  }
+
+  .profile-no-articles {
+    justify-content: center;
+    text-align: center;
+    margin-top: 10rem;
+    width: 100%;
+  }
+
+  .profile-no-articles p {
+    text-align: center;
+    letter-spacing: 0.3em;
+    color: #4b414b;
+    text-transform: uppercase;
   }
 
   .profile-img-container {

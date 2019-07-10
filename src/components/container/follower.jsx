@@ -4,13 +4,15 @@ import PropTypes from 'prop-types';
 import { Container, TabContent, TabPane } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { getUser } from '../../redux/action-creators/profile';
-import Footer from '../functional/footer';
 import AppBar from '../functional/navBar';
 import { FollowerView, FollowingView } from '../singleArticle';
 import helper from '../../helpers/decodeToken';
 import ImageAvatar from '../imageAvatar';
 import {
-  follow, unFollow, getFollowers, getFollowing,
+  follow,
+  unFollow,
+  getFollowers,
+  getFollowing,
 } from '../../redux/action-creators/user';
 
 export class Follow extends Component {
@@ -38,7 +40,6 @@ export class Follow extends Component {
     }
   }
 
-
   notifySuccess = (username) => {
     toast(`You have success followed ${username}`);
   };
@@ -57,7 +58,10 @@ export class Follow extends Component {
       key={Math.random()}
       followEvent={async (username) => {
         const followBack = await this.props.follow(username);
-        if (followBack.payload !== undefined && followBack.payload.status === 201) {
+        if (
+          followBack.payload !== undefined
+            && followBack.payload.status === 201
+        ) {
           await this.props.getFollowing(this.props.user.username);
           this.notifySuccess(follower.username);
         }
@@ -75,7 +79,10 @@ export class Follow extends Component {
       key={Math.random()}
       unfollowEvent={async (username) => {
         const unFollowMe = await this.props.unFollow(username);
-        if (unFollowMe.payload !== undefined && unFollowMe.payload.status === 200) {
+        if (
+          unFollowMe.payload !== undefined
+            && unFollowMe.payload.status === 200
+        ) {
           await this.props.getFollowing(this.props.user.username);
           this.notifyUnFollow(follower.username);
         }
@@ -96,7 +103,12 @@ export class Follow extends Component {
       user, isRequestOn, followers, following,
     } = this.props;
     const {
-      username: userName, bio, image, firstName, lastName, email = 'No email',
+      username: userName,
+      bio,
+      image,
+      firstName,
+      lastName,
+      email = 'No email',
     } = user;
     const { activeTab } = this.state;
     return (
@@ -107,7 +119,10 @@ export class Follow extends Component {
             <div className="row py-3">
               <div className="col-12 col-md-6 px-3 pt-1 px-md-5">
                 <div className="profile-names">
-                  <span className={`profile-name ${firstName && 'profile-names-hasvalue'}`}>
+                  <span
+                    className={`profile-name ${firstName
+                      && 'profile-names-hasvalue'}`}
+                  >
                     {`${firstName || 'unkown'} ${lastName || 'unkown'}`}
                   </span>
                   &nbsp;
@@ -121,11 +136,14 @@ export class Follow extends Component {
                 <div>Bio</div>
                 <div className="profile-user-bio">{bio || 'no bio yet'}</div>
                 <div className="profile-btn-group">
-                  <button className="btn btn-icon btn-profile-followers" type="button">
+                  <button
+                    className="btn btn-icon btn-profile-followers"
+                    type="button"
+                  >
                     <i className="material-icons">supervisor_account</i>
                     {followers === undefined ? null : followers.data.count}
                     {' '}
-                                  followers
+                    followers
                   </button>
                 </div>
               </div>
@@ -144,20 +162,36 @@ export class Follow extends Component {
             <div className="profile-articles-title">
               <button
                 type="button"
-                className={activeTab === '1' ? 'btn mr-2 mb-2 btn-primary' : 'btn mr-2 mb-2 btn-light text-secondary'}
-                onClick={() => { this.toggle('1'); }}
+                className={
+                  activeTab === '1'
+                    ? 'btn mr-2 mb-2 btn-primary'
+                    : 'btn mr-2 mb-2 btn-light text-secondary'
+                }
+                onClick={() => {
+                  this.toggle('1');
+                }}
               >
                 <span>
-                  {`${followers === undefined ? 0 : followers.data.count} Followers`}
+                  {`${
+                    followers === undefined ? 0 : followers.data.count
+                  } Followers`}
                 </span>
               </button>
               <button
                 type="button"
-                className={activeTab === '2' ? 'btn ml-2 mb-2 btn-primary' : 'btn ml-2 mb-2 btn-light text-secondary'}
-                onClick={() => { this.toggle('2'); }}
+                className={
+                  activeTab === '2'
+                    ? 'btn ml-2 mb-2 btn-primary'
+                    : 'btn ml-2 mb-2 btn-light text-secondary'
+                }
+                onClick={() => {
+                  this.toggle('2');
+                }}
               >
                 <span>
-                  {`${following === undefined ? 0 : following.data.count} Following`}
+                  {`${
+                    following === undefined ? 0 : following.data.count
+                  } Following`}
                 </span>
               </button>
             </div>
@@ -182,13 +216,14 @@ export class Follow extends Component {
                   {following !== undefined ? (
                     this.renderFollowing(following.data.followers)
                   ) : (
-                    <div className="profile-no-articles">No articles published yet</div>
+                    <div className="profile-no-articles">
+                      No articles published yet
+                    </div>
                   )}
                 </div>
               </TabPane>
             </TabContent>
           </div>
-          <Footer />
         </Container>
       </Fragment>
     );
@@ -212,7 +247,12 @@ Follow.defaultProps = {
 
 const mapStateToProps = ({ user: userReducer }) => {
   const {
-    user, isRequestOn, userArticles: articles, followers, following, errors,
+    user,
+    isRequestOn,
+    userArticles: articles,
+    followers,
+    following,
+    errors,
   } = userReducer;
   return {
     user,

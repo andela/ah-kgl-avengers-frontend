@@ -44,8 +44,9 @@ export const userLogin = user => async (dispatch) => {
   const url = `${process.env.REACT_APP_API}/auth/login`;
 
   return axios
-    .post(url, user)
+    .post(url, user, { })
     .then((response) => {
+      console.log(response);
       // dispatch the action and pass the payload
       const { user: userData } = response.data;
       const { token } = userData;
