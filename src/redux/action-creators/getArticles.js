@@ -9,7 +9,6 @@ const getArticles = () => async (dispatch) => {
   try {
     const request = await axios.get(url, optRequest);
     const { articles } = request.data;
-    console.log(articles);
     return dispatch(actionDispatch(articleSuccess, articles));
   } catch (error) {
     // handle error

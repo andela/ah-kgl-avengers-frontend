@@ -16,7 +16,7 @@ import {
   USER_FOLLOW_COUNT,
   USER_FOLLOWING_COUNT,
   FOLLOW_FAIL,
-  UN_FOLLOW_FAIL
+  UN_FOLLOW_FAIL,
 } from '../action-types/user';
 import {
   REGISTER_FORM_SEND,
@@ -37,6 +37,7 @@ import {
   REDIRECT_TO,
   LOGOUT_SUCCESS,
   LOGOUT_FAIL,
+  CLEAR_PROFILE,
 } from '../action-types';
 
 export default (
@@ -135,13 +136,22 @@ export default (
     case UPDATE_PROFILE_SUCCESS:
       return { ...state, profile: payload };
 
+    case CLEAR_PROFILE:
+      return {
+        ...state,
+        profile: {},
+        errors: [],
+      };
+
     case FETCH_PROFILE_SUCCESS:
       return { ...state, profile: payload.user, userArticles: payload.articles };
 
     case FETCH_PROFILE_FAIL:
-    case FETCH_USER_FAIL:
     case UPDATE_PROFILE_FAIL:
       return { ...state, errors: payload };
+
+    case FETCH_USER_FAIL:
+      return { ...state, loggedIn: false };
 
     case FETCH_START:
       return { ...state, isRequestOn: true };

@@ -34,7 +34,9 @@ class AppBar extends Component {
   componentDidUpdate = (prevProps) => {
     const { redirect, history } = this.props;
     if (prevProps.redirect !== redirect) {
-      history.push('/');
+      if (redirect.to) {
+        history.push(redirect.to);
+      } else history.push('/');
     }
   };
 

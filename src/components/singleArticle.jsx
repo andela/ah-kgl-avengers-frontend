@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import propTypes from 'prop-types';
 import Chip from './functional/chip';
-import { follow } from '../redux/action-creators/user';
 import ImageAvatar from './imageAvatar';
 
 const renderTags = (tags) => {
@@ -13,10 +12,13 @@ const renderTags = (tags) => {
   return null;
 };
 
-const ArticleView = ({ article, className, bookmark }) => {
-  if (article.User) {
-    article.author = article.User;
+const ArticleView = ({
+  article, className, bookmark, hideUser,
+}) => {
+  if (Object.prototype.hasOwnProperty.call(article, 'User')) {
+    Object.defineProperty(article, 'author', { value: article.User });
   }
+
   return (
     <div className={`article-container ${className}`}>
       <Link to={`/articles/${article.slug}`}>
@@ -29,10 +31,12 @@ const ArticleView = ({ article, className, bookmark }) => {
       <div className="article-meta">
         <div>
           <Link to={`/${article.author.username}`}>
+            {!hideUser && (
             <span className="author-name">
               <i className="zmdi zmdi-face mr-1" />
               {article.author.username}
             </span>
+            )}
           </Link>
           <div className="date-and-read-time">
             <span className="publication-date">
@@ -102,7 +106,11 @@ const FollowerView = ({ follower, followEvent }) => (
         <div className="profile-names">
           <span className="profile-name">{follower.username}</span>
         </div>
-        <button type="button" className="btn btn-icon btn-follow-profile" onClick={() => followEvent(follower)}>
+        <button
+          type="button"
+          className="btn btn-icon btn-follow-profile"
+          onClick={() => followEvent(follower)}
+        >
           <i className="material-icons">account_circle</i>
           Follow Back
         </button>
@@ -121,7 +129,11 @@ const FollowingView = ({ follower, unfollowEvent }) => (
         <div className="profile-names">
           <span className="profile-name">{follower.username}</span>
         </div>
-        <button type="button" className="btn btn-icon btn-follow-profile" onClick={() => unfollowEvent(follower)}>
+        <button
+          type="button"
+          className="btn btn-icon btn-follow-profile"
+          onClick={() => unfollowEvent(follower)}
+        >
           <i className="material-icons">account_circle</i>
           UnFollow
         </button>
@@ -131,19 +143,26 @@ const FollowingView = ({ follower, unfollowEvent }) => (
 );
 
 ArticleView.propTypes = {
-  bookmark: propTypes.func.isRequired,
+  bookmark: propTypes.func,
   article: propTypes.objectOf(propTypes.any).isRequired,
   className: propTypes.string,
+  hideUser: propTypes.bool,
 };
 
 TrendingArticleView.propTypes = {
-  bookmark: propTypes.func.isRequired,
+  bookmark: propTypes.func,
   article: propTypes.objectOf(propTypes.any).isRequired,
   id: propTypes.number.isRequired,
 };
 
+TrendingArticleView.defaultProps = {
+  bookmark: undefined,
+};
+
 ArticleView.defaultProps = {
   className: '',
+  hideUser: false,
+  bookmark: undefined,
 };
 
 export {

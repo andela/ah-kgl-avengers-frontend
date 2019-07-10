@@ -9,6 +9,7 @@ import {
   DISLIKE_ARTICLE,
   FETCH_AGAIN_LIKES,
   LIKE_ARTICLE_FAIL,
+  CLEAR_ARTICLE,
 } from '../action-types';
 
 export const readArticle = slug => async (dispatch) => {
@@ -76,3 +77,5 @@ export const dislikeArticle = slug => async (dispatch) => {
     return errors;
   }
 };
+
+export const clearArticle = () => dispatch => dispatch({ type: CLEAR_ARTICLE, payload: {} });

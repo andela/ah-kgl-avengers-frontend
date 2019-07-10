@@ -186,6 +186,7 @@
       width: 30%;
       img {
         width: 100%;
+        height: 180px;
       }
       .title {
         padding-top: 4px;
@@ -199,6 +200,9 @@
         margin-bottom: 0;
         color: #5e5f5f;
         font-size: 1.1rem;
+        max-height: 55px;
+        word-wrap: break-word;
+        overflow: hidden;
       }
       .article-meta {
         div {
@@ -255,12 +259,6 @@
       }
     }
 
-    // @media all and (min-width: 520px) {
-    //   .btn-follow-profile {
-    //     color: 'black' !important;
-    //     width: 20rem !important;
-    //   }
-    // }
     .btn-edit-profile {
       color: #2ea8f7;
       border-color: #2ea8f7;

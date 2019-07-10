@@ -12,6 +12,8 @@ import {
   DELETE_ARTICLE_SUCCESS,
   FETCH_FEEDS_SUCCESS,
   LIKE_ARTICLE_FAIL,
+  CLEAR_ARTICLE,
+  CLEAR_EDITOR,
 } from '../action-types';
 import {
   draftSuccess,
@@ -23,10 +25,7 @@ import {
   dislikeArticle,
   fetchLikedArticle,
 } from '../action-types/getArticles';
-import {
-  rateSuccess,
-  rateFailed,
-} from '../action-types/rateArticle';
+import { rateSuccess, rateFailed } from '../action-types/rateArticle';
 
 import {
   BOOKMARK_SEND,
@@ -41,10 +40,7 @@ import {
 
 import initialState from '../initialState';
 
-export default (state = initialState, {
-  type,
-  payload,
-}) => {
+export default (state = initialState, { type, payload }) => {
   switch (type) {
     case UPDATE_ARTICLE_SUCCESS: {
       return {
@@ -52,17 +48,25 @@ export default (state = initialState, {
         editorArticle: payload,
       };
     }
+    case CLEAR_EDITOR:
+      return {
+        ...state,
+        editorArticle: {},
+        message: {},
+      };
 
     case DELETE_ARTICLE_FAIL:
     case UPDATE_ARTICLE_FAIL:
       return {
-        ...state, message: payload,
+        ...state,
+        message: payload,
       };
 
     case CREATE_ARTICLE_STARTED:
     case CREATE_ARTICLE_FINISHED:
       return {
-        ...state, isProgressOn: !state.isProgressOn,
+        ...state,
+        isProgressOn: !state.isProgressOn,
       };
 
     case FETCH_FEEDS_SUCCESS:
@@ -73,22 +77,26 @@ export default (state = initialState, {
 
     case FETCH_ARTICLE_START:
       return {
-        ...state, isProgressOn: true,
+        ...state,
+        isProgressOn: true,
       };
 
     case FETCH_ARTICLE_END:
       return {
-        ...state, isProgressOn: false,
+        ...state,
+        isProgressOn: false,
       };
 
     case FETCH_ARTICLE_FAIL:
       return {
-        ...state, message: payload,
+        ...state,
+        message: payload,
       };
 
     case REDIRECT_TO:
       return {
-        ...state, redirect: payload,
+        ...state,
+        redirect: payload,
       };
     case FETCH_ARTICLE_SUCCESS: {
       return {
@@ -98,6 +106,13 @@ export default (state = initialState, {
         success: '',
       };
     }
+
+    case CLEAR_ARTICLE:
+      return {
+        ...state,
+        article: {},
+        message: {},
+      };
 
     case DELETE_ARTICLE_SUCCESS: {
       let newArticles = [];
@@ -117,7 +132,8 @@ export default (state = initialState, {
 
     case 'EDIT_REQUEST':
       return {
-        ...state, editorArticle: payload,
+        ...state,
+        editorArticle: payload,
       };
 
     case LIKE_ARTICLE_FAIL:
@@ -234,18 +250,18 @@ export default (state = initialState, {
         likedArticle: state.article,
       };
 
-      /*
-       * Dislike an article and change the database
-       */
+    /*
+     * Dislike an article and change the database
+     */
     case dislikeArticle:
       return {
         ...state,
         dislikeArticle: state.article,
       };
 
-      /*
-       * Fetch the updated article with total count of likes and dislikes
-       */
+    /*
+     * Fetch the updated article with total count of likes and dislikes
+     */
     case fetchLikedArticle:
       return {
         ...state,

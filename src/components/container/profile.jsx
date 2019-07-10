@@ -10,10 +10,10 @@ import {
 } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { getUser } from '../../redux/action-creators/profile';
-import { getFollowers } from '../../redux/action-creators/user';
+import { getFollowers, clearProfile } from '../../redux/action-creators/user';
+import Footer from '../functional/footer';
 import AppBar from '../functional/navBar';
 import { ArticleView } from '../singleArticle';
-import helper from '../../helpers/decodeToken';
 import ImageAvatar from '../imageAvatar';
 
 class Profile extends Component {
@@ -34,14 +34,20 @@ class Profile extends Component {
     onGetUser(username);
     followersCount(username);
     // check if the user logged in is the profile owner
-    const loggedInUser = helper.decodeToken();
-    if (loggedInUser && loggedInUser.username === username) {
+    let user = localStorage.getItem('user');
+    user = user ? JSON.parse(user) : {};
+    if (user.username === username) {
       this.setState({ isLoggedInUser: true });
     }
   }
 
-  static getDerivedStateFromProps({ loggedIn }) {
-    if (typeof loggedIn !== 'undefined' && !loggedIn) {
+  componentWillUnmount() {
+    const { onClearProfile } = this.props;
+    onClearProfile();
+  }
+
+  static getDerivedStateFromProps({ loggedIn }, { isLoggedInUser }) {
+    if (typeof loggedIn !== 'undefined' && loggedIn === false && isLoggedInUser) {
       toast('Logged out successfully!', {
         className: 'mt-5 text-primary',
       });
@@ -58,13 +64,9 @@ class Profile extends Component {
     });
   };
 
-  renderArticles = articles => articles.map(article => (
-    <ArticleView article={article} key={article.slug} />
-  ));
+  renderArticles = articles => articles.map(article => <ArticleView article={article} key={article.slug} hideUser />);
 
-  renderArticles = articles => articles.map(article => (
-    <ArticleView article={article} key={article.slug} />
-  ));
+  // renderArticles = articles => articles.map(article => <ArticleView article={article} key={article.slug} />);
 
   render() {
     const {
@@ -93,10 +95,7 @@ class Profile extends Component {
             <div className="row py-3">
               <div className="col-12 col-md-6 px-3 pt-1 px-md-5">
                 <div className="profile-names">
-                  <span
-                    className={`profile-name ${firstName
-                      && 'profile-names-hasvalue'}`}
-                  >
+                  <span className={`profile-name ${firstName && 'profile-names-hasvalue'}`}>
                     {`${firstName || 'unkown'} ${lastName || 'unkown'}`}
                   </span>
                   &nbsp;
@@ -111,16 +110,19 @@ class Profile extends Component {
                 <div className="profile-user-bio">{bio || 'no bio yet'}</div>
                 <div className="profile-btn-group">
                   <Link to={`/${userName}/follow`}>
-                    <button
-                      className="btn btn-icon btn-profile-followers"
-                      type="button"
-                    >
+                    <button className="btn btn-icon btn-profile-followers" type="button">
                       <i className="material-icons">supervisor_account</i>
+<<<<<<< HEAD
                       {followers === undefined
                         ? null
                         : followers.data.count}
                       {' '}
                       followers
+=======
+                      {followers === undefined ? null : followers.data.count}
+                      {' '}
+followers
+>>>>>>> bug(article): fix errors
                     </button>
                   </Link>
                   {isLoggedInUser ? (
@@ -133,10 +135,7 @@ class Profile extends Component {
                       Update
                     </Link>
                   ) : (
-                    <button
-                      className="btn btn-icon btn-follow-profile"
-                      type="button"
-                    >
+                    <button className="btn btn-icon btn-follow-profile" type="button">
                       <i className="material-icons">account_circle</i>
                       follow
                     </button>
@@ -167,9 +166,13 @@ class Profile extends Component {
                 {articles.length > 0 ? (
                   this.renderArticles(articles)
                 ) : (
+<<<<<<< HEAD
                   <div className="profile-no-articles">
                     <p>No articles published yet</p>
                   </div>
+=======
+                  <div className="profile-no-articles">No articles published yet</div>
+>>>>>>> bug(article): fix errors
                 )}
               </div>
               <hr />
@@ -185,9 +188,7 @@ class Profile extends Component {
                     </PaginationItem>
                     {[...Array(pages)].map((page, i) => (
                       <PaginationItem active={i === currentPage} key={i}>
-                        <PaginationLink onClick={() => this.handleClick(i)}>
-                          {i + 1}
-                        </PaginationLink>
+                        <PaginationLink onClick={() => this.handleClick(i)}>{i + 1}</PaginationLink>
                       </PaginationItem>
                     ))}
                     <PaginationItem disabled={currentPage === pages - 1}>
@@ -215,11 +216,14 @@ Profile.propTypes = {
   match: PropTypes.instanceOf(Object).isRequired,
   articles: PropTypes.instanceOf(Array),
   isRequestOn: PropTypes.bool.isRequired,
+  onClearProfile: PropTypes.func.isRequired,
+  followersCount: PropTypes.number,
 };
 
 Profile.defaultProps = {
   user: {},
   articles: [],
+  followersCount: 0,
 };
 
 const mapStateToProps = ({ user: userReducer }) => {
@@ -243,5 +247,9 @@ const mapStateToProps = ({ user: userReducer }) => {
 
 export default connect(
   mapStateToProps,
-  { onGetUser: getUser, followersCount: getFollowers },
+  {
+    onGetUser: getUser,
+    followersCount: getFollowers,
+    onClearProfile: clearProfile,
+  },
 )(Profile);

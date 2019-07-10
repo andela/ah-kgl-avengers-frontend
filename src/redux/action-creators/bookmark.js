@@ -15,6 +15,7 @@ export const bookmarkArticle = slug => async (dispatch) => {
   const url = `${process.env.REACT_APP_API}/bookmarks/${slug}`;
   dispatch(actionDispatch(BOOKMARK_SEND));
   try {
+    console.log(optRequest);
     const { data } = await Axios.post(url, null, optRequest);
     return dispatch(actionDispatch(BOOKMARK_SUCCESS, data.message));
   } catch (error) {
