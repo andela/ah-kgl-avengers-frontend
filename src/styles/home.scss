@@ -30,7 +30,7 @@
 
     .title {
       display: inline-block;
-      padding: 8px 0 .1em 0;
+      padding: 8px 0 0.1em 0;
       margin: 0;
       font-size: 1.2rem;
       font-weight: 600;
@@ -40,20 +40,19 @@
       }
     }
 
-  
     .article-description {
       display: block;
       font-weight: lighter;
       font-family: "Open Sans", sans-serif;
-      padding: 0 0 .8em 0;
+      padding: 0 0 0.8em 0;
       margin: 0;
-      font-size: .9em;
+      font-size: 0.9em;
       color: #5c5c5c;
       text-transform: capitalize;
     }
     .article-img {
       width: 100%;
-      height: inherit;
+      min-height: inherit;
     }
     .article-img img {
       width: 100%;
@@ -62,7 +61,7 @@
 
     .author-name {
       color: #4e4e4e;
-      font-size: .84rem;
+      font-size: 0.84rem;
       font-weight: bolder;
       padding: 0;
       margin: 0;
@@ -80,8 +79,8 @@
       }
     }
 
-    .date-and-read-time{
-      margin-top: -.2rem;
+    .date-and-read-time {
+      margin-top: -0.2rem;
     }
 
     .publication-date,
@@ -142,7 +141,7 @@
       }
     }
     .side-head-title {
-      font-size: .9rem;
+      font-size: 0.9rem;
       font-weight: 440;
       text-align: inherit;
     }
@@ -159,13 +158,13 @@
       font-weight: bolder;
       &:hover {
         color: #2ea8f7;
-        text-decoration:  #2ea8f7;
+        text-decoration: #2ea8f7;
       }
     }
     .publication-date,
     .read-time {
-      padding: .4em 0 0 0;
-      font-size: .7rem;
+      padding: 0.4em 0 0 0;
+      font-size: 0.7rem;
     }
 
     @media (min-width: 576px) {
@@ -216,6 +215,9 @@
     flex-wrap: wrap;
     justify-content: space-between;
     .article-container {
+      .article-img {
+        height: 180px;
+      }
     }
   }
 
@@ -226,18 +228,12 @@
       height: 400px;
     }
     .article-description {
-      font-size: .9em;
+      font-size: 0.9em;
       font-weight: lighter;
     }
   }
 
   @media (max-width: 576px) {
-    aside {
-      // order: 1;
-    }
-    section.main {
-      // order: 2;
-    }
     aside,
     section {
       padding: 0;
@@ -251,20 +247,23 @@
     0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
 }
 
-.loadmore {
+.load-more {
   text-align: center;
   color: #38c4b0;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  margin-left: 35%;
 }
 
-.loadmore button {
-  padding: 10px 50px;
+.load-more button {
+  padding: 8px 16px;
   border: 1px solid #38c4b0;
-  border-radius: 10px;
+  border-radius: 4px;
   color: #38c4b0;
   background-color: white;
 }
 
-.loadmore button:hover {
+.load-more button:hover {
   color: white;
   background-color: #38c4b0;
 }

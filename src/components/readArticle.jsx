@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import ReactHtmlParser from 'react-html-parser';
 import '@fortawesome/fontawesome-free/js/all';
 import Rating from 'react-rating';
@@ -10,13 +11,13 @@ import Description from './description';
 import ArticleTitle from './articleTitle';
 import ArticleCreatedDate from './date';
 import ReadTime from './readTime';
-import UserName from './userNames';
 import TextArea from './textArea';
 import {
   readArticle,
   resetArticle,
   likeArticle,
   dislikeArticle,
+  clearArticle,
 } from '../redux/action-creators/readArticle';
 import readArticleHelper from '../helpers/readArticle';
 import Navbar from './functional/navBar';
@@ -30,12 +31,7 @@ import {
 import userLoggedIns from '../helpers/decodeToken';
 
 class ReadArticle extends Component {
-  state = {
-    isFollowed: false,
-  };
-
   componentDidMount() {
-    const user = userLoggedIns.decodeToken();
     const { match } = this.props;
     const { params } = match;
     const { readArticles, getFollowers, getFollowing } = this.props;
@@ -63,6 +59,9 @@ class ReadArticle extends Component {
   componentWillUnmount() {
     const { reset } = this.props;
     reset();
+  // componentWillUnmount() {
+  //   const { onClearArticle } = this.props;
+  //   onClearArticle();
   }
 
   notifyError = (message) => {
@@ -208,12 +207,12 @@ class ReadArticle extends Component {
         <section className="col-lg-8 col-lx-8 col-md-8 col-sm-10 col-lg-offset-4 mx-auto col-md-6 pt-2">
           <div className="container pl-5">
             <div className="row align-items-left">
-              <ImageAvatar />
+              <Link to={`/${author.username}`}><ImageAvatar image={author.image} /></Link>
               <div>
                 <div className="row align-items-center">
-                  <UserName className="lead lead-un-sm lead-un-md lead-un-lg text-left text-md-left text-black-50 ml-4 mt-2">
+                  <Link to={`/${author.username}`} className="lead lead-un-sm lead-un-md lead-un-lg text-left text-md-left ml-4 mt-2 author-username">
                     {author.username}
-                  </UserName>
+                  </Link>
                   {userLoggedIns.decodeToken() !== null
                     && userLoggedIns.decodeToken().username
                     === author.username ? null : (
@@ -330,6 +329,9 @@ class ReadArticle extends Component {
 ReadArticle.defaultProps = {
   error: '',
   success: '',
+  newLikes: undefined,
+  likes: 0,
+  dislikes: 0,
 };
 
 ReadArticle.propTypes = {
@@ -341,11 +343,12 @@ ReadArticle.propTypes = {
   reset: PropTypes.func.isRequired,
   error: PropTypes.string,
   success: PropTypes.string,
-  likes: PropTypes.number.isRequired,
-  dislikes: PropTypes.number.isRequired,
+  likes: PropTypes.number,
+  dislikes: PropTypes.number,
   match: PropTypes.instanceOf(Object).isRequired,
-  newLikes: PropTypes.instanceOf(Object).isRequired,
   likeErrors: PropTypes.instanceOf(Object).isRequired,
+  newLikes: PropTypes.instanceOf(Object),
+  // onClearArticle: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ article: articleReducer, user }) => ({
@@ -372,5 +375,6 @@ export default connect(
     unFollow,
     getFollowers,
     getFollowing,
+    onClearArticle: clearArticle,
   },
 )(ReadArticle);

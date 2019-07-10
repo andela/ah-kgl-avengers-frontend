@@ -40,6 +40,7 @@ const editorConfigs = {
   blockToolbar: ['heading', 'blockQuote', 'imageUpload'],
   removePlugins: ['List', 'Table', 'TableToolbar', 'MediaEmbed'],
   extraPlugins: [UploadAdapterPlugin],
+  placeholder: 'Your story here...',
   heading: {
     options: [
       { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },

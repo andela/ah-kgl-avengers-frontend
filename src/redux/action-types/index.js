@@ -19,6 +19,8 @@ export const DISLIKE_ARTICLE = 'DISLIKE_ARTICLE';
 export const FETCH_AGAIN_DISLIKES = 'FETCH_AGAIN_DISLIKES';
 export const FETCH_AGAIN_LIKES = 'FETCH_AGAIN_LIKES';
 export const LIKE_ARTICLE_FAIL = 'LIKE_ARTICLE_FAIL';
+export const CLEAR_ARTICLE = 'CLEAR_ARTICLE';
+export const CLEAR_EDITOR = 'CLEAR_EDITOR';
 
 // accounts
 export const FETCH_START = 'FETCH_START';
@@ -33,6 +35,7 @@ export const UPDATE_PROFILE_FAIL = 'UPDATE_PROFILE_FAIL';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAIL = 'LOGOUT_FAIL';
 export const FETCH_END = 'FETCH_USER_END';
+export const CLEAR_PROFILE = 'CLEAR_PROFILE';
 
 // others
 export const REDIRECT_TO = 'REDIRECT_TO';

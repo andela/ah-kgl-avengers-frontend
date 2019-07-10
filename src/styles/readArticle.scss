@@ -114,10 +114,10 @@ p img {
   .author-details {
     margin: 0;
     justify-content: center !important;
-    padding: 1rem .5rem 1rem .5rem !important;
+    padding: 1rem 0.5rem 1rem 0.5rem !important;
   }
   .article-likes {
-    margin: 1.5em 0 .5em 0 !important;
+    margin: 1.5em 0 0.5em 0 !important;
   }
 }
 @media all and (min-width: 576px) {
@@ -139,7 +139,6 @@ p img {
   margin: 0 auto;
   .article-tag {
     display: inline-block;
-    color: #2ea8f7;
     height: 32px;
     padding: 0 12px;
     margin: 8px;
@@ -175,10 +174,12 @@ p img {
   font-weight: bold;
   margin-left: auto;
   font-size: 0.8em;
-  color: rgba(0,0,0,.5) !important;
-} 
+  color: rgba(0, 0, 0, 0.5) !important;
+}
 @keyframes cssAnimation {
-  to   { visibility: hidden; }
+  to {
+    visibility: hidden;
+  }
 }
 .dislike {
   border: 1px solid #f72e38;
@@ -193,5 +194,12 @@ p img {
   &:hover {
     color: #ffffff;
     background-color: #f72e3f;
+  }
+}
+
+a.author-username {
+  color: rgba(0, 0, 0, 0.5);
+  &:hover {
+    color: #2ea8f7;
   }
 }

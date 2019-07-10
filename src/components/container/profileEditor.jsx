@@ -7,7 +7,6 @@ import {
 import { updateUser, getUser } from '../../redux/action-creators/profile';
 import Footer from '../functional/footer';
 import AppBar from '../functional/navBar';
-import helper from '../../helpers/decodeToken';
 import ImageAvatar from '../imageAvatar';
 import upLoader from '../../helpers/imageUpLoader';
 
@@ -27,8 +26,9 @@ class ProfileEditor extends Component {
     const { onGetUser, match, history } = this.props;
     const { username } = match.params;
     // TODO: check if the user object has data and discard the request
-    const loggedInUser = helper.decodeToken();
-    if (!loggedInUser || loggedInUser.username !== username) {
+    let user = localStorage.getItem('user');
+    user = user ? JSON.parse(user) : {};
+    if (user.username !== username) {
       return history.push(`/${username}`);
     }
     return onGetUser(username);

@@ -3,7 +3,13 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-  TabContent, TabPane, Row, Col, Pagination, PaginationItem, PaginationLink,
+  TabContent,
+  TabPane,
+  Row,
+  Col,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
 } from 'reactstrap';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import Navbar from './functional/navBar';
@@ -41,23 +47,21 @@ class Articles extends Component {
       getArticles: getMyArticles,
       getDrafts: getDraftArticles,
     } = this.props;
+
     if (typeof loggedIn !== 'undefined' && !loggedIn) return history.push('/');
     getMyArticles();
     return getDraftArticles();
   }
 
   componentDidUpdate() {
-    const {
-      history,
-      loggedIn,
-    } = this.props;
+    const { history, loggedIn } = this.props;
     if (typeof loggedIn !== 'undefined' && !loggedIn) return history.push('/');
     return null;
   }
 
-  handleClick = (i) => {
+  handleClick = (index) => {
     this.setState({
-      currentPage: i,
+      currentPage: index,
     });
   };
 
@@ -74,9 +78,7 @@ class Articles extends Component {
   };
 
   toggle(tab) {
-    const {
-      activeTab, draftClass, pubClass,
-    } = this.state;
+    const { activeTab, draftClass, pubClass } = this.state;
     if (activeTab !== tab) {
       this.setState({
         activeTab: tab,
@@ -87,9 +89,9 @@ class Articles extends Component {
     }
   }
 
-  update(data) {
+  update({ data, status }) {
     const { editArticle: edit, history } = this.props;
-    edit(data);
+    edit(Object.defineProperty(data, 'status', { value: status }));
     history.push('/new-post');
   }
 
@@ -97,14 +99,22 @@ class Articles extends Component {
     const { articles, drafts } = this.props;
 
     const {
-      activeTab, draftClass, pubClass, currentPage, pageSize, defaultPages, slug, modal, tab,
+      activeTab,
+      draftClass,
+      pubClass,
+      currentPage,
+      pageSize,
+      defaultPages,
+      slug,
+      modal,
+      tab,
     } = this.state;
 
     const viewArticles = articles.slice(pageSize * currentPage, pageSize * currentPage + pageSize);
     const viewDrafts = drafts.slice(pageSize * currentPage, pageSize * currentPage + pageSize);
     let pages = 1;
-    (tab === 1) && (pages = Math.ceil(articles.length / pageSize));
-    (tab === 2) && (pages = Math.ceil(drafts.length / pageSize));
+    tab === 1 && (pages = Math.ceil(articles.length / pageSize));
+    tab === 2 && (pages = Math.ceil(drafts.length / pageSize));
 
     return (
       <Fragment>
@@ -157,7 +167,9 @@ class Articles extends Component {
                       <p className="article-details">
                         <span>{article.readTime}</span>
                         <span className="edit">
-                          <MdEdit onClick={() => this.update(article)} />
+                          <MdEdit
+                            onClick={() => this.update({ data: article, status: 'published' })}
+                          />
                         </span>
                         <button
                           type="button"
@@ -185,7 +197,7 @@ class Articles extends Component {
                       <p className="article-details">
                         <span>{draft.readTime}</span>
                         <span className="edit">
-                          <MdEdit onClick={() => this.update(draft)} />
+                          <MdEdit onClick={() => this.update({ data: draft, status: 'draft' })} />
                         </span>
                         <button
                           type="button"
@@ -203,11 +215,9 @@ class Articles extends Component {
                   <hr />
                 </TabPane>
               ))}
-            {
-              (pages > 1) && (
+            {pages > 1 && (
               <div className="pagination-wrapper">
                 <Pagination aria-label="Page navigation example">
-
                   <PaginationItem disabled={currentPage <= 0}>
                     <PaginationLink
                       onClick={e => this.handleClick(currentPage - 1)}
@@ -215,15 +225,11 @@ class Articles extends Component {
                       href="#"
                     />
                   </PaginationItem>
-                  {
-                    [...Array(pages || defaultPages)].map((page, i) => (
-                      <PaginationItem active={i === currentPage} key={i}>
-                        <PaginationLink onClick={() => this.handleClick(i)}>
-                          {i + 1}
-                        </PaginationLink>
-                      </PaginationItem>
-                    ))
-                  }
+                  {[...Array(pages || defaultPages)].map((page, i) => (
+                    <PaginationItem active={i === currentPage} key={i}>
+                      <PaginationLink onClick={() => this.handleClick(i)}>{i + 1}</PaginationLink>
+                    </PaginationItem>
+                  ))}
                   <PaginationItem disabled={currentPage === pages - 1}>
                     <PaginationLink
                       onClick={() => this.handleClick(currentPage + 1)}
@@ -233,8 +239,7 @@ class Articles extends Component {
                   </PaginationItem>
                 </Pagination>
               </div>
-              )
-            }
+            )}
           </TabContent>
         </div>
       </Fragment>

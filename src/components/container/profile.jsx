@@ -3,17 +3,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import {
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Container,
+  Pagination, PaginationItem, PaginationLink, Container,
 } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { getUser } from '../../redux/action-creators/profile';
-import { getFollowers } from '../../redux/action-creators/user';
+import { getFollowers, clearProfile } from '../../redux/action-creators/user';
 import AppBar from '../functional/navBar';
 import { ArticleView } from '../singleArticle';
-import helper from '../../helpers/decodeToken';
 import ImageAvatar from '../imageAvatar';
 
 class Profile extends Component {
@@ -34,14 +30,20 @@ class Profile extends Component {
     onGetUser(username);
     followersCount(username);
     // check if the user logged in is the profile owner
-    const loggedInUser = helper.decodeToken();
-    if (loggedInUser && loggedInUser.username === username) {
+    let user = localStorage.getItem('user');
+    user = user ? JSON.parse(user) : {};
+    if (user.username === username) {
       this.setState({ isLoggedInUser: true });
     }
   }
 
-  static getDerivedStateFromProps({ loggedIn }) {
-    if (typeof loggedIn !== 'undefined' && !loggedIn) {
+  componentWillUnmount() {
+    const { onClearProfile } = this.props;
+    onClearProfile();
+  }
+
+  static getDerivedStateFromProps({ loggedIn }, { isLoggedInUser }) {
+    if (typeof loggedIn !== 'undefined' && loggedIn === false && isLoggedInUser) {
       toast('Logged out successfully!', {
         className: 'mt-5 text-primary',
       });
@@ -58,9 +60,7 @@ class Profile extends Component {
     });
   };
 
-  renderArticles = articles => articles.map(article => (
-    <ArticleView article={article} key={article.slug} />
-  ));
+  renderArticles = articles => articles.map(article => <ArticleView article={article} key={article.slug} hideUser />);
 
   render() {
     const {
@@ -68,17 +68,12 @@ class Profile extends Component {
     } = this.state;
     const end = start + pageSize;
     const {
-      user, isRequestOn, articles, profile, followers,
+      isRequestOn, articles, profile, followers,
     } = this.props;
     const pages = Math.ceil(articles.length / pageSize);
     const views = articles.slice(start, end);
     const {
-      username: userName,
-      bio,
-      image,
-      firstName,
-      lastName,
-      email = 'No email',
+      username: userName, bio, image, firstName, lastName, email = 'No email',
     } = profile;
 
     return (
@@ -89,10 +84,7 @@ class Profile extends Component {
             <div className="row py-3">
               <div className="col-12 col-md-6 px-3 pt-1 px-md-5">
                 <div className="profile-names">
-                  <span
-                    className={`profile-name ${firstName
-                      && 'profile-names-hasvalue'}`}
-                  >
+                  <span className={`profile-name ${firstName && 'profile-names-hasvalue'}`}>
                     {`${firstName || 'unkown'} ${lastName || 'unkown'}`}
                   </span>
                   &nbsp;
@@ -107,16 +99,10 @@ class Profile extends Component {
                 <div className="profile-user-bio">{bio || 'no bio yet'}</div>
                 <div className="profile-btn-group">
                   <Link to={`/${userName}/follow`}>
-                    <button
-                      className="btn btn-icon btn-profile-followers"
-                      type="button"
-                    >
+                    <button className="btn btn-icon btn-profile-followers" type="button">
                       <i className="material-icons">supervisor_account</i>
-                      {followers === undefined
-                        ? null
-                        : followers.data.count}
-                      {' '}
-                      followers
+                      {followers === undefined ? null : followers.data.count}
+                      &nbsp;followers
                     </button>
                   </Link>
                   {isLoggedInUser ? (
@@ -129,10 +115,7 @@ class Profile extends Component {
                       Update
                     </Link>
                   ) : (
-                    <button
-                      className="btn btn-icon btn-follow-profile"
-                      type="button"
-                    >
+                    <button className="btn btn-icon btn-follow-profile" type="button">
                       <i className="material-icons">account_circle</i>
                       follow
                     </button>
@@ -179,10 +162,10 @@ class Profile extends Component {
                         href="#"
                       />
                     </PaginationItem>
-                    {[...Array(pages)].map((page, i) => (
-                      <PaginationItem active={i === currentPage} key={i}>
-                        <PaginationLink onClick={() => this.handleClick(i)}>
-                          {i + 1}
+                    {[...Array(pages)].map((page, index) => (
+                      <PaginationItem active={index === currentPage} key={index}>
+                        <PaginationLink onClick={() => this.handleClick(index)}>
+                          {index + 1}
                         </PaginationLink>
                       </PaginationItem>
                     ))}
@@ -205,27 +188,26 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
-  user: PropTypes.instanceOf(Object),
   profile: PropTypes.instanceOf(Object).isRequired,
   onGetUser: PropTypes.func.isRequired,
   match: PropTypes.instanceOf(Object).isRequired,
   articles: PropTypes.instanceOf(Array),
   isRequestOn: PropTypes.bool.isRequired,
+  onClearProfile: PropTypes.func.isRequired,
+  followersCount: PropTypes.number,
+  followers: PropTypes.instanceOf(Array),
 };
 
 Profile.defaultProps = {
   user: {},
   articles: [],
+  followersCount: 0,
+  followers: [],
 };
 
 const mapStateToProps = ({ user: userReducer }) => {
   const {
-    user,
-    isRequestOn,
-    userArticles: articles,
-    profile,
-    loggedIn,
-    followers,
+    user, isRequestOn, userArticles: articles, profile, loggedIn, followers,
   } = userReducer;
   return {
     loggedIn,
@@ -239,5 +221,9 @@ const mapStateToProps = ({ user: userReducer }) => {
 
 export default connect(
   mapStateToProps,
-  { onGetUser: getUser, followersCount: getFollowers },
+  {
+    onGetUser: getUser,
+    followersCount: getFollowers,
+    onClearProfile: clearProfile,
+  },
 )(Profile);

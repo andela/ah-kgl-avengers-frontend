@@ -14,7 +14,7 @@ class Welcome extends Component {
     super(props);
     this.state = {
       available: 10,
-      fullyloaded: false,
+      fullyLoaded: false,
     };
   }
 
@@ -25,7 +25,7 @@ class Welcome extends Component {
 
   componentDidUpdate(prevProps) {
     const { loggedIn } = this.props;
-    if (loggedIn !== undefined && prevProps.loggedIn !== loggedIn && loggedIn === false) {
+    if (loggedIn !== undefined && prevProps.loggedIn === !loggedIn && loggedIn === false) {
       this.notifyLogout('Logged out successfully!');
     }
   }
@@ -40,7 +40,9 @@ class Welcome extends Component {
         toast.error('First login to bookmark the article');
         return;
       }
-      status === 400 ? toast.error(message) : toast.success(message);
+      if (bookmark.includes('You')) {
+        toast.error(bookmark);
+      } else toast.success(bookmark);
     }
   };
 
@@ -59,14 +61,14 @@ class Welcome extends Component {
     return views.map(single => <ArticleView article={single} key={single.slug} />);
   };
 
-  loadmore = () => {
+  loadMore = () => {
     const { available } = this.state;
     const { feeds } = this.props;
     this.setState({ available: available + 10 });
     if (available + 10 >= feeds.secondary.length) {
-      this.setState({ fullyloaded: true });
+      this.setState({ fullyLoaded: true });
     }
-  }
+  };
 
   notifyLogout = (message) => {
     toast(message, {
@@ -76,7 +78,7 @@ class Welcome extends Component {
 
   render() {
     const { feeds, isProgressOn, user } = this.props;
-    const { fullyloaded } = this.state;
+    const { fullyLoaded } = this.state;
     const { image = null } = user;
     return (
       <Fragment>
@@ -91,7 +93,7 @@ class Welcome extends Component {
               ) : (
                 <Fragment>
                   <section className="main col-12 col-md-9">
-                    {feeds.main.hasOwnProperty('title') && (
+                    {Object.prototype.hasOwnProperty.call(feeds.main, 'title') && (
                       <section className="articles-main">
                         <ArticleView
                           article={feeds.main}
@@ -105,9 +107,12 @@ class Welcome extends Component {
                         && feeds.secondary[5]
                         && this.secondaryArticle(feeds.secondary)}
                     </section>
-                    {feeds.secondary[10] && fullyloaded === false && (
-                      <section className="loadmore" onClick={() => this.loadmore()}>
-                        <button>Load more</button>
+                    {feeds.secondary[10] && fullyLoaded === false && (
+                      <section className="load-more">
+                        <button type="button" onClick={() => this.loadMore()}>
+                          <i className="zmdi zmdi-refresh" />
+                          &nbsp; Load more
+                        </button>
                       </section>
                     )}
                   </section>

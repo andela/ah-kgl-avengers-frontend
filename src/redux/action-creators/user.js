@@ -25,6 +25,7 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_FAIL,
   REDIRECT_TO,
+  CLEAR_PROFILE,
 } from '../action-types';
 
 export const loadUser = () => (dispatch) => {
@@ -206,3 +207,5 @@ export const unFollow = username => async (dispatch) => {
     return error;
   }
 };
+
+export const clearProfile = () => dispatch => dispatch({ type: CLEAR_PROFILE, payload: {} });
