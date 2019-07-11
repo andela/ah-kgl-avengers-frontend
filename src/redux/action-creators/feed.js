@@ -41,7 +41,10 @@ const fetchFeeds = () => (dispatch) => {
         );
       }
       if (articleLength > 6) {
-        secondary = Array.from({ length: 6 }, (value, index) => articles[index + 7]);
+        secondary = Array.from(
+          { length: articleLength - 7 },
+          (value, index) => articles[index + 7],
+        );
       }
       return dispatch({
         type: FETCH_FEEDS_SUCCESS,

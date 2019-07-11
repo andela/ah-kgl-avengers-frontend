@@ -4,7 +4,7 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { UPDATE_ARTICLE_FAIL } from '../../redux/action-types';
 
-import saveArticle from '../../redux/action-creators';
+import { saveArticle } from '../../redux/action-creators';
 
 const mockStore = configureStore([thunk]);
 const store = mockStore({ user: {} });
@@ -40,7 +40,7 @@ describe('Article action', () => {
       });
     });
 
-    await store.dispatch(saveArticle({ article, token: 'awsedrftgyhujuhygtfrdes.jhgfds.kjhgfds' }));
+    await store.dispatch(saveArticle({ article }));
     expect(store.getActions()).toBeDefined();
   });
 
@@ -55,7 +55,6 @@ describe('Article action', () => {
       .dispatch(
         saveArticle({
           article: { body: '', title: 'title' },
-          token: 'awsedrftgyhujuhygtfrdes.jhgfds.kjhgfds',
         }),
       )
       .then(() => {

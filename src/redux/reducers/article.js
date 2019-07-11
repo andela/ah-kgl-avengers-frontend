@@ -13,6 +13,13 @@ import {
   FETCH_FEEDS_SUCCESS,
   LIKE_ARTICLE_FAIL,
   RESET_ARTICLE,
+  CLEAR_ARTICLE,
+  CLEAR_EDITOR,
+  CREATE_COMMENT_SUCCESS,
+  LIKE_COMMENT_SUCCESS,
+  DISLIKE_COMMENT_SUCCESS,
+  LIKE_COMMENT_FAIL,
+  CREATE_COMMENT_FAIL,
 } from '../action-types';
 import {
   draftSuccess,
@@ -24,10 +31,7 @@ import {
   dislikeArticle,
   fetchLikedArticle,
 } from '../action-types/getArticles';
-import {
-  rateSuccess,
-  rateFailed,
-} from '../action-types/rateArticle';
+import { rateSuccess, rateFailed } from '../action-types/rateArticle';
 
 import {
   BOOKMARK_SEND,
@@ -42,10 +46,7 @@ import {
 
 import initialState from '../initialState';
 
-export default (state = initialState, {
-  type,
-  payload,
-}) => {
+export default (state = initialState, { type, payload }) => {
   switch (type) {
     case UPDATE_ARTICLE_SUCCESS: {
       return {
@@ -53,17 +54,25 @@ export default (state = initialState, {
         editorArticle: payload,
       };
     }
+    case CLEAR_EDITOR:
+      return {
+        ...state,
+        editorArticle: {},
+        message: {},
+      };
 
     case DELETE_ARTICLE_FAIL:
     case UPDATE_ARTICLE_FAIL:
       return {
-        ...state, message: payload,
+        ...state,
+        message: payload,
       };
 
     case CREATE_ARTICLE_STARTED:
     case CREATE_ARTICLE_FINISHED:
       return {
-        ...state, isProgressOn: !state.isProgressOn,
+        ...state,
+        isProgressOn: !state.isProgressOn,
       };
 
     case FETCH_FEEDS_SUCCESS:
@@ -74,29 +83,44 @@ export default (state = initialState, {
 
     case FETCH_ARTICLE_START:
       return {
-        ...state, isProgressOn: true,
+        ...state,
+        isProgressOn: true,
       };
 
     case FETCH_ARTICLE_END:
       return {
-        ...state, isProgressOn: false,
+        ...state,
+        isProgressOn: false,
       };
 
     case FETCH_ARTICLE_FAIL:
       return {
-        ...state, message: payload,
+        ...state,
+        message: payload,
       };
 
     case REDIRECT_TO:
       return {
-        ...state, redirect: payload,
+        ...state,
+        redirect: payload,
       };
-    case FETCH_ARTICLE_SUCCESS: {
+    case FETCH_ARTICLE_SUCCESS:
       return {
         ...state,
         article: payload,
         error: '',
         success: '',
+      };
+
+    case CREATE_COMMENT_SUCCESS: {
+      const newComments = state.article.comments;
+      newComments.push(payload);
+      return {
+        ...state,
+        article: {
+          ...state.article,
+          comments: newComments,
+        },
       };
     }
     case RESET_ARTICLE: {
@@ -104,6 +128,53 @@ export default (state = initialState, {
         ...state,
       };
     }
+
+    case LIKE_COMMENT_SUCCESS: {
+      const commentIndex = state.article.comments.findIndex(
+        singleComment => singleComment.id === payload.id,
+      );
+      const comment = Object.assign({}, state.article.comments[commentIndex]);
+      comment.likes += 1;
+      const articleComments = state.article.comments;
+      articleComments[commentIndex] = comment;
+      return {
+        ...state,
+        article: {
+          ...state.article,
+          comments: articleComments,
+        },
+      };
+    }
+
+    case DISLIKE_COMMENT_SUCCESS: {
+      const commentIndex = state.article.comments.findIndex(
+        singleComment => singleComment.id === payload.id,
+      );
+      const comment = Object.assign({}, state.article.comments[commentIndex]);
+      comment.likes = comment.likes > 0 ? comment.likes - 1 : 0;
+      const articleComments = state.article.comments;
+      articleComments[commentIndex] = comment;
+      return {
+        ...state,
+        article: {
+          ...state.article,
+          comments: articleComments,
+        },
+      };
+    }
+
+    case LIKE_COMMENT_FAIL:
+      return { ...state, commentsError: 'Failed to like or dislike comment' };
+
+    case CREATE_COMMENT_FAIL:
+      return { ...state, commentsError: 'Failed to add comment' };
+
+    case CLEAR_ARTICLE:
+      return {
+        ...state,
+        article: {},
+        message: {},
+      };
 
     case DELETE_ARTICLE_SUCCESS: {
       let newArticles = [];
@@ -123,7 +194,8 @@ export default (state = initialState, {
 
     case 'EDIT_REQUEST':
       return {
-        ...state, editorArticle: payload,
+        ...state,
+        editorArticle: payload,
       };
 
     case LIKE_ARTICLE_FAIL:
@@ -240,18 +312,18 @@ export default (state = initialState, {
         likedArticle: state.article,
       };
 
-      /*
-       * Dislike an article and change the database
-       */
+    /*
+     * Dislike an article and change the database
+     */
     case dislikeArticle:
       return {
         ...state,
         dislikeArticle: state.article,
       };
 
-      /*
-       * Fetch the updated article with total count of likes and dislikes
-       */
+    /*
+     * Fetch the updated article with total count of likes and dislikes
+     */
     case fetchLikedArticle:
       return {
         ...state,

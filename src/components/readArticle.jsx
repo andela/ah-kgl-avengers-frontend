@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import ReactHtmlParser from 'react-html-parser';
 import '@fortawesome/fontawesome-free/js/all';
 import Rating from 'react-rating';
@@ -10,32 +11,34 @@ import Description from './description';
 import ArticleTitle from './articleTitle';
 import ArticleCreatedDate from './date';
 import ReadTime from './readTime';
-import UserName from './userNames';
 import TextArea from './textArea';
 import {
   readArticle,
   resetArticle,
   likeArticle,
   dislikeArticle,
+  clearArticle,
+  createComment,
+  likeComment,
 } from '../redux/action-creators/readArticle';
 import readArticleHelper from '../helpers/readArticle';
 import Navbar from './functional/navBar';
+import Footer from './functional/footer';
 import rateArticle from '../redux/action-creators/rateArticle';
 import {
-  follow,
-  unFollow,
-  getFollowers,
-  getFollowing,
+  follow, unFollow, getFollowers, getFollowing,
 } from '../redux/action-creators/user';
 import userLoggedIns from '../helpers/decodeToken';
 
 class ReadArticle extends Component {
-  state = {
-    isFollowed: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      commentBody: '',
+    };
+  }
 
   componentDidMount() {
-    const user = userLoggedIns.decodeToken();
     const { match } = this.props;
     const { params } = match;
     const { readArticles, getFollowers, getFollowing } = this.props;
@@ -51,7 +54,7 @@ class ReadArticle extends Component {
       this.notifyError(error === 'jwt malformed' ? 'Please Login to rate this article' : error);
     }
 
-    if (success !== '' && prevProps.success !== undefined) {
+    if (success !== '' && prevProps.success !== undefined && prevProps.success !== success) {
       this.notifyRateSuccess(success);
     }
 
@@ -71,20 +74,12 @@ class ReadArticle extends Component {
 
   rate = async (value) => {
     const {
-      rateArticle: request, article, success,
+      rateArticle: request, article,
     } = this.props;
     const newRating = {
       rating: value,
     };
     await request(newRating, article.slug);
-    const { error } = this.props;
-    if (error !== '' && error !== undefined) {
-      this.notifyError(error === 'jwt malformed' ? 'Please Login' : error);
-    }
-
-    if (success !== '' && error !== undefined) {
-      this.notifyError(success);
-    }
   };
 
   likeArts = async (slug) => {
@@ -159,10 +154,56 @@ class ReadArticle extends Component {
     });
   };
 
+  renderComments = (comments) => {
+    const { onLikeComment, loggedIn } = this.props;
+    return comments.map(comment => (
+      <div className="single-comment" key={comment.id}>
+        <div className="comment-author-header">
+          <ImageAvatar image={comment.author.image} />
+          <div>
+            <Link to={`/${comment.author.username}`} className="author-username">
+              {comment.author.username}
+            </Link>
+            <span className="comment-date">{readArticleHelper.timeFormat(comment.createdAt)}</span>
+          </div>
+        </div>
+        <div className="comment-content">{comment.body}</div>
+        <div className="comment-footer">
+          <button
+            type="button"
+            onClick={() => {
+              if (loggedIn) {
+                onLikeComment({ commentId: comment.id });
+              } else {
+                toast.error('Login to like this comment');
+              }
+            }}
+            className="btn btn-comment-like"
+          >
+            <i className="zmdi zmdi-thumb-up mr-2" />
+            {`${comment.likes} like${comment.likes !== 1 ? 's' : ''}`}
+          </button>
+        </div>
+      </div>
+    ));
+  };
+
+  createComment = () => {
+    const { onCreateComment, loggedIn, article } = this.props;
+    if (!loggedIn) return toast.error('Login to add your comment');
+    const { commentBody: body } = this.state;
+    if (body.trim().length > 0) {
+      onCreateComment({ body, slug: article.slug });
+      this.setState({ commentBody: '' });
+    }
+    return null;
+  };
+
   render() {
     const {
       article, likes, dislikes, newLikes, success,
     } = this.props;
+    const { commentBody } = this.state;
 
     if (!Object.prototype.hasOwnProperty.call(article, 'body')) return null;
 
@@ -190,12 +231,10 @@ class ReadArticle extends Component {
 
         <section className="col-lg-8 col-md-8 col-sm-10 pt-4 col-lg-offset-3 col-md-offset-3 mx-auto">
           <div className="container">
-            <ArticleTitle className="display-5 text-md-left">
-              {title}
-            </ArticleTitle>
-            <Description className="text-lg-left text-md-left text-sm-left text-black-50 mb-2 mb-lg-8">
+            <ArticleTitle className="display-5 text-md-left">{title}</ArticleTitle>
+            {/* <Description className="text-lg-left text-md-left text-sm-left text-black-50 mb-2 mb-lg-8">
               {description}
-            </Description>
+            </Description> */}
           </div>
         </section>
         {/*
@@ -208,12 +247,17 @@ class ReadArticle extends Component {
         <section className="col-lg-8 col-lx-8 col-md-8 col-sm-10 col-lg-offset-4 mx-auto col-md-6 pt-2">
           <div className="container pl-5">
             <div className="row align-items-left">
-              <ImageAvatar />
+              <Link to={`/${author.username}`}>
+                <ImageAvatar image={author.image} />
+              </Link>
               <div>
                 <div className="row align-items-center">
-                  <UserName className="lead lead-un-sm lead-un-md lead-un-lg text-left text-md-left text-black-50 ml-4 mt-2">
+                  <Link
+                    to={`/${author.username}`}
+                    className="lead lead-un-sm lead-un-md lead-un-lg text-left text-md-left ml-4 mt-2 author-username"
+                  >
                     {author.username}
-                  </UserName>
+                  </Link>
                   {userLoggedIns.decodeToken() !== null
                     && userLoggedIns.decodeToken().username
                     === author.username ? null : (
@@ -252,11 +296,10 @@ class ReadArticle extends Component {
               {newBody}
             </TextArea>
           </div>
-          <div>
-            <span className="message">{success}</span>
-          </div>
 
-          <div className="author-details border d-flex justify-content-between rounded-lg mt-4 mb-5 p-3 row align-items-center">
+          {tagList && <div className="article-taglist">{this.renderTags(tagList)}</div>}
+
+          <div className="author-details border d-flex justify-content-between rounded-lg mt-4 mb-4 p-3 row align-items-center">
             <div>
               <Rating
                 className="small-icon"
@@ -295,11 +338,8 @@ class ReadArticle extends Component {
                   className="btn-follow-author"
                 >
                   <i className="zmdi zmdi-thumb-up mr-2" />
-                  {newLikes === undefined
-                    ? likes
-                    : newLikes.data.article.likes}
-                  {' '}
-                  likes
+                  {newLikes === undefined ? likes : newLikes.data.article.likes}
+                  &nbsp;likes
                 </button>
               </div>
               <div className="mr-1">
@@ -309,18 +349,63 @@ class ReadArticle extends Component {
                   className="dislike"
                 >
                   <i className="zmdi zmdi-thumb-down mr-2" />
-                  {newLikes === undefined
-                    ? dislikes
-                    : newLikes.data.article.dislikes}
-                  {' '}
-                  dislikes
+                  {newLikes === undefined ? dislikes : newLikes.data.article.dislikes}
+                  &nbsp;dislikes
                 </button>
               </div>
             </div>
           </div>
-          {tagList && (
-            <div className="article-taglist">{this.renderTags(tagList)}</div>
-          )}
+
+          <section className="article-comments">
+            {article.comments.length > 0 ? (
+              <div>
+                <h3 className="comments-header">
+                  Comments&nbsp;
+                  <span>
+                    {`${article.comments.length}`}
+                  </span>
+                </h3>
+                {this.renderComments(article.comments)}
+              </div>
+            ) : (
+              <div className="comments-none">Be the first one to comment on this story!</div>
+            )}
+            <div className="new-comment-editor">
+              <textarea
+                name="comment"
+                id=""
+                cols="20"
+                rows="5"
+                placeholder="Your comment here..."
+                value={commentBody}
+                onChange={(evt) => {
+                  this.setState({ commentBody: evt.target.value });
+                }}
+              />
+              <div className="comment-editor-options">
+                <button
+                  href="#"
+                  className="btn btn-icon btn-update-cancel"
+                  type="button"
+                  onClick={() => {
+                    this.setState({ commentBody: '' });
+                  }}
+                >
+                  <i className="material-icons">cancel</i>
+                  Clear
+                </button>
+                <button
+                  className="btn btn-icon btn-update-comment"
+                  type="button"
+                  onClick={this.createComment}
+                >
+                  <i className="material-icons">save</i>
+                  Save
+                </button>
+              </div>
+            </div>
+          </section>
+          <Footer />
         </section>
       </Fragment>
     );
@@ -330,6 +415,11 @@ class ReadArticle extends Component {
 ReadArticle.defaultProps = {
   error: '',
   success: '',
+  newLikes: undefined,
+  likes: 0,
+  dislikes: 0,
+  commentErrors: undefined,
+  loggedIn: undefined,
 };
 
 ReadArticle.propTypes = {
@@ -341,11 +431,16 @@ ReadArticle.propTypes = {
   reset: PropTypes.func.isRequired,
   error: PropTypes.string,
   success: PropTypes.string,
-  likes: PropTypes.number.isRequired,
-  dislikes: PropTypes.number.isRequired,
+  likes: PropTypes.number,
+  dislikes: PropTypes.number,
   match: PropTypes.instanceOf(Object).isRequired,
-  newLikes: PropTypes.instanceOf(Object).isRequired,
   likeErrors: PropTypes.instanceOf(Object).isRequired,
+  newLikes: PropTypes.instanceOf(Object),
+  onClearArticle: PropTypes.func.isRequired,
+  onCreateComment: PropTypes.func.isRequired,
+  commentErrors: PropTypes.string,
+  onLikeComment: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool,
 };
 
 const mapStateToProps = ({ article: articleReducer, user }) => ({
@@ -358,6 +453,8 @@ const mapStateToProps = ({ article: articleReducer, user }) => ({
   authorFollowers: user.followers,
   userErrors: user.errors,
   likeErrors: articleReducer.likedErrors,
+  loggedIn: user.loggedIn,
+  commentErrors: articleReducer.commentsError,
 });
 
 export default connect(
@@ -372,5 +469,8 @@ export default connect(
     unFollow,
     getFollowers,
     getFollowing,
+    onClearArticle: clearArticle,
+    onCreateComment: createComment,
+    onLikeComment: likeComment,
   },
 )(ReadArticle);

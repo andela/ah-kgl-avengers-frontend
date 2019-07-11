@@ -37,6 +37,7 @@ import {
   REDIRECT_TO,
   LOGOUT_SUCCESS,
   LOGOUT_FAIL,
+  CLEAR_PROFILE,
 } from '../action-types';
 
 export default (
@@ -135,6 +136,13 @@ export default (
 
     case UPDATE_PROFILE_SUCCESS:
       return { ...state, profile: payload };
+
+    case CLEAR_PROFILE:
+      return {
+        ...state,
+        profile: {},
+        errors: [],
+      };
 
     case FETCH_PROFILE_SUCCESS:
       return { ...state, profile: payload.user, userArticles: payload.articles };
