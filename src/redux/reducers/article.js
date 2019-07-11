@@ -11,6 +11,7 @@ import {
   FETCH_ARTICLE_FAIL,
   DELETE_ARTICLE_SUCCESS,
   FETCH_FEEDS_SUCCESS,
+  LIKE_ARTICLE_FAIL,
 } from '../action-types';
 import {
   draftSuccess,
@@ -117,6 +118,12 @@ export default (state = initialState, {
     case 'EDIT_REQUEST':
       return {
         ...state, editorArticle: payload,
+      };
+
+    case LIKE_ARTICLE_FAIL:
+      return {
+        ...state,
+        likedErrors: payload,
       };
 
     case draftFailed:

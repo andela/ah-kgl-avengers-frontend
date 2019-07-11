@@ -16,6 +16,7 @@ import {
   USER_FOLLOW_COUNT,
   USER_FOLLOWING_COUNT,
   FOLLOW_FAIL,
+  UN_FOLLOW_FAIL
 } from '../action-types/user';
 import {
   REGISTER_FORM_SEND,
@@ -155,6 +156,8 @@ export default (
       return { ...state, followedUser: payload };
 
     case FOLLOW_FAIL:
+      return { ...state, errors: payload };
+    case UN_FOLLOW_FAIL:
       return { ...state, errors: payload };
     case UN_FOLLOW_SUCCESS:
       return { ...state, message: payload };

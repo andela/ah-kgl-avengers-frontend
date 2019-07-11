@@ -17,6 +17,7 @@ import {
   FOLLOW_SUCCESS,
   UN_FOLLOW_SUCCESS,
   FOLLOW_FAIL,
+  UN_FOLLOW_FAIL,
 } from '../action-types/user';
 import {
   FETCH_USER_SUCCESS,
@@ -201,6 +202,7 @@ export const unFollow = username => async (dispatch) => {
     const followUser = await axios.delete(url, optRequest);
     return dispatch({ type: UN_FOLLOW_SUCCESS, payload: followUser });
   } catch (error) {
+    dispatch({ type: UN_FOLLOW_FAIL, payload: error.response.data });
     return error;
   }
 };

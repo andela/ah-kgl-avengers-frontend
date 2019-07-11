@@ -36,7 +36,7 @@ class Welcome extends Component {
     const { bookmark } = this.props;
     if (bookmark) {
       if (bookmark.includes('jwt')) {
-        toast.error('First login to bookmark the article');
+        toast.error('Please login to bookmark');
         return;
       }
       bookmark.includes('You') ? toast.error(bookmark) : toast.success(bookmark);

@@ -8,6 +8,7 @@ import {
   LIKE_ARTICLE,
   DISLIKE_ARTICLE,
   FETCH_AGAIN_LIKES,
+  LIKE_ARTICLE_FAIL,
 } from '../action-types';
 
 export const readArticle = slug => async (dispatch) => {
@@ -52,6 +53,7 @@ export const likeArticle = slug => async (dispatch) => {
     dispatch({ type: LIKE_ARTICLE, payload: makeRequest });
     dispatch({ type: FETCH_AGAIN_LIKES, payload: likedArticle });
   } catch (errors) {
+    dispatch({ type: LIKE_ARTICLE_FAIL, payload: errors.response.data });
     return errors;
   }
 };
@@ -70,6 +72,7 @@ export const dislikeArticle = slug => async (dispatch) => {
     dispatch({ type: DISLIKE_ARTICLE, payload: makeRequest });
     dispatch({ type: FETCH_AGAIN_LIKES, payload: likedArticle });
   } catch (errors) {
+    dispatch({ type: LIKE_ARTICLE_FAIL, payload: errors.response.data });
     return errors;
   }
 };
