@@ -49,13 +49,9 @@ class Editor extends Component {
   notify = (message) => {
     const { text } = message;
     if (Array.isArray(text)) {
-      return toast.error(text[0], {
-        className: 'mt-5 text-primary',
-      });
+      return toast.error('Add a featured image');
     }
-    return toast.error(text.message || text || 'Failed to save article', {
-      className: 'mt-5 text-primary',
-    });
+    return toast.error(text.message || text || 'Failed to save article');
   };
 
   /**

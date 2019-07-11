@@ -40,9 +40,7 @@ class Welcome extends Component {
         toast.error('First login to bookmark the article');
         return;
       }
-      if (bookmark.includes('You')) {
-        toast.error(bookmark);
-      } else toast.success(bookmark);
+      status === 400 ? toast.error(message) : toast.success(message);
     }
   };
 
@@ -58,7 +56,9 @@ class Welcome extends Component {
   secondaryArticle = (articles) => {
     const { available } = this.state;
     const views = articles.slice(0, available);
-    return views.map(single => <ArticleView article={single} key={single.slug} />);
+    return views.map(single => (
+      <ArticleView article={single} key={single.slug} bookmark={this.bookmarkArticle} />
+    ));
   };
 
   loadMore = () => {

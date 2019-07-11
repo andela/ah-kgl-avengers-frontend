@@ -1,4 +1,5 @@
 import axios from 'axios';
+import uploadHelper from '../../helpers/imageUpLoader';
 
 class UploadAdapter {
   constructor(loader) {
@@ -9,20 +10,7 @@ class UploadAdapter {
     return new Promise((resolve, reject) => {
       this.loader.file
         .then((file) => {
-          const data = new FormData();
-          data.append('file', file, file.name);
-          data.append('upload_preset', 'qmnnrrnhhaven');
-          data.append('tags', 'browser_upload');
-          axios
-            .post('https://api.cloudinary.com/v1_1/avpaul/upload', data, {
-              headers: { 'content-type': 'multipart/form-data' },
-            })
-            .then((response) => {
-              const { url } = response.data;
-              const formatedURL = url.search(/\/$/g) >= 0 ? url.slice(0, -1) : url;
-              resolve({ default: formatedURL });
-            })
-            .catch(error => reject(error || "Couldn't upload the image"));
+          resolve(uploadHelper(file));
         })
         .catch((err) => {
           reject(err);

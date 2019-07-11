@@ -28,6 +28,17 @@ const initialState = {
       author: 'ABC',
       createdAt: '2019-06-21T08:13:05.567Z',
       tagList: ['test', 'jest'],
+      comments: [
+        {
+          body: 'heloo comment',
+          id: '34564567887',
+          createdAt: '2019-06-21T08:13:05.567Z',
+          author: {
+            image: 'jhgfdsdfgh',
+            username: 'welson',
+          },
+        },
+      ],
     },
   },
 };

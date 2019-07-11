@@ -106,7 +106,7 @@ export class Follow extends Component {
 
   render() {
     const {
-      user, isRequestOn, followers, following,
+      isRequestOn, followers, following, profile,
     } = this.props;
     const {
       username: userName,
@@ -115,7 +115,7 @@ export class Follow extends Component {
       firstName,
       lastName,
       email = 'No email',
-    } = user;
+    } = profile;
     const { activeTab } = this.state;
     return (
       <Fragment>
@@ -237,7 +237,7 @@ export class Follow extends Component {
 }
 
 Follow.propTypes = {
-  user: PropTypes.instanceOf(Object),
+  profile: PropTypes.instanceOf(Object),
   onGetUser: PropTypes.func.isRequired,
   match: PropTypes.instanceOf(Object).isRequired,
   isRequestOn: PropTypes.bool.isRequired,
@@ -248,7 +248,7 @@ Follow.propTypes = {
 };
 
 Follow.defaultProps = {
-  user: [],
+  profile: {},
 };
 
 const mapStateToProps = ({ user: userReducer }) => {
@@ -259,6 +259,7 @@ const mapStateToProps = ({ user: userReducer }) => {
     followers,
     following,
     errors,
+    profile,
   } = userReducer;
   return {
     user,
@@ -267,6 +268,7 @@ const mapStateToProps = ({ user: userReducer }) => {
     followers,
     following,
     errors,
+    profile,
   };
 };
 

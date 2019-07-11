@@ -199,10 +199,9 @@ Profile.propTypes = {
 };
 
 Profile.defaultProps = {
-  user: {},
   articles: [],
   followersCount: 0,
-  followers: [],
+  followers: undefined,
 };
 
 const mapStateToProps = ({ user: userReducer }) => {

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { objectProperty } from '@babel/types';
 import { optRequest } from '../../helpers/config';
 import {
   FETCH_ARTICLE_END,
@@ -11,23 +12,39 @@ import {
   LIKE_ARTICLE_FAIL,
   RESET_ARTICLE,
   CLEAR_ARTICLE,
+  CREATE_COMMENT_FAIL,
+  CREATE_COMMENT_SUCCESS,
+  LIKE_COMMENT_SUCCESS,
+  DISLIKE_COMMENT_SUCCESS,
+  LIKE_COMMENT_FAIL,
 } from '../action-types';
 
 export const readArticle = slug => async (dispatch) => {
   const url = `${process.env.REACT_APP_API}/articles/${slug}`;
   const ratingUrl = `${process.env.REACT_APP_API}/articles/${slug}/ratings`;
+  const commentURL = `${process.env.REACT_APP_API}/articles/${slug}/comments`;
   dispatch({ type: FETCH_ARTICLE_START, payload: {} });
   try {
     const resp = await axios.get(url, optRequest);
     const { article } = resp.data;
     let totalRatings;
+    let comments = [];
+    try {
+      const { data } = await axios.get(commentURL, optRequest);
+      comments = data.comments;
+    } catch (error) {
+      comments = [];
+    }
     try {
       const ratings = await axios.get(ratingUrl, optRequest());
       totalRatings = ratings.data.totalRatings;
     } catch (error) {
       totalRatings = 0;
     }
-    article.totalRatings = totalRatings;
+    Object.defineProperties(article, {
+      comments: { value: comments, enumerable: true },
+      totalRatings: { value: totalRatings, enumerable: true },
+    });
     return dispatch({ type: FETCH_ARTICLE_SUCCESS, payload: article });
   } catch (error) {
     const { errors } = error.response;
@@ -80,6 +97,36 @@ export const dislikeArticle = slug => async (dispatch) => {
   } catch (errors) {
     dispatch({ type: LIKE_ARTICLE_FAIL, payload: errors.response.data });
     return errors;
+  }
+};
+
+export const createComment = ({ slug, body }) => async (dispatch) => {
+  const commentURL = `${process.env.REACT_APP_API}/articles/${slug}/comments`;
+  try {
+    const { data } = await axios.post(commentURL, { body }, optRequest());
+    const { comment } = data;
+    const user = JSON.parse(localStorage.getItem('user'));
+    Object.defineProperties(comment, {
+      author: { value: user, enumerable: true },
+      likes: { value: 0, enumerable: true, writable: true },
+    });
+    dispatch({ type: CREATE_COMMENT_SUCCESS, payload: comment });
+  } catch (error) {
+    dispatch({ type: CREATE_COMMENT_FAIL, payload: 'comment failed' });
+  }
+};
+
+export const likeComment = ({ commentId }) => async (dispatch) => {
+  const URL = `${process.env.REACT_APP_API}/articles/comments/${commentId}/like`;
+  try {
+    const { data } = await axios.post(URL, {}, optRequest());
+    const { message } = data;
+    if (!message.includes('removed')) {
+      dispatch({ type: LIKE_COMMENT_SUCCESS, payload: { id: commentId } });
+    } else dispatch({ type: DISLIKE_COMMENT_SUCCESS, payload: { id: commentId } });
+  } catch (error) {
+    const { data } = error;
+    dispatch({ type: LIKE_COMMENT_FAIL, payload: data.error || data });
   }
 };
 

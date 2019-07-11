@@ -1,3 +1,4 @@
+import { statement } from '@babel/template';
 import reducer from '../../redux/reducers/article';
 import * as TYPES from '../../redux/action-types';
 import initialState from '../../redux/initialState';
@@ -106,4 +107,82 @@ describe('Article Reducer', () => {
       article,
     });
   });
+
+  it('add a new comment in articles', () => {
+    const comment = {
+      id: '78654324567',
+      body: 'testing',
+    };
+    expect(
+      reducer(
+        { ...initialState, article: { comments: [] } },
+        { type: TYPES.CREATE_COMMENT_SUCCESS, payload: comment },
+      ),
+    ).toEqual({
+      ...initialState,
+      article: {
+        ...initialState.article,
+        comments: [comment],
+      },
+    });
+  });
+
+  it('increase comment likes', () => {
+    expect(
+      reducer(
+        { ...initialState, article: { comments: [{ id: 23457654, likes: 0 }] } },
+        { type: TYPES.LIKE_COMMENT_SUCCESS, payload: { id: 23457654 } },
+      ),
+    ).toEqual({
+      ...initialState,
+      article: { comments: [{ id: 23457654, likes: 1 }] },
+    });
+  });
+
+  it('decrease comment likes', () => {
+    expect(
+      reducer(
+        { ...initialState, article: { comments: [{ id: 23457654, likes: 0 }] } },
+
+        { type: TYPES.DISLIKE_COMMENT_SUCCESS, payload: { id: 23457654 } },
+      ),
+    ).toEqual({
+      ...initialState,
+      article: { comments: [{ id: 23457654, likes: 0 }] },
+    });
+  });
+
+  it('add an error on comment like fail', () => {
+    expect(reducer(initialState, { type: TYPES.LIKE_COMMENT_FAIL, payload: {} })).toEqual({
+      ...initialState,
+      commentsError: 'Failed to like or dislike comment',
+    });
+  });
+
+  it('add an error on comment fail', () => {
+    expect(reducer(initialState, { type: TYPES.CREATE_COMMENT_FAIL, payload: {} })).toEqual({
+      ...initialState,
+      commentsError: 'Failed to add comment',
+    });
+  });
+
+  it('set the article object to any empty object', () => {
+    expect(reducer(initialState, { type: TYPES.CLEAR_ARTICLE, payload: {} })).toEqual({
+      ...initialState,
+      article: {},
+      message: {},
+    });
+  });
+
+  // it('remove', () => {
+  //   expect(reducer(initialState, { type: TYPES.DELETE_ARTICLE_SUCCESS, payload: {} })).toEqual({});
+  // });
+
+  // it('', () => {
+  //   expect(reducer(initialState, { type: TYPES.FETCH_ARTICLE_END, payload: {} })).toEqual({});
+  // });
+
+  // it('', () => {
+  //   expect(reducer(initialState, { type: TYPES.FETCH_ARTICLE_END, payload: {} })).toEqual({});
+  // });
 });

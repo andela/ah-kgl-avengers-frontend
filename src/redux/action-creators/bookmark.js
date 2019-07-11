@@ -20,7 +20,7 @@ export const bookmarkArticle = slug => async (dispatch) => {
   } catch (error) {
     const { status, data } = error.response;
     if (status === 400) {
-      const { data: response } = await Axios.delete(url, optRequest);
+      const { data: response } = await Axios.delete(url, optRequest());
       response.message = 'Successfully removed your bookmark';
       return dispatch(actionDispatch(BOOKMARK_SUCCESS, response));
     }

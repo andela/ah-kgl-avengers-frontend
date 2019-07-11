@@ -15,6 +15,11 @@ import {
   RESET_ARTICLE,
   CLEAR_ARTICLE,
   CLEAR_EDITOR,
+  CREATE_COMMENT_SUCCESS,
+  LIKE_COMMENT_SUCCESS,
+  DISLIKE_COMMENT_SUCCESS,
+  LIKE_COMMENT_FAIL,
+  CREATE_COMMENT_FAIL,
 } from '../action-types';
 import {
   draftSuccess,
@@ -99,12 +104,23 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         redirect: payload,
       };
-    case FETCH_ARTICLE_SUCCESS: {
+    case FETCH_ARTICLE_SUCCESS:
       return {
         ...state,
         article: payload,
         error: '',
         success: '',
+      };
+
+    case CREATE_COMMENT_SUCCESS: {
+      const newComments = state.article.comments;
+      newComments.push(payload);
+      return {
+        ...state,
+        article: {
+          ...state.article,
+          comments: newComments,
+        },
       };
     }
     case RESET_ARTICLE: {
@@ -112,6 +128,46 @@ export default (state = initialState, { type, payload }) => {
         ...state,
       };
     }
+
+    case LIKE_COMMENT_SUCCESS: {
+      const commentIndex = state.article.comments.findIndex(
+        singleComment => singleComment.id === payload.id,
+      );
+      const comment = Object.assign({}, state.article.comments[commentIndex]);
+      comment.likes += 1;
+      const articleComments = state.article.comments;
+      articleComments[commentIndex] = comment;
+      return {
+        ...state,
+        article: {
+          ...state.article,
+          comments: articleComments,
+        },
+      };
+    }
+
+    case DISLIKE_COMMENT_SUCCESS: {
+      const commentIndex = state.article.comments.findIndex(
+        singleComment => singleComment.id === payload.id,
+      );
+      const comment = Object.assign({}, state.article.comments[commentIndex]);
+      comment.likes = comment.likes > 0 ? comment.likes - 1 : 0;
+      const articleComments = state.article.comments;
+      articleComments[commentIndex] = comment;
+      return {
+        ...state,
+        article: {
+          ...state.article,
+          comments: articleComments,
+        },
+      };
+    }
+
+    case LIKE_COMMENT_FAIL:
+      return { ...state, commentsError: 'Failed to like or dislike comment' };
+
+    case CREATE_COMMENT_FAIL:
+      return { ...state, commentsError: 'Failed to add comment' };
 
     case CLEAR_ARTICLE:
       return {
