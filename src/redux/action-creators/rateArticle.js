@@ -6,7 +6,7 @@ const rateArticle = (value, slug) => (dispatch) => {
   const url = `${process.env.REACT_APP_API}/articles/${slug}/ratings`;
   dispatch(actionDispatch(rateRequest));
   return axios
-    .post(url, value, optRequest)
+    .post(url, value, optRequest())
     .then((response) => {
       const { averageRating } = response.data;
       dispatch(actionDispatch(rateSuccess, averageRating));

@@ -93,6 +93,7 @@ export default (
         ...state,
         user: payload,
         loggedIn: true,
+        localErrors: {},
       };
 
     case LOGOUT_SUCCESS:
@@ -139,9 +140,11 @@ export default (
       return { ...state, profile: payload.user, userArticles: payload.articles };
 
     case FETCH_PROFILE_FAIL:
-    case FETCH_USER_FAIL:
     case UPDATE_PROFILE_FAIL:
       return { ...state, errors: payload };
+
+    case FETCH_USER_FAIL:
+      return { ...state, loggedIn: false };
 
     case FETCH_START:
       return { ...state, isRequestOn: true };

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { actionDispatch, optRequest } from '../../helpers/config';
+import { actionDispatch } from '../../helpers/config';
 import { draftRequest, draftSuccess, draftFailed } from '../action-types/getArticles';
 
 const getDrafts = () => async (dispatch) => {
@@ -7,7 +7,12 @@ const getDrafts = () => async (dispatch) => {
   dispatch(actionDispatch(draftRequest));
 
   try {
-    const request = await axios.get(url, optRequest);
+    const request = await axios.get(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
     const { articles } = request.data;
     return dispatch(actionDispatch(draftSuccess, articles));
   } catch (error) {
