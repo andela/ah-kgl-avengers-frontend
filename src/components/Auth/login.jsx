@@ -24,6 +24,7 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { errors } = nextProps;
+    this.notifyError(errors[0]);
     if (errors instanceof Array === true) {
       errors.forEach((error) => {
         if (error.includes('email')) {
@@ -52,6 +53,10 @@ class Login extends Component {
       className: 'mt-5 text-primary',
     });
   }
+
+  notifyError = (message) => {
+    toast.error(message);
+  };
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
@@ -95,9 +100,6 @@ class Login extends Component {
                         value={email}
                         isrequired="true"
                       />
-                      <div className="errors">
-                        <div className="error">{emailError}</div>
-                      </div>
                     </FormGroup>
                     <FormGroup>
                       <Label className="label-color">Password</Label>
@@ -110,9 +112,6 @@ class Login extends Component {
                         value={password}
                         isrequired="true"
                       />
-                      <div className="errors">
-                        <div className="error">{passError}</div>
-                      </div>
                     </FormGroup>
                     <div className="text-center">
                       <button

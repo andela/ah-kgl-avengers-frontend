@@ -5,7 +5,10 @@ import { Container } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { ArticleView } from '../singleArticle';
 import NavBar from '../functional/navBar';
-import { getAllBookmarks, removeBookmark } from '../../redux/action-creators/bookmark';
+import {
+  getAllBookmarks,
+  removeBookmark,
+} from '../../redux/action-creators/bookmark';
 
 class Bookmark extends Component {
   componentDidMount() {
@@ -20,10 +23,20 @@ class Bookmark extends Component {
     await remove(slug);
     const { bookmark } = this.props;
     const message = bookmark || 'Successfully removed from bookmark';
-    if (!bookmark) { toast.success(message); } else { toast.error(message); }
+    if (!bookmark) {
+      toast.success(message);
+    } else {
+      toast.error(message);
+    }
   };
 
-  getBookmarks = bookmarks => bookmarks.map(article => <ArticleView article={article} key={article.slug} bookmark={this.deleteBookmark} />);
+  getBookmarks = bookmarks => bookmarks.map(article => (
+    <ArticleView
+      article={article}
+      key={article.slug}
+      bookmark={this.deleteBookmark}
+    />
+  ));
 
   render() {
     const { bookmarks } = this.props;
@@ -36,7 +49,13 @@ class Bookmark extends Component {
           <div className="container-profile-view">
             <div className="row">
               <div className="col-12 main-articles profile-articles-container">
-                {bookmarks.length > 0 ? this.getBookmarks(bookmarks) : (<div className="profile-no-articles">You have no bookmarks</div>)}
+                {bookmarks.length > 0 ? (
+                  this.getBookmarks(bookmarks)
+                ) : (
+                  <div className="profile-no-articles">
+                    <p>You have no bookmarks</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -68,4 +87,7 @@ const mapDispatchToProps = dispatch => ({
   remove: slug => dispatch(removeBookmark(slug)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Bookmark);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Bookmark);

@@ -18,7 +18,6 @@ import {
   dislikeArticle,
 } from '../redux/action-creators/readArticle';
 import readArticleHelper from '../helpers/readArticle';
-import Footer from './functional/footer';
 import Navbar from './functional/navBar';
 import rateArticle from '../redux/action-creators/rateArticle';
 import {
@@ -308,7 +307,6 @@ class ReadArticle extends Component {
           {tagList && (
             <div className="article-taglist">{this.renderTags(tagList)}</div>
           )}
-          <Footer />
         </section>
       </Fragment>
     );

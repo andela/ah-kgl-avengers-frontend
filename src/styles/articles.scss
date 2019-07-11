@@ -106,3 +106,21 @@ a:hover {
     background-color: #38c4b0;
     border-color: #38c4b0;
 }
+
+.no-content {
+  justify-content: center;
+  text-align: center;
+  margin-top: 14rem;
+  width: 100%;
+}
+
+.no-content p {
+  text-align: center;
+  letter-spacing: 0.3em;
+  color: #4b414b;
+  text-transform: uppercase;
+}
+
+.disabled {
+  display: none;
+}
