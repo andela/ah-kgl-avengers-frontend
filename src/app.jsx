@@ -16,7 +16,6 @@ import UpdatePassword from './components/container/updatePassword';
 import Bookmark from './components/container/bookmark';
 import Profile from './components/container/profile';
 import ProfileEditor from './components/container/profileEditor';
-import socialLogin from './components/Auth/socialLogin';
 import './index.scss';
 
 import Follow from './components/container/follower';
@@ -38,7 +37,6 @@ class App extends Component {
       <Router>
         <Switch>
           <Route exact path="/" component={Welcome} />
-          <Route path="/social" component={socialLogin} />
           <Route path="/signup" component={Signup} />
           <Route path="/redirect" component={Redirect} />
           <Route path="/login" component={Login} />

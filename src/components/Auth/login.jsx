@@ -42,9 +42,7 @@ class Login extends Component {
 
   componentDidUpdate(prevProps) {
     const { user, history } = this.props;
-    const { message } = user;
     if (user.username !== prevProps.user.username) {
-      this.notifySuccess(message);
       history.push('/');
     }
   }

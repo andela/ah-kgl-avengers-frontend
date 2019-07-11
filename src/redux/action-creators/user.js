@@ -78,9 +78,10 @@ export const googleSocialAccess = accessToken => async (dispatch) => {
       },
     );
     const { token, data, message } = googleAccess.data;
+    const googleLocalStorage = { ...data };
     const googleData = { ...data, message };
     localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(googleData));
+    localStorage.setItem('user', JSON.stringify(googleLocalStorage));
     return dispatch({ type: GOOGLE_SOCIAL_ACCESS_SUCCESS, payload: googleData });
   } catch (error) {
     const { data } = error.response;
@@ -102,9 +103,10 @@ export const facebookSocialAccess = accessToken => async (dispatch) => {
       },
     );
     const { token, data, message } = facebookAccess.data;
+    const facebookLocalStorage = { ...data };
     const facebookData = { ...data, message };
     localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(facebookData));
+    localStorage.setItem('user', JSON.stringify(facebookLocalStorage));
     return dispatch({ type: FACEBOOK_SOCIAL_ACCESS_SUCCESS, payload: facebookData });
   } catch (error) {
     const { data } = error.response;

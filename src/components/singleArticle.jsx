@@ -28,10 +28,12 @@ const ArticleView = ({ article, className, bookmark }) => {
       </Link>
       <div className="article-meta">
         <div>
-          <span className="author-name">
-            <i className="zmdi zmdi-face mr-1" />
-            {article.author.username}
-          </span>
+          <Link to={`/${article.author.username}`}>
+            <span className="author-name">
+              <i className="zmdi zmdi-face mr-1" />
+              {article.author.username}
+            </span>
+          </Link>
           <div className="date-and-read-time">
             <span className="publication-date">
               <i className="zmdi zmdi-calendar mr-1" />
@@ -65,18 +67,20 @@ const TrendingArticleView = ({ article, id, bookmark }) => (
     <div className="trending-article-container">
       <Link to={`/articles/${article.slug}`}>
         <h3 className="title">{article.title}</h3>
-        <span className="author-name">{article.author.username}</span>
-        <span className="publication-date">
-          <i className="zmdi zmdi-calendar" />
-          &nbsp;
-          {moment(article.updatedAt).format('ll')}
-        </span>
-        <span className="read-time">
-          <i className="zmdi zmdi-time" />
-          &nbsp;
-          {article.readTime}
-        </span>
       </Link>
+      <Link to={`/${article.author.username}`}>
+        <span className="author-name">{article.author.username}</span>
+      </Link>
+      <span className="publication-date">
+        <i className="zmdi zmdi-calendar" />
+          &nbsp;
+        {moment(article.updatedAt).format('ll')}
+      </span>
+      <span className="read-time">
+        <i className="zmdi zmdi-time" />
+          &nbsp;
+        {article.readTime}
+      </span>
     </div>
     <button
       className="btn btn-icon btn-bookmark"

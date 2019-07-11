@@ -125,6 +125,8 @@
   .trending-article {
     padding: 16px 8px;
     display: flex;
+    transition: box-shadow ease-in-out 0.5s;
+    border-radius: 5px;
     flex-direction: row;
     color: #04080f;
 
@@ -266,3 +268,4 @@
   color: white;
   background-color: #38c4b0;
 }
+
