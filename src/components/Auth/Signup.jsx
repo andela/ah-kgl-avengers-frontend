@@ -6,6 +6,7 @@ import {
 } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Side from './Side';
 import img from '../../assets/developers_2_A1_Rectangle_58_pattern.png';
 import { userRegister, registerLoad } from '../../redux/action-creators/signup';
@@ -18,6 +19,18 @@ export class Register extends Component {
     email: '',
     hidden: true,
   };
+
+  componentDidUpdate() {
+    const { user } = this.props;
+    const { message } = user;
+    this.notifySuccess(message);
+  }
+
+  notifySuccess = (successMessage) => {
+    toast(successMessage, {
+      className: 'mt-5 text-primary',
+    });
+  }
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
@@ -193,10 +206,12 @@ Register.propTypes = {
   registerSubmit: PropTypes.func.isRequired,
   errors: PropTypes.instanceOf(Array),
   history: PropTypes.instanceOf(Object).isRequired,
+  user: PropTypes.instanceOf(Object),
 };
 
 export const mapStateToProps = ({ user }) => ({
   username: user.register.username,
+  user: user.user,
   email: user.register.email,
   password: user.register.password,
   message: user.register.message,
@@ -205,6 +220,7 @@ export const mapStateToProps = ({ user }) => ({
 
 Register.defaultProps = {
   errors: [],
+  user: {},
 };
 
 export default connect(
