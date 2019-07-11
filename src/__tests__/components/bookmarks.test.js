@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import Bookmark from '../../components/container/bookmark';
 
 const mockStore = configureMockStore([thunk]);
@@ -27,7 +27,7 @@ const initialState = {
         tagList: ['test', 'jest'],
       },
     ],
-    bookmark: '',
+    bookmark: {},
   },
 };
 
@@ -56,22 +56,4 @@ describe('Bookmark tests', () => {
   test('Should render the component', () => {
     expect(component).toBeDefined();
   });
-
-  // test('Should render the component when user has no bookmark ', () => {
-  //   const state = {
-  //     article: {
-  //       bookmarks: [],
-  //       bookmark: '',
-  //     },
-  //   };
-  //   store = mockStore(state);
-  //   component = mount(
-  //     <Provider store={store}>
-  //       <Router>
-  //         <Bookmark {...props} />
-  //       </Router>
-  //     </Provider>,
-  //   );
-  //   expect(component).toBeDefined();
-  // });
 });

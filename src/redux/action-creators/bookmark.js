@@ -16,10 +16,15 @@ export const bookmarkArticle = slug => async (dispatch) => {
   dispatch(actionDispatch(BOOKMARK_SEND));
   try {
     const { data } = await Axios.post(url, null, optRequest);
-    return dispatch(actionDispatch(BOOKMARK_SUCCESS, data.message));
+    return dispatch(actionDispatch(BOOKMARK_SUCCESS, data));
   } catch (error) {
-    const { error: message } = error.response.data;
-    return dispatch(actionDispatch(BOOKMARK_FAIL, message));
+    const { status, data } = error.response;
+    if (status === 400) {
+      const { data: response } = await Axios.delete(url, optRequest);
+      response.message = 'Successfully removed your bookmark';
+      return dispatch(actionDispatch(BOOKMARK_SUCCESS, response));
+    }
+    return dispatch(actionDispatch(BOOKMARK_FAIL, data));
   }
 };
 
