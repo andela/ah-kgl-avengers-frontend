@@ -12,6 +12,7 @@ import {
   DELETE_ARTICLE_SUCCESS,
   FETCH_FEEDS_SUCCESS,
   LIKE_ARTICLE_FAIL,
+  RESET_ARTICLE,
 } from '../action-types';
 import {
   draftSuccess,
@@ -96,6 +97,11 @@ export default (state = initialState, {
         article: payload,
         error: '',
         success: '',
+      };
+    }
+    case RESET_ARTICLE: {
+      return {
+        ...state,
       };
     }
 

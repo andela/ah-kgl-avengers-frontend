@@ -37,6 +37,7 @@ const props = {
     params: 'test',
   },
   readArticles: jest.fn(),
+  reset: jest.fn(),
 };
 let store;
 let component;
